@@ -32,10 +32,10 @@ class News extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+    // public function getRouteKeyName()
+    // {
+    //     return 'slug';
+    // }
 
     public function getThumbnailUrlAttribute()
     {
@@ -48,8 +48,34 @@ class News extends Model
 
         static::creating(function ($news) {
             if (empty($news->slug)) {
-                $news->slug = Str::slug($news->title);
+                $news->slug = static::generateUniqueSlug($news->title);
             }
         });
+
+        static::updating(function ($news) {
+            if ($news->isDirty('title')) {
+                $news->slug = static::generateUniqueSlug($news->title, $news->id);
+            }
+        });
+    }
+
+    /**
+     * Generate unique slug based on title.
+     */
+    protected static function generateUniqueSlug($title, $ignoreId = null)
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (static::where('slug', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
     }
 }

@@ -21,11 +21,6 @@ class Page extends Model
         'meta_description',
     ];
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     public function getFeaturedImageUrlAttribute()
     {
         return $this->featured_image ? url(Storage::url($this->featured_image)) : null;
@@ -37,8 +32,35 @@ class Page extends Model
 
         static::creating(function ($page) {
             if (empty($page->slug)) {
-                $page->slug = Str::slug($page->title);
+                $page->slug = static::generateUniqueSlug($page->title);
             }
         });
+
+        static::updating(function ($page) {
+            if ($page->isDirty('title')) {
+                $page->slug = static::generateUniqueSlug($page->title, $page->id);
+            }
+        });
+    }
+
+    /**
+     * Generate a unique slug based on title.
+     */
+    protected static function generateUniqueSlug($title, $ignoreId = null)
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (static::withTrashed()
+            ->where('slug', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
     }
 }

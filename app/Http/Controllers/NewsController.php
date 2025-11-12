@@ -17,12 +17,12 @@ class NewsController extends Controller
             return $item;
         });
 
-        return view('admin.news.index', compact('news'));
+        return view('news.index', compact('news'));
     }
 
     public function create()
     {
-        return view('admin.news.create');
+        return view('news.create');
     }
 
     public function store(Request $request)
@@ -36,7 +36,6 @@ class NewsController extends Controller
             'status' => 'required|in:draft,published',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
         $validated['created_by'] = Auth::id();
 
         if ($request->hasFile('thumbnail')) {
@@ -45,19 +44,19 @@ class NewsController extends Controller
 
         News::create($validated);
 
-        return redirect()->route('news.index')->with('success', 'Berita berhasil dibuat!');
+        return redirect()->route('admin.news.index')->with('success', 'Berita berhasil dibuat!');
     }
 
     public function show(News $news)
     {
         $news->thumbnail_url = $news->thumbnail ? url(Storage::url($news->thumbnail)) : null;
-        return view('admin.news.show', compact('news'));
+        return view('news.show', compact('news'));
     }
 
     public function edit(News $news)
     {
         $news->thumbnail_url = $news->thumbnail ? url(Storage::url($news->thumbnail)) : null;
-        return view('admin.news.edit', compact('news'));
+        return view('news.edit', compact('news'));
     }
 
     public function update(Request $request, News $news)
@@ -71,8 +70,6 @@ class NewsController extends Controller
             'status' => 'required|in:draft,published',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-
         if ($request->hasFile('thumbnail')) {
             if ($news->thumbnail && Storage::disk('public')->exists($news->thumbnail)) {
                 Storage::disk('public')->delete($news->thumbnail);
@@ -82,7 +79,7 @@ class NewsController extends Controller
 
         $news->update($validated);
 
-        return redirect()->route('news.index')->with('success', 'Berita berhasil diperbarui!');
+        return redirect()->route('admin.news.index')->with('success', 'Berita berhasil diperbarui!');
     }
 
     public function destroy(News $news)
@@ -93,12 +90,32 @@ class NewsController extends Controller
 
         $news->delete();
 
-        return redirect()->route('news.index')->with('success', 'Berita berhasil dihapus!');
+        return redirect()->route('admin.news.index')->with('success', 'Berita berhasil dihapus!');
     }
 
     public function showPublic(News $news)
     {
         $news->thumbnail_url = $news->thumbnail ? url(Storage::url($news->thumbnail)) : null;
         return view('frontend.news.show', compact('news'));
+    }
+
+    public function publish(News $news)
+    {
+        $news->update([
+            'status' => 'published',
+            'published_at' => now(),
+        ]);
+
+        return redirect()->route('admin.news.index')->with('success', 'Berita berhasil dipublikasikan.');
+    }
+
+    public function draft(News $news)
+    {
+        $news->update([
+            'status' => 'draft',
+            'published_at' => null,
+        ]);
+
+        return redirect()->route('admin.news.index')->with('success', 'Berita berhasil diubah menjadi draft.');
     }
 }

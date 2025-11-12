@@ -26,11 +26,6 @@ class Event extends Model
         'end_date' => 'datetime',
     ];
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     public function getThumbnailUrlAttribute()
     {
         return $this->thumbnail ? url(Storage::url($this->thumbnail)) : null;
@@ -40,10 +35,38 @@ class Event extends Model
     {
         parent::boot();
 
+        // Saat membuat event baru
         static::creating(function ($event) {
             if (empty($event->slug)) {
-                $event->slug = Str::slug($event->title);
+                $event->slug = static::generateUniqueSlug($event->title);
             }
         });
+
+        // Saat update title event
+        static::updating(function ($event) {
+            if ($event->isDirty('title')) {
+                $event->slug = static::generateUniqueSlug($event->title, $event->id);
+            }
+        });
+    }
+
+    /**
+     * Generate unique slug untuk Event
+     */
+    protected static function generateUniqueSlug($title, $ignoreId = null)
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (static::where('slug', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
     }
 }

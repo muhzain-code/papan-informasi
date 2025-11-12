@@ -16,12 +16,12 @@ class EventController extends Controller
             return $event;
         });
 
-        return view('admin.events.index', compact('events'));
+        return view('events.index', compact('events'));
     }
 
     public function create()
     {
-        return view('admin.events.create');
+        return view('events.create');
     }
 
     public function store(Request $request)
@@ -35,27 +35,24 @@ class EventController extends Controller
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $request->file('thumbnail')->store('events', 'public');
         }
 
         Event::create($validated);
 
-        return redirect()->route('events.index')->with('success', 'Event berhasil dibuat!');
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil dibuat!');
     }
-
     public function show(Event $event)
     {
         $event->thumbnail_url = $event->thumbnail ? url(Storage::url($event->thumbnail)) : null;
-        return view('admin.events.show', compact('event'));
+        return view('events.show', compact('event'));
     }
 
     public function edit(Event $event)
     {
         $event->thumbnail_url = $event->thumbnail ? url(Storage::url($event->thumbnail)) : null;
-        return view('admin.events.edit', compact('event'));
+        return view('events.edit', compact('event'));
     }
 
     public function update(Request $request, Event $event)
@@ -69,8 +66,6 @@ class EventController extends Controller
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-
         if ($request->hasFile('thumbnail')) {
             if ($event->thumbnail && Storage::disk('public')->exists($event->thumbnail)) {
                 Storage::disk('public')->delete($event->thumbnail);
@@ -80,7 +75,7 @@ class EventController extends Controller
 
         $event->update($validated);
 
-        return redirect()->route('events.index')->with('success', 'Event berhasil diperbarui!');
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil diperbarui!');
     }
 
     public function destroy(Event $event)
@@ -91,7 +86,7 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('events.index')->with('success', 'Event berhasil dihapus!');
+        return redirect()->route('admin.events.index')->with('success', 'Event berhasil dihapus!');
     }
 
     public function showPublic(Event $event)

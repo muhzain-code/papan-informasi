@@ -16,13 +16,14 @@ class PageController extends Controller
             return $page;
         });
 
-        return view('admin.pages.index', compact('pages'));
+        return view('pages.index', compact('pages'));
     }
 
     public function create()
     {
-        return view('admin.pages.create');
+        return view('pages.create');
     }
+
 
     public function store(Request $request)
     {
@@ -34,27 +35,25 @@ class PageController extends Controller
             'meta_description' => 'nullable|string|max:500',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-
         if ($request->hasFile('featured_image')) {
             $validated['featured_image'] = $request->file('featured_image')->store('pages', 'public');
         }
 
         Page::create($validated);
 
-        return redirect()->route('pages.index')->with('success', 'Halaman berhasil dibuat!');
+        return redirect()->route('admin.pages.index')->with('success', 'Halaman berhasil dibuat!');
     }
 
     public function show(Page $page)
     {
         $page->featured_image_url = $page->featured_image ? url(Storage::url($page->featured_image)) : null;
-        return view('admin.pages.show', compact('page'));
+        return view('pages.show', compact('page'));
     }
 
     public function edit(Page $page)
     {
         $page->featured_image_url = $page->featured_image ? url(Storage::url($page->featured_image)) : null;
-        return view('admin.pages.edit', compact('page'));
+        return view('pages.edit', compact('page'));
     }
 
     public function update(Request $request, Page $page)
@@ -67,8 +66,6 @@ class PageController extends Controller
             'meta_description' => 'nullable|string|max:500',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
-
         if ($request->hasFile('featured_image')) {
             if ($page->featured_image && Storage::disk('public')->exists($page->featured_image)) {
                 Storage::disk('public')->delete($page->featured_image);
@@ -78,7 +75,7 @@ class PageController extends Controller
 
         $page->update($validated);
 
-        return redirect()->route('pages.index')->with('success', 'Halaman berhasil diperbarui!');
+        return redirect()->route('admin.pages.index')->with('success', 'Halaman berhasil diperbarui!');
     }
 
     public function destroy(Page $page)
@@ -89,7 +86,7 @@ class PageController extends Controller
 
         $page->delete();
 
-        return redirect()->route('pages.index')->with('success', 'Halaman berhasil dihapus!');
+        return redirect()->route('admin.pages.index')->with('success', 'Halaman berhasil dihapus!');
     }
 
     public function showPublic(Page $page)
@@ -98,4 +95,3 @@ class PageController extends Controller
         return view('frontend.pages.show', compact('page'));
     }
 }
-    
