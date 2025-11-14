@@ -37,8 +37,8 @@
                 <!-- Blog Image -->
                 <div class="blog-detail-img text-center" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000"
                     style="overflow:hidden; border-radius:12px;">
-                    <img src="../assets/images/backgrounds/blog-detail-img.jpg" alt="blog-detail" class="img-fluid w-100"
-                        style="object-fit:cover; max-height:480px;">
+                    <img src="{{ Illuminate\Support\Facades\Storage::url($news->thumbnail) }}" alt="blog-detail"
+                        class="img-fluid w-100" style="object-fit:cover; max-height:480px;">
                 </div>
 
                 <!-- Title + Date + Content -->
@@ -48,30 +48,29 @@
                         <!-- Title -->
                         <h2 class="fw-bold" data-aos="fade-up" data-aos-delay="320" data-aos-duration="1000"
                             style="line-height:1.3;">
-                            Judul Blog yang Menarik dan Informatif
+                            {{ $news->title }}
                         </h2>
 
                         <!-- Blog Date -->
                         <div class="blog-date mb-1" data-aos="fade-up" data-aos-delay="350" data-aos-duration="1000">
-                            <span class="date-text text-muted">Published on • 12 November 2025</span>
+                            <span
+                                class="date-text text-muted">{{ \Carbon\Carbon::parse($news->published_at)->translatedFormat('d F Y, H:i') }}</span>
                         </div>
 
                         <!-- Blog Content -->
                         <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
                             <p class="fs-5 mb-0">
-                                Blogger outreach campaigns adalah strategi kolaborasi antara bisnis dengan blogger
-                                berpengaruh untuk
-                                mempromosikan produk, layanan, atau konten tertentu. Teknik pemasaran ini memanfaatkan
-                                kredibilitas
-                                dan jangkauan yang dimiliki blogger di dalam niche mereka, sehingga mampu meningkatkan
-                                awareness dan
-                                engagement secara signifikan.
+                                {{ $news->content }}
                             </p>
                         </div>
-
                     </div>
                 </div>
-
+                <a href="{{ route('blog.index') }}" class="btn py-2 ps-3 pe-5" data-aos="fade-up" data-aos-delay="100"
+                    data-aos-duration="1000">
+                    <span class="btn-text pe-1">Back</span>
+                    <iconify-icon icon="lucide:arrow-up-right"
+                        class="btn-icon bg-white text-dark round-36 rounded-circle hstack justify-content-center fs-5 shadow-sm"></iconify-icon>
+                </a>
             </div>
         </div>
     </section>

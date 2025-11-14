@@ -32,242 +32,55 @@
     <section class="project py-5 py-lg-11 py-xl-12">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 mb-7">
-                    <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                        data-aos-duration="1000">
-                        <div class="portfolio-img position-relative overflow-hidden">
-                            <img src="../assets/images/portfolio/portfolio-img-5.jpg" alt=""
-                                class="img-fluid w-100">
-                            <div class="portfolio-overlay">
-                                <a href="projects-detail.html"
-                                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
-
-                            <!-- TITLE -->
-                            <h3 class="portfolio-title mb-0">Amber Bottle lore</h3>
-
-                            <!-- SHORT CONTENT -->
-                            <div class="project-content">
-                                A minimalistic bottle photography project focusing on lighting, texture, and color accuracy.
-                            </div>
-
-                            <!-- META INFO -->
-                            <div class="project-meta-grid">
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
-                                    <span>12 Jan 2024 - 28 Jan 2024</span>
-                                </div>
-
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
-                                    <span>Los Angeles Studio A</span>
+                @foreach ($events as $event)
+                    <div class="col-lg-6 mb-7">
+                        <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
+                            data-aos-duration="1000">
+                            <div class="portfolio-img position-relative overflow-hidden">
+                                <img src="{{ Illuminate\Support\Facades\Storage::url($event->thumbnail) ?? 'belum ada gambar' }}"
+                                    alt="" class="img-fluid w-100">
+                                <div class="portfolio-overlay">
+                                    <a href="{{ route('agenda.show', $event->slug) }}"
+                                        class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
+                                        <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
+                                    </a>
                                 </div>
                             </div>
+                            <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
 
-                        </div>
+                                <!-- TITLE -->
+                                <h3 class="portfolio-title mb-0">{{ $event->title }}</h3>
 
-
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-7">
-                    <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="200"
-                        data-aos-duration="1000">
-                        <div class="portfolio-img position-relative overflow-hidden">
-                            <img src="../assets/images/portfolio/portfolio-img-4.jpg" alt=""
-                                class="img-fluid w-100">
-                            <div class="portfolio-overlay">
-                                <a href="projects-detail.html"
-                                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
-
-                            <!-- TITLE -->
-                            <h3 class="portfolio-title mb-0">Amber Bottle lore</h3>
-
-                            <!-- SHORT CONTENT -->
-                            <div class="project-content">
-                                A minimalistic bottle photography project focusing on lighting, texture, and color accuracy.
-                            </div>
-
-                            <!-- META INFO -->
-                            <div class="project-meta-grid">
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
-                                    <span>12 Jan 2024 - 28 Jan 2024</span>
+                                <!-- SHORT CONTENT -->
+                                <div class="project-content">
+                                    {{ $event->description }}
                                 </div>
 
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
-                                    <span>Los Angeles Studio A</span>
+                                <!-- META INFO -->
+                                <div class="project-meta-grid">
+                                    <div class="meta-item">
+                                        <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
+                                        <span>
+                                            {{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y, H:i') }}
+                                            -
+                                            {{ $event->end_date ? \Carbon\Carbon::parse($event->end_date)->translatedFormat('d F Y, H:i') : 'Selesai' }}
+                                        </span>
+
+                                    </div>
+
+                                    <div class="meta-item">
+                                        <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
+                                        <span>{{ $event->location }}</span>
+                                    </div>
                                 </div>
+
                             </div>
+
 
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 mb-7">
-                    <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="300"
-                        data-aos-duration="1000">
-                        <div class="portfolio-img position-relative overflow-hidden">
-                            <img src="../assets/images/portfolio/portfolio-img-6.jpg" alt=""
-                                class="img-fluid w-100">
-                            <div class="portfolio-overlay">
-                                <a href="projects-detail.html"
-                                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
+                @endforeach
 
-                            <!-- TITLE -->
-                            <h3 class="portfolio-title mb-0">Amber Bottle lore</h3>
-
-                            <!-- SHORT CONTENT -->
-                            <div class="project-content">
-                                A minimalistic bottle photography project focusing on lighting, texture, and color accuracy.
-                            </div>
-
-                            <!-- META INFO -->
-                            <div class="project-meta-grid">
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
-                                    <span>12 Jan 2024 - 28 Jan 2024</span>
-                                </div>
-
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
-                                    <span>Los Angeles Studio A</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-7">
-                    <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="400"
-                        data-aos-duration="1000">
-                        <div class="portfolio-img position-relative overflow-hidden">
-                            <img src="../assets/images/portfolio/portfolio-img-3.jpg" alt=""
-                                class="img-fluid w-100">
-                            <div class="portfolio-overlay">
-                                <a href="projects-detail.html"
-                                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
-
-                            <!-- TITLE -->
-                            <h3 class="portfolio-title mb-0">Amber Bottle lore</h3>
-
-                            <!-- SHORT CONTENT -->
-                            <div class="project-content">
-                                A minimalistic bottle photography project focusing on lighting, texture, and color accuracy.
-                            </div>
-
-                            <!-- META INFO -->
-                            <div class="project-meta-grid">
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
-                                    <span>12 Jan 2024 - 28 Jan 2024</span>
-                                </div>
-
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
-                                    <span>Los Angeles Studio A</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-7">
-                    <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="500"
-                        data-aos-duration="1000">
-                        <div class="portfolio-img position-relative overflow-hidden">
-                            <img src="../assets/images/portfolio/portfolio-img-1.jpg" alt=""
-                                class="img-fluid w-100">
-                            <div class="portfolio-overlay">
-                                <a href="projects-detail.html"
-                                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
-
-                            <!-- TITLE -->
-                            <h3 class="portfolio-title mb-0">Amber Bottle lore</h3>
-
-                            <!-- SHORT CONTENT -->
-                            <div class="project-content">
-                                A minimalistic bottle photography project focusing on lighting, texture, and color accuracy.
-                            </div>
-
-                            <!-- META INFO -->
-                            <div class="project-meta-grid">
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
-                                    <span>12 Jan 2024 - 28 Jan 2024</span>
-                                </div>
-
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
-                                    <span>Los Angeles Studio A</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-7">
-                    <div class="portfolio d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="600"
-                        data-aos-duration="1000">
-                        <div class="portfolio-img position-relative overflow-hidden">
-                            <img src="../assets/images/portfolio/portfolio-img-2.jpg" alt=""
-                                class="img-fluid w-100">
-                            <div class="portfolio-overlay">
-                                <a href="projects-detail.html"
-                                    class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                    <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="portfolio-details d-flex flex-column gap-3 modern-portfolio-details">
-
-                            <!-- TITLE -->
-                            <h3 class="portfolio-title mb-0">Amber Bottle lore</h3>
-
-                            <!-- SHORT CONTENT -->
-                            <div class="project-content">
-                                A minimalistic bottle photography project focusing on lighting, texture, and color accuracy.
-                            </div>
-
-                            <!-- META INFO -->
-                            <div class="project-meta-grid">
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:calendar" class="meta-icon"></iconify-icon>
-                                    <span>12 Jan 2024 - 28 Jan 2024</span>
-                                </div>
-
-                                <div class="meta-item">
-                                    <iconify-icon icon="lucide:map-pin" class="meta-icon"></iconify-icon>
-                                    <span>Los Angeles Studio A</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

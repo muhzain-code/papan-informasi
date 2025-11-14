@@ -37,8 +37,8 @@
 
                     <div class="row">
                         <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-                            <img src="../assets/images/portfolio/portfolio-img-4.jpg" alt="services"
-                                class="w-100 object-fit-cover">
+                            <img src=" {{ Illuminate\Support\Facades\Storage::url($event->thumbnail) ?? 'belum ada gambar' }}"
+                                alt="services" class="w-100 object-fit-cover">
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@
                         <div class="d-flex flex-column gap-1 py-2 pe-3 pe-lg-5 border-end">
                             <p class="mb-0">Scope of work</p>
                             <p class="mb-0 text-dark fs-5 fw-medium">Brand identity, Digital design</p>
-                        </div>
+                        </div> 
 
                         <div class="d-flex flex-column gap-1 py-2 pe-3 pe-lg-5 border-end">
                             <p class="mb-0">Industry</p>

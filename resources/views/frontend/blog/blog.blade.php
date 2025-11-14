@@ -31,25 +31,31 @@
 
 
     <!--  Blog Section -->
-    <section class="blog-section py-5 py-lg-11 py-xl-12">
-        <div class="container">
-            <div class="row">
-                @foreach ($news as $berita)
-                    <div class="col-lg-6 blog-col">
+<section class="blog-section py-5 py-lg-11 py-xl-12">
+    <div class="container">
+        <div class="row">
+            @foreach ($news as $berita)
+                <div class="col-12 single-blog-list">
+                    <a href="{{ route('blog.show', $berita->slug) }}" class="blog-card-custom-link">
                         <div class="blog-card-custom">
                             <div class="img-box">
                                 <img src="{{ Illuminate\Support\Facades\Storage::url($berita->thumbnail) ?? 'belum ada gambar' }}"
                                     alt="resources">
                             </div>
                             <div class="content">
-                                <p class="date">{{ $berita->published_at }}</p>
+                                <p class="date">
+                                    {{ \Carbon\Carbon::parse($berita->published_at)->translatedFormat('d F Y, H:i') }}
+                                </p>
                                 <h4>{{ $berita->title }}</h4>
                                 <p class="excerpt">
                                     {{ $berita->excerpt }}
                                 </p>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-    </section>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+</section>
+
 @endsection

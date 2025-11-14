@@ -87,13 +87,6 @@
             <div class="d-flex flex-column gap-5 gap-xl-11">
                 <div class="row gap-7 gap-xl-0">
                     <div class="col-xl-4 col-xxl-4">
-                        <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                            data-aos-duration="1000">
-                            <span
-                                class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">01</span>
-                            <hr class="border-line">
-                            <span class="badge text-bg-dark">Berita</span>
-                        </div>
                     </div>
                     <div class="col-xl-8 col-xxl-7">
 
@@ -111,7 +104,7 @@
                 <!-- Modern Grid -->
                 <div class="modern-grid">
                     @foreach ($news as $berita)
-                        <a href="#" class="news-card-link">
+                        <a href="{{ route('blog.show', $berita->slug) }}" class="news-card-link">
                             <div class="news-card" data-aos="fade-up" data-aos-delay="100">
 
                                 <div class="news-img-wrapper">
@@ -120,7 +113,7 @@
                                 </div>
 
                                 <div class="news-info">
-                                    <p class="date">{{ $berita->published_at }}</p>
+                                    <p class="date">{{ \Carbon\Carbon::parse($berita->published_at)->translatedFormat('d F Y, H:i') }}</p>
                                     <h4 class="news-title line-clamp-2">{{ $berita->title }}</h4>
                                     <p class="news-desc line-clamp-2">{{ $berita->excerpt }}</p>
                                 </div>
@@ -135,7 +128,7 @@
             <!-- More News Button -->
             <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="150">
                 <a href="blog.html" class="more-news-btn">
-                    More News
+                    Berita Lainnya
                     <span class="arrow-icon">→</span>
                 </a>
             </div>
@@ -151,13 +144,6 @@
             <div class="container">
                 <div class="row gap-7 gap-xl-0">
                     <div class="col-xl-4 col-xxl-4">
-                        <div class="d-flex align-items-center gap-7 py-2" data-aos="fade-right" data-aos-delay="100"
-                            data-aos-duration="1000">
-                            <span
-                                class="round-36 flex-shrink-0 text-dark rounded-circle bg-primary hstack justify-content-center fw-medium">02</span>
-                            <hr class="border-line">
-                            <span class="badge text-bg-dark">Agenda</span>
-                        </div>
                     </div>
                     <div class="col-xl-8 col-xxl-7">
                         <div class="row">
@@ -183,7 +169,7 @@
                                         <img src="{{ Illuminate\Support\Facades\Storage::url($event->thumbnail) }}"
                                             alt="" class="img-fluid">
                                         <div class="portfolio-overlay">
-                                            <a href="projects-detail.html"
+                                            <a href="{{ route('agenda.show', $event->slug) }}"
                                                 class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
                                                 <iconify-icon icon="lucide:arrow-up-right"
                                                     class="fs-8 text-dark"></iconify-icon>
@@ -214,7 +200,7 @@
                     </div>
                     <div class="text-center mt-5">
                         <a href="blog.html" class="more-news-btn">
-                            More Events <span class="arrow-icon">→</span>
+                           Agenda Lainnya <span class="arrow-icon">→</span>
                         </a>
                     </div>
                 </div>
