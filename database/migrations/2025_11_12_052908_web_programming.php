@@ -21,7 +21,6 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-
         // NEWS
         Schema::create('news', function (Blueprint $table) {
             $table->id();
@@ -56,6 +55,17 @@ return new class extends Migration
             $table->text('value')->nullable();
             $table->timestamps();
         });
+        
+        // CONTACTS
+        Schema::create('contacts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('subject')->nullable();
+            $table->text('message');
+            $table->timestamps();
+        });
     }
 
     public function down(): void
@@ -66,5 +76,6 @@ return new class extends Migration
         Schema::dropIfExists('categories');
         Schema::dropIfExists('news');
         Schema::dropIfExists('pages');
+        Schema::dropIfExists('contacts');
     }
 };

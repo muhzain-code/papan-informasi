@@ -79,3 +79,12 @@ Route::get('berita/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
 Route::get('agenda/{slug}', [AgendaController::class, 'show'])->name('agenda.show');
 
+//about
+Route::get('tentang', function () {
+    return view('frontend.about.about');
+})->name('about');
+
+//about
+Route::get('kontak', function () {
+    return view('frontend.contact.contact');
+})->name('contact');

@@ -1322,52 +1322,74 @@
 .owl-carousel .video-card-new {
     padding: 10px;
 }
-
 /* WRAPPER BARU */
 .about-fakultas-wrapper {
     position: relative;
+    overflow: hidden; /* Mencegah elemen hover keluar batas */
 }
 
-/* BOX TEKS */
-.about-fakultas-content {
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+/* [GAMBAR]
+   Styling untuk pembungkus gambar */
+.about-fakultas-image {
+    border-radius: 15px; /* Radius lebih modern */
+    /* Shadow kini menggunakan utility Bootstrap 'shadow-lg' di HTML, 
+       namun bisa juga di-override di sini jika perlu */
     transition: 0.3s ease;
 }
 
-.about-fakultas-content:hover {
-    transform: translateY(-5px);
-}
-
-/* LIST CHECK */
-.about-f-list li {
-    list-style: none;
-    margin-bottom: 12px;
-    font-size: 1.05rem;
-}
-
-/* GAMBAR BAWAH */
 .about-fakultas-image img {
-    border-radius: 20px;
-    object-fit: cover;
-    height: 420px;
-    width: 100%;
+    border-radius: 15px; /* Samakan dengan pembungkusnya */
+    
+    /* PENTING: Hapus 'height' tetap di desktop. 
+       Biarkan 'img-fluid' Bootstrap bekerja. */
+    /* 'object-fit: cover' tidak diperlukan di desktop jika 'height' auto */
+    
     transition: 0.35s ease;
 }
 
-.about-fakultas-image img:hover {
-    transform: scale(1.03);
+/* Efek hover yang lebih baik */
+.about-fakultas-image:hover {
+    transform: translateY(-5px); /* Angkat sedikit card-nya */
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .about-fakultas-image img {
-        height: 260px;
+.about-fakultas-image:hover img {
+    transform: scale(1.03); /* Zoom gambar di dalamnya */
+}
+
+
+/* [TEKS]
+   Styling untuk list */
+.about-f-list li {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 12px !important; /* Pastikan mb-2 dari HTML ter-override jika perlu */
+}
+
+.about-f-list i {
+    font-size: 1.1rem; /* Sedikit lebih besar agar icon terlihat jelas */
+}
+
+/* [RESPONSIVE]
+   Bootstrap (col-lg-5/7) sudah menangani stacking otomatis.
+   Kita hanya perlu mengatur ulang gambar saat di mobile. */
+@media (max-width: 991.98px) { /* Saat breakpoint 'lg' (tablet/mobile) */
+    
+    .about-fakultas-image {
+        /* Beri jarak bawah saat gambar berada di atas teks */
+        margin-bottom: 30px; 
     }
 
-    .about-fakultas-content {
-        padding: 25px !important;
+    .about-fakultas-image img {
+        /* Saat di mobile, kita bisa batasi tingginya agar tidak terlalu besar */
+        max-height: 400px;
+        width: 100%;
+        object-fit: cover; /* Di sini kita pakai object-fit */
+    }
+
+    /* Ratakan teks di mobile agar lebih rapi */
+    .about-fakultas-wrapper h1,
+    .about-fakultas-wrapper h4 {
+        text-align: center;
     }
 }
 
@@ -1461,6 +1483,13 @@
     max-height: calc(1.5em * 6);
     margin-bottom: 0;
     /* Hapus margin bawah paragraf */
+}
+
+/* 7. Menyembunyikan konten paragraf di Tampilan Mobile */
+@media (max-width: 767.98px) {
+    .blog-content p {
+        display: none;
+    }
 }
 
 /* =======================================
@@ -1601,3 +1630,140 @@
             rgba(0, 0, 0, 0.2) 30%,
             rgba(0, 0, 0, 0.95) 100%);
 }
+
+/* 1. Mengatur Kartu (Card) Utama */
+.blog-list-view .blog-item {
+    display: flex;
+    flex-direction: row;
+    /* Layout horizontal */
+    height: 100%;
+    /* Memastikan 2 kolom sama tinggi */
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.blog-list-view .blog-item:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+/* 2. Mengatur Kontainer Gambar (Sisi Kiri Item) */
+.blog-list-view .blog-img-container {
+    /* [PERUBAHAN UTAMA 1] 
+           Ganti width: 35% (persentase) menjadi 'px' (fixed).
+           180px adalah ukuran yang sangat proporsional untuk thumbnail.
+        */
+    width: 180px;
+    flex-shrink: 0;
+    /* Mencegah gambar menyusut */
+
+    /* [PERUBAHAN UTAMA 2] 
+           Ganti rasio 1:1 (kotak) ke 4:3 (lebih landscape).
+           Ini akan membuat gambar tidak terlalu tinggi dan lebih proporsional
+           dengan area teks yang hanya berisi judul/tanggal.
+        */
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+
+/* 3. Mengatur Gambar */
+.blog-list-view .blog-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.blog-list-view .blog-item:hover .blog-img-container img {
+    transform: scale(1.05);
+}
+
+/* 4. Mengatur Area Konten Teks (Sisi Kanan Item) */
+.blog-list-view .blog-content {
+    /* [PERUBAHAN UTAMA 3] 
+           Hapus 'width: 65%' dan biarkan 'flex-grow' yang bekerja.
+           'flex-grow: 1' akan membuat area teks ini otomatis
+           mengisi sisa ruang di sebelah gambar 180px.
+        */
+    flex-grow: 1;
+
+    padding: 1rem 1.25rem;
+    /* Beri padding kiri-kanan yg baik */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Pusatkan teks (tanggal & judul) */
+}
+
+/* 5. Mengatur Tampilan Tanggal */
+.blog-list-view .blog-content .blog-comment {
+    margin-bottom: 0.5rem;
+    order: 1;
+}
+
+.blog-list-view .blog-content .blog-comment .small {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* 6. Mengatur Tampilan Judul */
+.blog-list-view .blog-content a.h4 {
+    font-size: 1.15rem;
+    /* Sedikit diperbesar agar jelas */
+    font-weight: 700;
+    line-height: 1.4;
+    color: #333;
+    text-decoration: none;
+    margin-bottom: 0;
+    order: 2;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    /* Izinkan 3 baris */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: auto;
+}
+
+.blog-list-view .blog-content a.h4:hover {
+    color: var(--bs-primary, #0d6efd);
+}
+
+/*
+      ==================================================================
+      RESPONSIVE (TETAP SAMA dan SUDAH BENAR)
+      ==================================================================
+      Di layar HP (di bawah 'md' 768px), style di bawah ini akan
+      otomatis 'mengalahkan' width: 180px dan aspect-ratio: 4/3 di atas,
+      mengembalikannya ke layout kartu vertikal.
+    */
+@media (max-width: 767.98px) {
+    .blog-list-view .blog-item {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .blog-list-view .blog-img-container {
+        /* Style ini akan menimpa 'width: 180px' di HP */
+        width: 100%;
+        /* Style ini akan menimpa 'aspect-ratio: 4/3' di HP */
+        aspect-ratio: 16 / 9;
+    }
+
+    .blog-list-view .blog-content {
+        width: 100%;
+        padding: 1.25rem;
+        justify-content: flex-start;
+    }
+
+    .blog-list-view .blog-content a.h4 {
+        -webkit-line-clamp: 2;
+    }
+}
+
