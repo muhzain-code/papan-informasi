@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $news = News::latest()->take(3)->where('status', 'published')->get();
 
-        $events = Event::latest()->take(5)->get();
+        $events = Event::latest()->take(2)->get();
 
         return view('frontend.home.index', compact('news', 'events'));
     }

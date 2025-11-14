@@ -1,30 +1,34 @@
  @extends('frontend.layouts.dashboard')
 
  @section('content')
-     <!--  Get in touch Section -->
-     <section
-         class="bg-light-gray border-top border-primary border-4 d-flex align-items-center justify-content-center min-vh-100">
-         <div class="container py-3">
-             <div class="d-flex flex-column justify-content-center gap-8">
-                 <img src="../assets/images/backgrounds/404.svg" alt="404" width="550" class="img-fluid mx-auto"
-                     data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000">
-                 <h2 class="mb-0 text-center" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Oops! Page
-                     Not
-                     Found</h2>
-                 <a href="index.html" class="btn mx-auto" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
-                     <span class="btn-text">Back to Home</span>
-                     <iconify-icon icon="lucide:arrow-up-right"
-                         class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm"></iconify-icon>
-                 </a>
+     <!-- Header Start -->
+     <div class="container-fluid bg-breadcrumb">
+         <div class="container text-center py-5" style="max-width: 900px;">
+             <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">404 Pages</h4>
+             <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                 <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                 <li class="breadcrumb-item active text-primary">404 Page</li>
+             </ol>
+         </div>
+     </div>
+     <!-- Header End -->
+
+
+     <!-- 404 Start -->
+     <div class="container-fluid bg-light py-5">
+         <div class="container py-5 text-center">
+             <div class="row justify-content-center">
+                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                     <i class="far fa-frown-open display-1 text-primary mb-4" style="width: 80px; height: 80px;"></i>
+                     <h1 class="display-1">404</h1>
+                     <h1 class="mb-4">Page Not Found</h1>
+                     <p class="mb-4">We’re sorry, the page you have looked for does not exist in our website! Maybe go to
+                         our home page or try to use a search?</p>
+                     <a class="btn btn-primary rounded-pill py-3 px-5" href="index.html">Go Back To Home</a>
+                 </div>
              </div>
          </div>
-     </section>
-
-     <div class="get-template hstack gap-2">
-
-         <button class="btn bg-primary p-2 round-52 rounded-circle hstack justify-content-center flex-shrink-0"
-             id="scrollToTopBtn">
-             <iconify-icon icon="lucide:arrow-up" class="fs-7 text-dark"></iconify-icon>
-         </button>
      </div>
+     <!-- 404 End -->
  @endsection

@@ -1,211 +1,261 @@
 @extends('frontend.layouts.dashboard')
 
 @section('content')
-    <!--  Banner Section -->
-    <section class="banner-section position-relative d-flex align-items-end min-vh-100">
-        <video class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" autoplay muted loop playsinline>
-            <source src="../assets/images/backgrounds/unuja-video.mp4" type="video/mp4" />
+    <!-- Fullscreen Video Background Section -->
+    <section class="video-hero">
+
+        <!-- Background Video -->
+        <video autoplay muted loop playsinline class="video-bg">
+            <source src="{{ asset('frontend/img/unuja-video.mp4') }}" type="video/mp4">
         </video>
-        <div class="container">
-            <div class="d-flex flex-column gap-4 pb-8 position-relative z-1">
-                <div class="row align-items-center">
-                    <div class="col-xl-4">
-                        <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
-                            data-aos-duration="1000">
-                            <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                            <p class="mb-0 text-dark fs-5 text-opacity-0">Welcome<br><span
-                                    class="text-bg-primary">Universitas Nurul
-                                    Jadid</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                    <h1 class="mb-0 fs-15 text-dark lh-1">Fakultas Teknik</h1>
-                </div>
-            </div>
-        </div>
+
+        <!-- Dark Overlay -->
+        <!-- <div class="overlay"></div> -->
+
+        <!-- Content -->
+        <!-- <div class="hero-content container text-center text-white">
+                                                                                            <h4 class="text-uppercase fw-bold mb-4">Universitas Nurul Jadid</h4>
+                                                                                            <h1 class="display-1 fw-bold mb-4">Fakultas Teknik</h1>
+                                                                                         
+
+                                                                                            <div class="d-flex justify-content-center flex-wrap">
+                                                                                                <a class="btn btn-light rounded-pill py-3 px-5 me-2 mb-2" href="#">
+                                                                                                    <i class="fas fa-play-circle me-2"></i> Berita
+                                                                                                </a>
+                                                                                                <a class="btn btn-dark rounded-pill py-3 px-5 ms-2 mb-2" href="#">
+                                                                                                    Daftar
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        </div> -->
+
     </section>
-    <!--  About Highlight Section -->
-    <section class="stats-facts py-5 py-lg-11 py-xl-12 position-relative overflow-hidden">
-        <div class="container">
-            <div class="row align-items-center g-5">
 
-                <!-- Left Video -->
-                <div class="col-lg-5" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1000">
+    <!-- Feature Start -->
+    <div class="container-fluid feature bg-light py-5 ftnj-section-wrapper">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Universitas Nurul Jadid</h4>
+                <h1 class="display-4 mb-4">Fakultas Teknik</h1>
+                <p class="mb-0 ftnj-description">
+                    Fakultas Teknik Universitas Nurul Jadid telah berkembang menjadi pusat inovasi dan rekayasa
+                    teknologi,
+                    berkomitmen mencetak lulusan unggul, berintegritas, dan memiliki kemampuan adaptif terhadap
+                    perkembangan
+                    era digital. Berbagai layanan dan aplikasi pendukung tersedia untuk pelayanan akademik dan
+                    administrasi.
+                </p>
+            </div>
 
-                    <div class="ratio ratio-16x9 rounded-4 overflow-hidden"
-                        style="width: 100%; max-height: 400px; position: relative; z-index: 5;">
-
-                        <iframe src="https://www.youtube.com/embed/Sjo8RhDPEpM?rel=0&controls=1&modestbranding=1"
-                            title="YouTube video" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                            style="width: 100%; height: 100%; border:0; position:absolute; top:0; left:0; z-index:10;">
-                        </iframe>
-
-                    </div>
-
-                </div>
-
-                <!-- Right Content -->
-                <div class="col-lg-7">
-                    <div class="d-flex flex-column gap-4" data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000">
-
-                        <h3 class="mb-0">High quality web design solutions you can trust.</h3>
-
-                        <p class="fs-4 mb-0">
-                            When selecting a web design agency, it's essential to consider its reputation,
-                            experience, and the specific needs of your project.
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="feature-item p-4 pt-0 ftnj-feature-item">
+                        <div class="feature-icon p-4 mb-4 ftnj-icon-box">
+                            <i class="far fa-handshake"></i>
+                        </div>
+                        <h4 class="mb-4 ftnj-feature-title">Sistem Informasi FT</h4>
+                        <p class="mb-4 ftnj-feature-desc">
+                            Akses layanan akademik, administrasi, dan informasi internal Fakultas Teknik secara online.
                         </p>
-
-                        <a href="about-us.html" class="btn mt-2" data-aos="fade-up" data-aos-delay="300"
-                            data-aos-duration="1000">
-                            <span class="btn-text">Who we are</span>
-                            <iconify-icon icon="lucide:arrow-up-right"
-                                class="btn-icon bg-white text-dark round-52 rounded-circle hstack justify-content-center fs-7 shadow-sm">
-                            </iconify-icon>
-                        </a>
-
+                        <a class="btn btn-primary ftnj-btn" href="#">Kunjungi</a>
                     </div>
                 </div>
 
+                <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
+                    <div class="feature-item p-4 pt-0 ftnj-feature-item">
+                        <div class="feature-icon p-4 mb-4 ftnj-icon-box">
+                            <i class="fa fa-laptop-code"></i>
+                        </div>
+                        <h4 class="mb-4 ftnj-feature-title">E-Learning Teknik</h4>
+                        <p class="mb-4 ftnj-feature-desc">
+                            Platform pembelajaran digital yang digunakan dosen dan mahasiswa Fakultas Teknik.
+                        </p>
+                        <a class="btn btn-primary ftnj-btn" href="#">Masuk</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="feature-item p-4 pt-0 ftnj-feature-item">
+                        <div class="feature-icon p-4 mb-4 ftnj-icon-box">
+                            <i class="fa fa-server"></i>
+                        </div>
+                        <h4 class="mb-4 ftnj-feature-title">Repository Teknik</h4>
+                        <p class="mb-4 ftnj-feature-desc">
+                            Pusat arsip digital untuk penelitian, laporan, dan publikasi akademik mahasiswa & dosen.
+                        </p>
+                        <a class="btn btn-primary ftnj-btn" href="#">Lihat</a>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
+                    <div class="feature-item p-4 pt-0 ftnj-feature-item">
+                        <div class="feature-icon p-4 mb-4 ftnj-icon-box">
+                            <i class="fa fa-headphones"></i>
+                        </div>
+                        <h4 class="mb-4 ftnj-feature-title">Helpdesk FT</h4>
+                        <p class="mb-4 ftnj-feature-desc">
+                            Layanan aduan & support teknis untuk seluruh mahasiswa dan staf Fakultas Teknik.
+                        </p>
+                        <a class="btn btn-primary ftnj-btn" href="#">Buka</a>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    <!-- Feature End -->
 
-        <!-- Background Decorative -->
-        <div class="position-absolute bottom-0 start-0" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000"
-            style="z-index: 1; pointer-events: none;">
-            <img src="../assets/images/backgrounds/stats-facts-bg.svg" alt="" class="img-fluid">
-        </div>
-    </section>
+    <!-- Blog Start -->
+    <div class="container-fluid blog py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Berita</h4>
+                <h1 class="display-4 mb-4">Berita Terbaru</h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+                @foreach ($news as $berita)
+                    {{-- 
+                  Grid diubah ke col-lg-4 agar menjadi 3 kolom di layar besar,
+                  dan col-md-6 agar menjadi 2 kolom di tablet
+                --}}
+                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                        {{-- 
+                      Class .blog-item kini diatur oleh CSS di atas 
+                      untuk tinggi, bayangan, dan border-radius
+                    --}}
+                        <div class="blog-item">
+                            {{-- 
+                          Container BARU untuk aspect-ratio gambar yang fix
+                        --}}
+                            <div class="blog-img-container">
+                                <img src="{{ Illuminate\Support\Facades\Storage::url($berita->thumbnail) ?? 'belum ada gambar' }}"
+                                    alt="{{ $berita->title }}">
+                            </div>
 
+                            {{-- 
+                          Urutan konten diubah (Judul -> Tanggal -> Teks) 
+                          agar sesuai gambar referensi
+                        --}}
+                            <div class="blog-content">
 
+                                {{-- 1. JUDUL (Maks 3 baris) --}}
+                                <a href="{{ route('blog.show', $berita->slug) }}"
+                                    class="h4 d-inline-block">{{ $berita->title }}</a>
 
-    <!--  Recent news Section -->
-    <section class="Recent-news bg-light-gray py-5 py-lg-11 py-xl-12 modern-news-grid">
-        <div class="container">
-            <div class="d-flex flex-column gap-5 gap-xl-11">
-                <div class="row gap-7 gap-xl-0">
-                    <div class="col-xl-4 col-xxl-4">
-                    </div>
-                    <div class="col-xl-8 col-xxl-7">
-
-                        <div class="row">
-                            <div class="col-xxl-8">
-                                <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                                    data-aos-duration="1000">
-                                    <h2 class="mb-0">Berita Terbaru</h2>
+                                {{-- 2. TANGGAL --}}
+                                <div class="blog-comment">
+                                    <div class="small"><span class="fa fa-calendar text-primary"></span>
+                                        {{ \Carbon\Carbon::parse($berita->published_at)->translatedFormat('d F Y, H:i') }}
+                                    </div>
                                 </div>
+
+                                {{-- 3. KONTEN (Dipotong otomatis) --}}
+                                <p>{{ $berita->content }}</p>
+
                             </div>
                         </div>
                     </div>
+                @endforeach
+                <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="#">Berita Lainnya</a>
                 </div>
-
-                <!-- Modern Grid -->
-                <div class="modern-grid">
-                    @foreach ($news as $berita)
-                        <a href="{{ route('blog.show', $berita->slug) }}" class="news-card-link">
-                            <div class="news-card" data-aos="fade-up" data-aos-delay="100">
-
-                                <div class="news-img-wrapper">
-                                    <img src="{{ Illuminate\Support\Facades\Storage::url($berita->thumbnail) ?? 'belum ada gambar' }}"
-                                        alt="resources" class="news-img">
-                                </div>
-
-                                <div class="news-info">
-                                    <p class="date">{{ \Carbon\Carbon::parse($berita->published_at)->translatedFormat('d F Y, H:i') }}</p>
-                                    <h4 class="news-title line-clamp-2">{{ $berita->title }}</h4>
-                                    <p class="news-desc line-clamp-2">{{ $berita->excerpt }}</p>
-                                </div>
-
-                            </div>
-                        </a>
-                    @endforeach
-
-                </div>
-
-            </div>
-            <!-- More News Button -->
-            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="150">
-                <a href="blog.html" class="more-news-btn">
-                    Berita Lainnya
-                    <span class="arrow-icon">→</span>
-                </a>
             </div>
         </div>
-    </section>
+    </div>
+    <!-- Blog End -->
 
-
-
-    <!--  Featured Projects Section -->
-    <section class="featured-projects py-5 py-lg-11 py-xl-12 bg-light-gray">
-        <div class="d-flex flex-column gap-5 gap-xl-11">
-
-            <div class="container">
-                <div class="row gap-7 gap-xl-0">
-                    <div class="col-xl-4 col-xxl-4">
-                    </div>
-                    <div class="col-xl-8 col-xxl-7">
-                        <div class="row">
-                            <div class="col-xxl-8">
-                                <div class="d-flex flex-column gap-6" data-aos="fade-up" data-aos-delay="100"
-                                    data-aos-duration="1000">
-                                    <h2 class="mb-0">Agenda Terbaru</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Service Start -->
+    <div class="container-fluid service py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Agenda</h4>
+                <h1 class="display-4 mb-4">Agenda Terbaru</h1>
             </div>
-            <div class="featured-projects-slider-wrapper">
-                <div class="featured-projects-slider">
-                    <div class="owl-carousel owl-theme">
 
-                        @foreach ($events as $event)
-                            <!-- ITEM 4 -->
-                            <div class="item">
-                                <div class="portfolio d-flex flex-column gap-6">
-                                    <div class="portfolio-img position-relative overflow-hidden">
-                                        <img src="{{ Illuminate\Support\Facades\Storage::url($event->thumbnail) }}"
-                                            alt="" class="img-fluid">
-                                        <div class="portfolio-overlay">
-                                            <a href="{{ route('agenda.show', $event->slug) }}"
-                                                class="position-absolute top-50 start-50 translate-middle bg-primary round-64 rounded-circle hstack justify-content-center">
-                                                <iconify-icon icon="lucide:arrow-up-right"
-                                                    class="fs-8 text-dark"></iconify-icon>
-                                            </a>
-                                        </div>
-                                    </div>
+            <div class="row g-lg-4 g-3 justify-content-center">
 
-                                    <div class="portfolio-details d-flex flex-column gap-3 flex-grow-1">
+                @foreach ($events as $event)
+                    <div class="col-12 col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
 
-                                        <h3 class="mb-0">{{ $event->title }}</h3>
+                        <a href="{{ route('agenda.show', $event->slug) }}" class="agenda-card-stylish"
+                            aria-label="Lihat detail {{ $event->title }}"
+                            style="background-image: url('{{ Illuminate\Support\Facades\Storage::url($event->thumbnail) ?? 'https://via.placeholder.com/600x400.png?text=No+Image' }}');">
 
-                                        <div class="portfolio-meta d-flex flex-column gap-1">
-                                            <span class="text-muted small"><strong>Start:</strong>
-                                                {{ $event->start_date }}</span>
-                                            <span class="text-muted small"><strong>End:</strong>
-                                                {{ $event->end_date ?? 'belum ditentukan' }}</span>
-                                            <span class="text-muted small"><strong>Location:</strong>
-                                                {{ $event->location }}</span>
-                                            <p class="text-muted small mb-0">
-                                                {{ $event->description }}
-                                            </p>
-                                        </div>
-                                    </div>
+                            <div class="agenda-content-overlay">
+
+                                <div class="agenda-meta-stylish">
+                                    <span class="meta-pill">
+                                        <i class="fa fa-calendar-alt"></i>
+                                        <span>
+                                            {{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d M Y') }}
+                                            @if (
+                                                $event->end_date &&
+                                                    \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') !=
+                                                        \Carbon\Carbon::parse($event->end_date)->format('Y-m-d'))
+                                                - {{ \Carbon\Carbon::parse($event->end_date)->translatedFormat('d M Y') }}
+                                            @endif
+                                        </span>
+                                    </span>
+                                    <span class="meta-pill">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        <span>{{ $event->location }}</span>
+                                    </span>
                                 </div>
-                            </div>
-                        @endforeach
 
-                    </div>
-                    <div class="text-center mt-5">
-                        <a href="blog.html" class="more-news-btn">
-                           Agenda Lainnya <span class="arrow-icon">→</span>
+                                <h4 class="agenda-title-stylish">{{ $event->title }}</h4>
+                            </div>
+
                         </a>
                     </div>
+                @endforeach
+
+                <div class="col-12 text-center mt-5 wow fadeInUp" data-wow-delay="0.2s">
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="#">Agenda Lainnya</a>
                 </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+    <!-- Testimonial Start -->
+    <div class="container-fluid testimonial pb-5">
+        <div class="container pb-5">
+
+            <!-- NEW TITLE -->
+            <div class="text-center mx-auto pb-4 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Video Galeri</h4>
+                <h1 class="display-5 mb-3">Video Kegiatan & Dokumentasi</h1>
+            </div>
+
+            <!-- NEW VIDEO CAROUSEL -->
+            <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">
+
+                <!-- Video 1 -->
+                <div class="video-card-new bg-light rounded overflow-hidden">
+                    <div class="ratio ratio-16x9 video-wrapper-new">
+                        <iframe src="https://www.youtube.com/embed/Sjo8RhDPEpM" allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="video-card-new bg-light rounded overflow-hidden">
+                    <div class="ratio ratio-16x9 video-wrapper-new">
+                        <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="video-card-new bg-light rounded overflow-hidden">
+                    <div class="ratio ratio-16x9 video-wrapper-new">
+                        <iframe src="https://www.youtube.com/embed/VIDEO_ID_3" allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
             </div>
 
         </div>
-    </section>
+    </div>
+    <!-- Testimonial End -->
 @endsection

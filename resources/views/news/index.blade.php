@@ -73,7 +73,7 @@
                                     <td class="d-flex gap-1">
                                         @if ($item->status === 'draft')
                                             <form action="{{ route('admin.news.publish', $item->id) }}" method="POST"
-                                                class="d-inline">
+                                                class="d-inline form-publish">
                                                 @csrf
                                                 <button type="submit" class="btn btn-success btn-sm"
                                                     title="Publish Berita">
@@ -82,7 +82,7 @@
                                             </form>
                                         @elseif ($item->status === 'published')
                                             <form action="{{ route('admin.news.draft', $item->id) }}" method="POST"
-                                                class="d-inline">
+                                                class="d-inline form-draft">
                                                 @csrf
                                                 <button type="submit" class="btn btn-secondary btn-sm" title="Set Draft">
                                                     <i class="bi bi-arrow-counterclockwise"></i>
@@ -103,8 +103,7 @@
                                             class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus Berita"
-                                                onclick="return confirm('Yakin ingin menghapus berita ini?')">
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus Berita">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -117,4 +116,52 @@
             </div>
         </section>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Delegated listener untuk Publish
+        document.addEventListener('submit', function(e) {
+            if (e.target.classList.contains('form-publish')) {
+                e.preventDefault();
+
+                let form = e.target;
+
+                Swal.fire({
+                    title: 'Publish Berita?',
+                    text: "Berita akan langsung tampil di halaman utama.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Publish!',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#28a745'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+
+        // Delegated listener untuk Draft
+        document.addEventListener('submit', function(e) {
+            if (e.target.classList.contains('form-draft')) {
+                e.preventDefault();
+
+                let form = e.target;
+
+                Swal.fire({
+                    title: 'Kembalikan ke Draft?',
+                    text: "Berita tidak akan tampil lagi ke publik.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Set Draft!',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

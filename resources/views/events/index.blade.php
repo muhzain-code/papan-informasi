@@ -80,8 +80,7 @@
                                         </a>
 
                                         <form action="{{ route('admin.events.destroy', $item->id) }}" method="POST"
-                                            class="d-inline delete-form"
-                                            onsubmit="return confirm('Yakin ingin menghapus event ini?')">
+                                            class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" title="Hapus">

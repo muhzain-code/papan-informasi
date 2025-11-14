@@ -1,93 +1,49 @@
 @extends('frontend.layouts.dashboard')
 
 @section('content')
-    <!--  Banner Section -->
-    <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-        style="background-image: url(../assets/images/backgrounds/projects-detail-banner.jpg);">
-        <div class="container">
-            <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
-                <div class="row align-items-center">
-                    <div class="col-xl-4">
-                        <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
-                            data-aos-duration="1000">
-                            <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                            <p class="mb-0 text-white fs-5 text-opacity-70">A <span class="text-primary">showcase of
-                                    creativity</span>, strategy, and results explore the projects that define us.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                    <h1 class="mb-0 fs-16 text-white lh-1">BioTrack LIMS</h1>
-                    <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
-                        <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
-                            <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                        </span>
-                    </a>
-                </div>
-            </div>
+    <!-- Header Start -->
+    <div class="container-fluid bg-breadcrumb">
+        <div class="container text-center py-5" style="max-width: 900px;">
+            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Agenda</h4>
+            <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('agenda.index') }}">Agenda</a></li>
+                <li class="breadcrumb-item active text-primary">Agenda Detail</li>
+            </ol>
         </div>
-    </section>
+    </div>
+    <!-- Header End -->
 
-    <!--  Project Detail Section -->
-    <section class="project-detail py-5 py-lg-11 py-xl-12">
-        <div class="container">
-            <div class="d-flex flex-column gap-4 gap-lg-6">
 
-                <div class="d-flex flex-column gap-4">
+    <!-- AGENDA DETAIL START -->
+    <div class="container agenda-detail-wrapper py-5">
 
-                    <div class="row">
-                        <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000">
-                            <img src=" {{ Illuminate\Support\Facades\Storage::url($event->thumbnail) ?? 'belum ada gambar' }}"
-                                alt="services" class="w-100 object-fit-cover">
-                        </div>
-                    </div>
-
-                    <div class="d-md-flex align-items-center gap-3 gap-lg-5" data-aos="fade-up" data-aos-delay="200"
-                        data-aos-duration="1000">
-
-                        <div class="d-flex flex-column gap-1 py-2 pe-3 pe-lg-5 border-end">
-                            <p class="mb-0">Scope of work</p>
-                            <p class="mb-0 text-dark fs-5 fw-medium">Brand identity, Digital design</p>
-                        </div> 
-
-                        <div class="d-flex flex-column gap-1 py-2 pe-3 pe-lg-5 border-end">
-                            <p class="mb-0">Industry</p>
-                            <p class="mb-0 text-dark fs-5 fw-medium">Bags</p>
-                        </div>
-
-                        <div class="d-flex flex-column gap-1 py-2 pe-3 pe-lg-5 border-end">
-                            <p class="mb-0">Raised</p>
-                            <p class="mb-0 text-dark fs-5 fw-medium">$1.1M</p>
-                        </div>
-
-                        <div class="d-flex flex-column gap-1 py-2">
-                            <p class="mb-0">Website</p>
-                            <p class="mb-0 text-dark fs-5 fw-medium">www.studiova.com</p>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row gap-3 gap-lg-0">
-                    <div class="col-lg-12">
-                        <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                            <p class="fs-5 mb-4">
-                                Exploring the world of handbags reveals a diverse array of blogs catering to various styles,
-                                trends,
-                                and fashion insights. Here are some notable handbag blogs you might find engaging:
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <a href="projects.html" class="btn py-2 ps-3 pe-5" data-aos="fade-up" data-aos-delay="100"
-                    data-aos-duration="1000">
-                    <span class="btn-text pe-1">Back</span>
-                    <iconify-icon icon="lucide:arrow-up-right"
-                        class="btn-icon bg-white text-dark round-36 rounded-circle hstack justify-content-center fs-5 shadow-sm"></iconify-icon>
-                </a>
-
-            </div>
+        <!-- BIG IMAGE -->
+        <div class="agenda-detail-image mb-4">
+            <img src="{{ Illuminate\Support\Facades\Storage::url($event->thumbnail) ?? 'belum ada gambar' }}" alt="Agenda Image" class="img-fluid rounded-4 w-100">
         </div>
-    </section>
+
+        <!-- CONTENT -->
+        <div class="agenda-detail-content">
+
+            <h1 class="agenda-detail-title mb-3">{{ $event->title }}</h1>
+
+            <div class="agenda-detail-meta d-flex flex-wrap gap-4 mb-4">
+                <div><i class="fa fa-calendar text-primary me-2"></i> Start:
+                    {{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y, H:i') }}</div>
+                <div><i class="fa fa-calendar-check text-primary me-2"></i> End:
+                    {{ $event->end_date ? \Carbon\Carbon::parse($event->end_date)->translatedFormat('d F Y, H:i') : 'Selesai' }}
+                </div>
+                <div><i class="fa fa-map-marker-alt text-primary me-2"></i> {{ $event->location }}</div>
+            </div>
+
+            <p class="agenda-detail-desc">
+                {{ $event->description }}
+            </p>
+
+            {{-- <a href="#" class="btn btn-primary rounded-pill py-3 px-5 mt-3">Back to Agenda List</a> --}}
+        </div>
+
+    </div>
+    <!-- AGENDA DETAIL END -->
 @endsection

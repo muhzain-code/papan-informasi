@@ -1,61 +1,62 @@
 @extends('frontend.layouts.dashboard')
 
 @section('content')
-    <!--  Banner Section -->
-    <section class="banner-section banner-inner-section position-relative overflow-hidden d-flex align-items-end"
-        style="background-image: url(../assets/images/backgrounds/blog-banner.jpg);">
-        <div class="container">
-            <div class="d-flex flex-column gap-4 pb-5 pb-xl-10 position-relative z-1">
-                <div class="row align-items-center">
-                    <div class="col-xl-4">
-                        <div class="d-flex align-items-center gap-4" data-aos="fade-up" data-aos-delay="100"
-                            data-aos-duration="1000">
-                            <img src="../assets/images/svgs/primary-leaf.svg" alt="" class="img-fluid animate-spin">
-                            <p class="mb-0 text-white fs-5 text-opacity-70">Excited to <span class="text-primary">begin
-                                    something
-                                    amazing?</span>Get in touch—we'd love to connect with you!</p>
+    <!-- Blog Start -->
+    <div class="container-fluid blog py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Berita</h4>
+                <h1 class="display-4 mb-4">Berita Terbaru</h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+                @foreach ($news as $berita)
+                    {{-- 
+                  Grid diubah ke col-lg-4 agar menjadi 3 kolom di layar besar,
+                  dan col-md-6 agar menjadi 2 kolom di tablet
+                --}}
+                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                        {{-- 
+                      Class .blog-item kini diatur oleh CSS di atas 
+                      untuk tinggi, bayangan, dan border-radius
+                    --}}
+                        <div class="blog-item">
+                            {{-- 
+                          Container BARU untuk aspect-ratio gambar yang fix
+                        --}}
+                            <div class="blog-img-container">
+                                <img src="{{ Illuminate\Support\Facades\Storage::url($berita->thumbnail) ?? 'belum ada gambar' }}"
+                                    alt="{{ $berita->title }}">
+                            </div>
+
+                            {{-- 
+                          Urutan konten diubah (Judul -> Tanggal -> Teks) 
+                          agar sesuai gambar referensi
+                        --}}
+                            <div class="blog-content">
+
+                                {{-- 1. JUDUL (Maks 3 baris) --}}
+                                <a href="{{ route('blog.show', $berita->slug) }}"
+                                    class="h4 d-inline-block">{{ $berita->title }}</a>
+
+                                {{-- 2. TANGGAL --}}
+                                <div class="blog-comment">
+                                    <div class="small"><span class="fa fa-calendar text-primary"></span>
+                                        {{ \Carbon\Carbon::parse($berita->published_at)->translatedFormat('d F Y, H:i') }}
+                                    </div>
+                                </div>
+
+                                {{-- 3. KONTEN (Dipotong otomatis) --}}
+                                <p>{{ $berita->content }}</p>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex align-items-end gap-3" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                    <h1 class="mb-0 fs-16 text-white lh-1">Blog</h1>
-                    <a href="javascript:void(0)" class="p-1 ps-7 bg-primary rounded-pill">
-                        <span class="bg-white round-52 rounded-circle d-flex align-items-center justify-content-center">
-                            <iconify-icon icon="lucide:arrow-up-right" class="fs-8 text-dark"></iconify-icon>
-                        </span>
-                    </a>
+                @endforeach
+                <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="#">Berita Lainnya</a>
                 </div>
             </div>
         </div>
-    </section>
-
-
-    <!--  Blog Section -->
-<section class="blog-section py-5 py-lg-11 py-xl-12">
-    <div class="container">
-        <div class="row">
-            @foreach ($news as $berita)
-                <div class="col-12 single-blog-list">
-                    <a href="{{ route('blog.show', $berita->slug) }}" class="blog-card-custom-link">
-                        <div class="blog-card-custom">
-                            <div class="img-box">
-                                <img src="{{ Illuminate\Support\Facades\Storage::url($berita->thumbnail) ?? 'belum ada gambar' }}"
-                                    alt="resources">
-                            </div>
-                            <div class="content">
-                                <p class="date">
-                                    {{ \Carbon\Carbon::parse($berita->published_at)->translatedFormat('d F Y, H:i') }}
-                                </p>
-                                <h4>{{ $berita->title }}</h4>
-                                <p class="excerpt">
-                                    {{ $berita->excerpt }}
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
-</section>
-
+    </div>
+    <!-- Blog End -->
 @endsection

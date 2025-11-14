@@ -20,6 +20,8 @@ class BlogController extends Controller
         if (!$news) {
             return view('frontend.404');
         }
-        return view('frontend.blog.blog-detail', compact('news'));
+
+        $newsAll = News::latest()->where('status', 'published')->where('id', '!=', $news->id)->take(5)->get();
+        return view('frontend.blog.blog-detail', compact('news', 'newsAll'));
     }
 }

@@ -29,12 +29,15 @@ class NewsController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'excerpt' => 'nullable|string|max:500',
             'content' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'published_at' => 'nullable|date',
             'status' => 'required|in:draft,published',
         ]);
+
+        if ($validated['status'] === 'published') {
+            $validated['published_at'] = now();
+        }
+
 
         $validated['created_by'] = Auth::id();
 
@@ -66,9 +69,12 @@ class NewsController extends Controller
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'published_at' => 'nullable|date',
             'status' => 'required|in:draft,published',
         ]);
+
+        if ($validated['status'] === 'published' && !$news->published_at) {
+            $validated['published_at'] = now();
+        }
 
         if ($request->hasFile('thumbnail')) {
             if ($news->thumbnail && Storage::disk('public')->exists($news->thumbnail)) {
@@ -91,12 +97,6 @@ class NewsController extends Controller
         $news->delete();
 
         return redirect()->route('admin.news.index')->with('success', 'Berita berhasil dihapus!');
-    }
-
-    public function showPublic(News $news)
-    {
-        $news->thumbnail_url = $news->thumbnail ? url(Storage::url($news->thumbnail)) : null;
-        return view('frontend.news.show', compact('news'));
     }
 
     public function publish(News $news)
