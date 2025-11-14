@@ -1322,38 +1322,44 @@
 .owl-carousel .video-card-new {
     padding: 10px;
 }
+
 /* WRAPPER BARU */
 .about-fakultas-wrapper {
     position: relative;
-    overflow: hidden; /* Mencegah elemen hover keluar batas */
+    overflow: hidden;
+    /* Mencegah elemen hover keluar batas */
 }
 
 /* [GAMBAR]
    Styling untuk pembungkus gambar */
 .about-fakultas-image {
-    border-radius: 15px; /* Radius lebih modern */
+    border-radius: 15px;
+    /* Radius lebih modern */
     /* Shadow kini menggunakan utility Bootstrap 'shadow-lg' di HTML, 
        namun bisa juga di-override di sini jika perlu */
     transition: 0.3s ease;
 }
 
 .about-fakultas-image img {
-    border-radius: 15px; /* Samakan dengan pembungkusnya */
-    
+    border-radius: 15px;
+    /* Samakan dengan pembungkusnya */
+
     /* PENTING: Hapus 'height' tetap di desktop. 
        Biarkan 'img-fluid' Bootstrap bekerja. */
     /* 'object-fit: cover' tidak diperlukan di desktop jika 'height' auto */
-    
+
     transition: 0.35s ease;
 }
 
 /* Efek hover yang lebih baik */
 .about-fakultas-image:hover {
-    transform: translateY(-5px); /* Angkat sedikit card-nya */
+    transform: translateY(-5px);
+    /* Angkat sedikit card-nya */
 }
 
 .about-fakultas-image:hover img {
-    transform: scale(1.03); /* Zoom gambar di dalamnya */
+    transform: scale(1.03);
+    /* Zoom gambar di dalamnya */
 }
 
 
@@ -1362,28 +1368,32 @@
 .about-f-list li {
     font-size: 1.05rem;
     line-height: 1.6;
-    margin-bottom: 12px !important; /* Pastikan mb-2 dari HTML ter-override jika perlu */
+    margin-bottom: 12px !important;
+    /* Pastikan mb-2 dari HTML ter-override jika perlu */
 }
 
 .about-f-list i {
-    font-size: 1.1rem; /* Sedikit lebih besar agar icon terlihat jelas */
+    font-size: 1.1rem;
+    /* Sedikit lebih besar agar icon terlihat jelas */
 }
 
 /* [RESPONSIVE]
    Bootstrap (col-lg-5/7) sudah menangani stacking otomatis.
    Kita hanya perlu mengatur ulang gambar saat di mobile. */
-@media (max-width: 991.98px) { /* Saat breakpoint 'lg' (tablet/mobile) */
-    
+@media (max-width: 991.98px) {
+    /* Saat breakpoint 'lg' (tablet/mobile) */
+
     .about-fakultas-image {
         /* Beri jarak bawah saat gambar berada di atas teks */
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
     }
 
     .about-fakultas-image img {
         /* Saat di mobile, kita bisa batasi tingginya agar tidak terlalu besar */
         max-height: 400px;
         width: 100%;
-        object-fit: cover; /* Di sini kita pakai object-fit */
+        object-fit: cover;
+        /* Di sini kita pakai object-fit */
     }
 
     /* Ratakan teks di mobile agar lebih rapi */
@@ -1454,10 +1464,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    /* Fallback height untuk browser lama (line-height * baris) */
-    /* Sesuaikan jika font-size atau line-height Anda berbeda */
     line-height: 1.4;
-    /* height: calc(1.4em * 3); Hapus atau comment baris ini */
+
+    /* V-- TAMBAHKAN INI --V 
+      Ini adalah fallback penting untuk memaksa tinggi maksimal 
+      sesuai dengan (line-height * jumlah baris)
+    */
+    max-height: calc(1.4em * 3);
+
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
@@ -1766,4 +1780,3 @@
         -webkit-line-clamp: 2;
     }
 }
-

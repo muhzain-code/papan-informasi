@@ -44,16 +44,6 @@
                             @enderror
                         </div>
 
-                        {{-- Ringkasan (Excerpt) --}}
-                        <div class="mb-3">
-                            <label for="excerpt" class="form-label">Ringkasan (opsional)</label>
-                            <textarea name="excerpt" id="excerpt" class="form-control @error('excerpt') is-invalid @enderror" rows="3"
-                                maxlength="500">{{ old('excerpt') }}</textarea>
-                            @error('excerpt')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         {{-- Konten --}}
                         <div class="mb-3">
                             <label for="content" class="form-label">Konten</label>
@@ -80,29 +70,31 @@
                             </div>
                         </div>
 
-                        {{-- Tanggal Publikasi --}}
-                        <div class="mb-3">
-                            <label for="published_at" class="form-label">Tanggal Publikasi (opsional)</label>
-                            <input type="datetime-local" name="published_at" id="published_at"
-                                class="form-control @error('published_at') is-invalid @enderror"
-                                value="{{ old('published_at') }}">
-                            @error('published_at')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         {{-- Status --}}
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" id="status" class="form-select @error('status') is-invalid @enderror"
-                                required>
-                                <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>
-                                    Published
-                                </option>
-                            </select>
+                            <label class="form-label">Status</label>
+                            {{-- Grup untuk radio button --}}
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input @error('status') is-invalid @enderror" type="radio"
+                                        name="status" id="statusDraft" value="draft"
+                                        {{ old('status', 'draft') == 'draft' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="statusDraft">
+                                        Draft
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input @error('status') is-invalid @enderror" type="radio"
+                                        name="status" id="statusPublished" value="published"
+                                        {{ old('status') == 'published' ? 'checked' : '' }} required>
+                                    <label class="form-check-label" for="statusPublished">
+                                        Published
+                                    </label>
+                                </div>
+                            </div>
+                            {{-- Menampilkan error --}}
                             @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 

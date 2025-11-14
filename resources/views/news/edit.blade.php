@@ -48,15 +48,6 @@
                             @enderror
                         </div>
 
-                        {{-- Excerpt --}}
-                        <div class="mb-3">
-                            <label for="excerpt" class="form-label">Excerpt (opsional)</label>
-                            <textarea name="excerpt" id="excerpt" class="form-control @error('excerpt') is-invalid @enderror" rows="2">{{ old('excerpt', $news->excerpt) }}</textarea>
-                            @error('excerpt')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
                         {{-- Konten --}}
                         <div class="mb-3">
                             <label for="content" class="form-label">Konten</label>
@@ -66,8 +57,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
-
 
                         {{-- Tanggal Terbit --}}
                         <div class="mb-3">
@@ -83,16 +72,22 @@
                         {{-- Status --}}
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
-                            <select name="status" id="status" class="form-control @error('status') is-invalid @enderror"
-                                required>
-                                <option value="draft" {{ old('status', $news->status) == 'draft' ? 'selected' : '' }}>
-                                    Draft</option>
-                                <option value="published"
-                                    {{ old('status', $news->status) == 'published' ? 'selected' : '' }}>Published</option>
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <div class="form-check form-switch">
+
+                                <input type="hidden" name="status" value="draft">
+
+                                <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox"
+                                    role="switch" id="status" name="status" value="published"
+                                    {{ old('status', $news->status) == 'published' ? 'checked' : '' }}>
+
+                                <label class="form-check-label" for="status">
+                                    Published (Jika non-aktif = Draft)
+                                </label>
+
+                                @error('status')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         {{-- Thumbnail --}}

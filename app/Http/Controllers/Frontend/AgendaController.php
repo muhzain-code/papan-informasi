@@ -10,7 +10,7 @@ class AgendaController extends Controller
 {
     public function index()
     {
-        $events = Event::latest()->paginate(15);
+        $events = Event::latest()->paginate(8);
         return view('frontend.event.event', compact('events'));
     }
 

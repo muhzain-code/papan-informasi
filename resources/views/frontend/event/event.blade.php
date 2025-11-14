@@ -13,7 +13,7 @@
     </div>
     <!-- Header End -->
 
-   <!-- Service Start -->
+    <!-- Service Start -->
     <div class="container-fluid service py-5">
         <div class="container py-5">
             <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
@@ -58,8 +58,19 @@
                     </div>
                 @endforeach
 
-                <div class="col-12 text-center mt-5 wow fadeInUp" data-wow-delay="0.2s">
-                    <a class="btn btn-primary rounded-pill py-3 px-5" href="#">Agenda Lainnya</a>
+                <div class="col-12 wow fadeInUp" data-wow-delay="0.2s">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div class="pagination-info text-muted small">
+                            {{-- Menampilkan {{ $news->firstItem() }} - {{ $news->lastItem() }} dari {{ $news->total() }} berita --}}
+                        </div>
+
+                        <div>
+                            {{ $events->links() }}
+                        </div>
+
+                    </div>
                 </div>
 
             </div>

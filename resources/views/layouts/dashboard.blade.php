@@ -85,26 +85,63 @@
 
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'dashboard') ? 'active' : '' }}">
                             <a href="{{ route('dashboard') }}" class="sidebar-link">
-                                <i class="bi bi-grid-fill"></i>
+                                <i class="bi bi-speedometer2"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'admin.news.') ? 'active' : '' }}">
                             <a href="{{ route('admin.news.index') }}" class="sidebar-link">
-                                <i class="bi bi-check-circle-fill"></i>
+                                <i class="bi bi-newspaper"></i>
                                 <span>Berita</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'admin.events.') ? 'active' : '' }}">
                             <a href="{{ route('admin.events.index') }}" class="sidebar-link">
-                                <i class="bi bi-check-circle-fill"></i>
+                                <i class="bi bi-calendar-event"></i>
                                 <span>Agenda</span>
                             </a>
                         </li>
+
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Authentication</span>
+                            </a>
+
+                            <ul class="submenu ">
+
+
+                                <li
+                                    class="sidebar-item {{ Str::startsWith($currentRoute, 'register') ? 'active' : '' }}">
+                                    <a href="{{ route('register') }}" class="sidebar-link">
+                                        <i class="bi bi-person-plus"></i>
+                                        <span>Register</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a href="{{ route('logout') }}" class="sidebar-link"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+
+                            </ul>
+
+
+                        </li>
+
+
                     </ul>
                 </div>
+
             </div>
         </div>
         <div id="main">

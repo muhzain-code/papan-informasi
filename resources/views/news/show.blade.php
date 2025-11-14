@@ -44,14 +44,6 @@
                         <p>{{ $news->slug }}</p>
                     </div>
 
-                    {{-- Excerpt --}}
-                    @if ($news->excerpt)
-                        <div class="mb-3">
-                            <label class="form-label"><strong>Ringkasan</strong></label>
-                            <p>{{ $news->excerpt }}</p>
-                        </div>
-                    @endif
-
                     {{-- Konten --}}
                     <div class="mb-3">
                         <label class="form-label"><strong>Konten</strong></label>

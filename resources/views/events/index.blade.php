@@ -54,7 +54,7 @@
                             <tr>
                                 <th>Judul</th>
                                 <th>Tanggal Mulai</th>
-                                <th>Tanggal Selesai</th>
+                                {{-- <th>Tanggal Selesai</th> --}}
                                 <th>Lokasi</th>
                                 <th>Aksi</th>
                             </tr>
@@ -64,29 +64,31 @@
                                 <tr>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ \Carbon\Carbon::parse($item->start_date)->format('d M Y, H:i') }}</td>
-                                    <td>
+                                    {{-- <td>
                                         {{ $item->end_date ? \Carbon\Carbon::parse($item->end_date)->format('d M Y, H:i') : '-' }}
-                                    </td>
+                                    </td> --}}
                                     <td>{{ $item->location ?? '-' }}</td>
-                                    <td class="d-flex gap-1">
-                                        <a href="{{ route('admin.events.show', $item->id) }}" class="btn btn-info btn-sm"
-                                            title="Lihat">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            <a href="{{ route('admin.events.show', $item->id) }}"
+                                                class="btn btn-info btn-sm" title="Lihat">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
 
-                                        <a href="{{ route('admin.events.edit', $item->id) }}" class="btn btn-warning btn-sm"
-                                            title="Edit">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
+                                            <a href="{{ route('admin.events.edit', $item->id) }}"
+                                                class="btn btn-warning btn-sm" title="Edit">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
 
-                                        <form action="{{ route('admin.events.destroy', $item->id) }}" method="POST"
-                                            class="d-inline delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                            <form action="{{ route('admin.events.destroy', $item->id) }}" method="POST"
+                                                class="d-inline delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

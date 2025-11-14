@@ -70,44 +70,52 @@
                                             <span class="badge bg-success">Published</span>
                                         @endif
                                     </td>
-                                    <td class="d-flex gap-1">
-                                        @if ($item->status === 'draft')
-                                            <form action="{{ route('admin.news.publish', $item->id) }}" method="POST"
-                                                class="d-inline form-publish">
+
+                                    {{-- INI BAGIAN YANG DIPERBAIKI --}}
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            @if ($item->status === 'draft')
+                                                <form action="{{ route('admin.news.publish', $item->id) }}" method="POST"
+                                                    class="d-inline form-publish">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm"
+                                                        title="Publish Berita">
+                                                        <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                </form>
+                                            @elseif ($item->status === 'published')
+                                                <form action="{{ route('admin.news.draft', $item->id) }}" method="POST"
+                                                    class="d-inline form-draft">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-secondary btn-sm"
+                                                        title="Set Draft">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+
+                                            <a href="{{ route('admin.news.show', $item->id) }}" class="btn btn-info btn-sm"
+                                                title="Lihat">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a href="{{ route('admin.news.edit', $item->id) }}"
+                                                class="btn btn-warning btn-sm" title="Edit">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <form action="{{ route('admin.news.destroy', $item->id) }}" method="POST"
+                                                class="d-inline delete-form">
                                                 @csrf
-                                                <button type="submit" class="btn btn-success btn-sm"
-                                                    title="Publish Berita">
-                                                    <i class="bi bi-check-circle"></i>
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus Berita">
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
-                                        @elseif ($item->status === 'published')
-                                            <form action="{{ route('admin.news.draft', $item->id) }}" method="POST"
-                                                class="d-inline form-draft">
-                                                @csrf
-                                                <button type="submit" class="btn btn-secondary btn-sm" title="Set Draft">
-                                                    <i class="bi bi-arrow-counterclockwise"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                        <a href="{{ route('admin.news.show', $item->id) }}" class="btn btn-info btn-sm"
-                                            title="Lihat">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-
-                                        <a href="{{ route('admin.news.edit', $item->id) }}" class="btn btn-warning btn-sm"
-                                            title="Edit">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-
-                                        <form action="{{ route('admin.news.destroy', $item->id) }}" method="POST"
-                                            class="d-inline delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus Berita">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        </div>
                                     </td>
+                                    {{-- AKHIR BAGIAN YANG DIPERBAIKI --}}
+
                                 </tr>
                             @endforeach
                         </tbody>
