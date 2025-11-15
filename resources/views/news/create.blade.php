@@ -18,7 +18,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.news.index') }}">Berita</a>
+                                <a href="{{ route('news.index') }}">Berita</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Tambah Berita</li>
                         </ol>
@@ -30,7 +30,7 @@
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         {{-- Judul --}}
@@ -100,7 +100,7 @@
 
                         {{-- Tombol --}}
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('admin.news.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('news.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Kembali
                             </a>
                             <button type="submit" class="btn btn-primary">

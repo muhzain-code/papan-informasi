@@ -8,38 +8,32 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class News extends Model
+class Info extends Model
 {
     use SoftDeletes, LogsActivity;
 
-    protected $table = 'news';
+    protected $table = 'infos';
 
     protected $fillable = [
         'title',
-        'content',
-        'thumbnail',
-        'published_at',
+        'message',
+        'date',
         'status',
         'created_by',
         'updated_by',
         'deleted_by',
     ];
 
-    protected $casts = [
-        'published_at' => 'datetime',
-    ];
-
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->useLogName('news')
+            ->useLogName('info')
             ->logOnly($this->fillable)
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(
                 fn($event) =>
-                "Data news berhasil " .
+                "Data info berhasil " .
                     match ($event) {
                         'created' => 'ditambahkan',
                         'updated' => 'diperbarui',

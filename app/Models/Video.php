@@ -2,46 +2,44 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
-class Setting extends Model
+class Video extends Model
 {
-    use HasFactory;
+    use SoftDeletes, LogsActivity;
+
+    protected $table = 'videos';
 
     protected $fillable = [
-        'key',
-        'type',
-        'value',
+        'title',
+        'source_type',
+        'video_path',
+        'video_url',
+        'is_active',
+        'order',
         'created_by',
         'updated_by',
+        'deleted_by',
     ];
-
-    public static function getValue(string $key, $default = null)
-    {
-        return static::where('key', $key)->value('value') ?? $default;
-    }
-
-    public static function setValue(string $key, $value)
-    {
-        return static::updateOrCreate(['key' => $key], ['value' => $value]);
-    }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->useLogName('setting')
+            ->useLogName('video')
             ->logOnly($this->fillable)
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(
                 fn($event) =>
-                "Data setting berhasil " .
+                "Data video berhasil " .
                     match ($event) {
                         'created' => 'ditambahkan',
                         'updated' => 'diperbarui',
+                        'deleted' => 'dihapus',
                         default => $event,
                     } . ' oleh ' . (Auth::user()->name ?? 'Sistem') . '.'
             );
@@ -51,5 +49,9 @@ class Setting extends Model
     {
         static::creating(fn($model) => $model->created_by ??= Auth::id());
         static::updating(fn($model) => $model->updated_by = Auth::id());
+        static::deleting(
+            fn($model) =>
+            $model->forceFill(['deleted_by' => Auth::id()])->saveQuietly()
+        );
     }
 }

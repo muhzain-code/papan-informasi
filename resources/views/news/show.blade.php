@@ -17,7 +17,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.news.index') }}">Berita</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('news.index') }}">Berita</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Detail</li>
                         </ol>
                     </nav>
@@ -38,12 +38,6 @@
                         <p>{{ $news->title }}</p>
                     </div>
 
-                    {{-- Slug --}}
-                    <div class="mb-3">
-                        <label class="form-label"><strong>Slug</strong></label>
-                        <p>{{ $news->slug }}</p>
-                    </div>
-
                     {{-- Konten --}}
                     <div class="mb-3">
                         <label class="form-label"><strong>Konten</strong></label>
@@ -51,7 +45,7 @@
                             {!! $news->content !!}
                         </div>
                     </div>
-
+                    
                     {{-- Thumbnail --}}
                     @if ($news->thumbnail)
                         <div class="mb-3">
@@ -83,10 +77,10 @@
                         <p>{{ $news->creator ? $news->creator->name : '-' }}</p>
                     </div>
 
-                    <a href="{{ route('admin.news.index') }}" class="btn btn-secondary me-2">
+                    <a href="{{ route('news.index') }}" class="btn btn-secondary me-2">
                         <i class="bi bi-arrow-left"></i> Kembali ke Daftar
                     </a>
-                    <a href="{{ route('admin.news.edit', $news->id) }}" class="btn btn-primary">
+                    <a href="{{ route('news.edit', $news->id) }}" class="btn btn-primary">
                         <i class="bi bi-pencil"></i> Edit
                     </a>
                 </div>

@@ -1,13 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\AgendaController;
@@ -27,22 +31,15 @@ Route::prefix('admin')
     ->middleware('auth')
     ->group(function () {
 
-        // Dashboard
-        Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
+        Route::get('/', [DashboardController::class, 'index'])->name('index');
 
-        // Pages
-        Route::resource('pages', PageController::class, ['as' => 'admin']);
-
-        // News
-        Route::resource('news', NewsController::class, ['as' => 'admin']);
-        Route::post('news/{news}/publish', [NewsController::class, 'publish'])->name('admin.news.publish');
-        Route::post('news/{news}/draft', [NewsController::class, 'draft'])->name('admin.news.draft');
-
-        // Events
-        Route::resource('events', EventController::class, ['as' => 'admin']);
-
-        // Settings
-        Route::resource('settings', SettingController::class, ['as' => 'admin']);
+        Route::resource('news', NewsController::class);
+         Route::post('news/{news}/publish', [NewsController::class, 'publish'])->name('news.publish');
+        Route::post('news/{news}/draft', [NewsController::class, 'draft'])->name('news.draft');
+        Route::resource('announcements', AnnouncementController::class);
+        Route::resource('infos', InfoController::class);
+        Route::resource('videos', VideoController::class);
+        Route::resource('schedules', ScheduleController::class);
 
         //activity
         Route::get('/activity', [ActivityController::class, 'index'])->name('activity.index');
@@ -50,13 +47,13 @@ Route::prefix('admin')
     });
 
 // ========== FRONTEND ==========
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('berita', [BlogController::class, 'index'])->name('blog.index');
-Route::get('berita/{slug}', [BlogController::class, 'show'])->name('blog.show');
+// Route::get('berita', [BlogController::class, 'index'])->name('blog.index');
+// Route::get('berita/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
-Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
-Route::get('agenda/{slug}', [AgendaController::class, 'show'])->name('agenda.show');
+// Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
+// Route::get('agenda/{slug}', [AgendaController::class, 'show'])->name('agenda.show');
 
-Route::view('tentang', 'frontend.about.about')->name('about');
-Route::view('kontak', 'frontend.contact.contact')->name('contact');
+// Route::view('tentang', 'frontend.about.about')->name('about');
+// Route::view('kontak', 'frontend.contact.contact')->name('contact');

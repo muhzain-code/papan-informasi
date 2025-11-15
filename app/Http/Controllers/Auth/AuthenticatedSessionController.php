@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
                 'user_agent'  => request()->userAgent(),
             ])
             ->log("Pengguna '{$user->email}' berhasil login");
-        return redirect()->intended(route('admin.index', absolute: false));
+        return redirect()->intended(route('index', absolute: false));
     }
 
     /**

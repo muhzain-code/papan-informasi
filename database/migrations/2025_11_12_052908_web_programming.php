@@ -8,33 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // PAGES
-        Schema::create('pages', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->longText('content');
-            $table->string('featured_image')->nullable();
-            $table->string('meta_title')->nullable();
-            $table->string('meta_description')->nullable();
-
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
-
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        // NEWS
+        /*
+        |--------------------------------------------------------------------------
+        | BERITA
+        |--------------------------------------------------------------------------
+        */
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
             $table->longText('content');
             $table->string('thumbnail')->nullable();
-            $table->dateTime('published_at')->nullable();
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->timestamp('published_at')->nullable();
+            $table->enum('status', ['draft', 'published'])->default('published');
 
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
@@ -44,16 +29,15 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        // EVENTS
-        Schema::create('events', function (Blueprint $table) {
+        /*
+        |--------------------------------------------------------------------------
+        | PENGUMUMAN
+        |--------------------------------------------------------------------------
+        */
+        Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
-            $table->longText('description');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date')->nullable();
-            $table->string('location')->nullable();
-            $table->string('thumbnail')->nullable();
+            $table->enum('status', ['draft', 'published'])->default('published');
 
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
@@ -63,38 +47,78 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        // SETTINGS
-        Schema::create('settings', function (Blueprint $table) {
+        /*
+        |--------------------------------------------------------------------------
+        | INFO PENTING
+        |--------------------------------------------------------------------------
+        */
+        Schema::create('infos', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique();
-            $table->text('value')->nullable();
+            $table->string('title');
+            $table->text('message');
+            $table->date('date')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+
+            // Audit fields
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('type')->default('text'); // text, image, video, link, boolean, dll
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
+            $table->softDeletes();
         });
 
-
-        // CONTACTS
-        Schema::create('contacts', function (Blueprint $table) {
+        /*
+        |--------------------------------------------------------------------------
+        | VIDEO
+        |--------------------------------------------------------------------------
+        */
+        Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone')->nullable();
-            $table->string('subject')->nullable();
-            $table->text('message');
+            $table->string('title')->nullable();
+            $table->enum('source_type', ['file', 'youtube', 'url'])->default('file');
+            $table->string('video_path')->nullable();
+            $table->string('video_url')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->integer('order')->default(0);
+
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
+            $table->softDeletes();
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | JADWAL
+        |--------------------------------------------------------------------------
+        */
+        Schema::create('schedules', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('place')->nullable();
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('end_at')->nullable();
+           
+            $table->boolean('is_active')->default(true);
+
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('settings');
-        Schema::dropIfExists('events');
-        Schema::dropIfExists('category_news');
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('videos');
+        Schema::dropIfExists('important_infos');
+        Schema::dropIfExists('announcements');
         Schema::dropIfExists('news');
-        Schema::dropIfExists('pages');
-        Schema::dropIfExists('contacts');
     }
 };

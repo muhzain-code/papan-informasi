@@ -18,7 +18,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.news.index') }}">Berita</a>
+                                <a href="{{ route('news.index') }}">Berita</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Edit</li>
                         </ol>
@@ -34,7 +34,7 @@
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
-                    <form action="{{ route('admin.news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -122,7 +122,7 @@
 
                         {{-- Tombol --}}
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('admin.news.index') }}" class="btn btn-secondary me-2">
+                            <a href="{{ route('news.index') }}" class="btn btn-secondary me-2">
                                 <i class="bi bi-arrow-left"></i> Kembali
                             </a>
                             <button type="submit" class="btn btn-primary">

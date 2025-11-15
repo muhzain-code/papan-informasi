@@ -44,7 +44,7 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <h5 class="card-title mb-0">Data Berita</h5>
-                        <a href="{{ route('admin.news.create') }}" class="btn btn-primary mb-3 ms-auto">
+                        <a href="{{ route('news.create') }}" class="btn btn-primary mb-3 ms-auto">
                             <i class="bi bi-plus-circle"></i> Tambah
                         </a>
                     </div>
@@ -112,7 +112,7 @@
 
                                             {{-- Publish --}}
                                             @if ($item->status === 'draft')
-                                                <form action="{{ route('admin.news.publish', $item->id) }}" method="POST"
+                                                <form action="{{ route('news.publish', $item->id) }}" method="POST"
                                                     class="d-inline form-publish">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success btn-sm">
@@ -122,7 +122,7 @@
 
                                                 {{-- Draft --}}
                                             @else
-                                                <form action="{{ route('admin.news.draft', $item->id) }}" method="POST"
+                                                <form action="{{ route('news.draft', $item->id) }}" method="POST"
                                                     class="d-inline form-draft">
                                                     @csrf
                                                     <button type="submit" class="btn btn-secondary btn-sm">
@@ -132,19 +132,19 @@
                                             @endif
 
                                             {{-- Show --}}
-                                            <a href="{{ route('admin.news.show', $item->id) }}"
+                                            <a href="{{ route('news.show', $item->id) }}"
                                                 class="btn btn-info btn-sm">
                                                 <i class="bi bi-eye"></i>
                                             </a>
 
                                             {{-- Edit --}}
-                                            <a href="{{ route('admin.news.edit', $item->id) }}"
+                                            <a href="{{ route('news.edit', $item->id) }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
 
                                             {{-- Delete --}}
-                                            <form action="{{ route('admin.news.destroy', $item->id) }}" method="POST"
+                                            <form action="{{ route('news.destroy', $item->id) }}" method="POST"
                                                 class="d-inline delete-form">
                                                 @csrf
                                                 @method('DELETE')
