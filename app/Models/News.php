@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class News extends Model
 {
@@ -19,6 +21,8 @@ class News extends Model
         'thumbnail',
         'published_at',
         'created_by',
+        'updated_by',
+        'deleted_by',
         'status',
     ];
 
@@ -30,11 +34,6 @@ class News extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
-    // public function getRouteKeyName()
-    // {
-    //     return 'slug';
-    // }
 
     public function getThumbnailUrlAttribute()
     {
@@ -76,5 +75,33 @@ class News extends Model
         }
 
         return $slug;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('berita')
+            ->logOnly($this->fillable)
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(
+                fn($event) =>
+                "Data berita berhasil " .
+                    match ($event) {
+                        'created' => 'ditambahkan',
+                        'updated' => 'diperbarui',
+                        'deleted' => 'dihapus',
+                        default => $event,
+                    } . ' oleh ' . (Auth::user()->name ?? 'Sistem') . '.'
+            );
+    }
+
+    protected static function booted()
+    {
+        static::creating(fn($model) => $model->created_by ??= Auth::id());
+        static::updating(fn($model) => $model->updated_by = Auth::id());
+        static::deleting(fn($model) => $model->forceFill([
+            'deleted_by' => Auth::id(),
+        ])->saveQuietly());
     }
 }

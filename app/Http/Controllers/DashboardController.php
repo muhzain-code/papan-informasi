@@ -11,7 +11,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Ambil user saat ini
         $user = Auth::user();
 
         // Count data utama
@@ -19,21 +18,11 @@ class DashboardController extends Controller
         $agendaCount  = Event::count();
         $contactCount = Contact::count();
 
-        // Recent activity dummy (karena user belum punya tabel activity)
-        $recentActivity = collect([
-            (object)[
-                'activity' => 'Menambahkan berita baru',
-                'created_at' => now()->subMinutes(5)
-            ],
-            (object)[
-                'activity' => 'Mengedit agenda kegiatan',
-                'created_at' => now()->subHour()
-            ],
-            (object)[
-                'activity' => 'Pesan baru masuk dari pengunjung',
-                'created_at' => now()->subHours(2)
-            ],
-        ]);
+        // Ambil aktivitas terbaru dari Spatie
+        $recentActivity = \Spatie\Activitylog\Models\Activity::with('causer')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
 
         return view('Home.index', compact(
             'user',

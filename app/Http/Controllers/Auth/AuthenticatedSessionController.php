@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,8 +27,19 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+        activity('auth')
+            ->causedBy($user)
+            ->event('login')
+            ->withProperties([
+                'user_id'     => $user->id,
+                'email'       => $user->email,
+                // 'role'        => $user->getRoleNames()->first(),
+                'ip'          => request()->ip(),
+                'user_agent'  => request()->userAgent(),
+            ])
+            ->log("Pengguna '{$user->email}' berhasil login");
+        return redirect()->intended(route('admin.index', absolute: false));
     }
 
     /**
@@ -36,11 +47,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+        activity('auth')
+            ->causedBy($user)
+            ->event('logout')
+            ->withProperties([
+                'user_id'     => $user->id,
+                'email'       => $user->email,
+                // 'role'        => $user->getRoleNames()->first(),
+                'ip'          => request()->ip(),
+                'user_agent'  => request()->userAgent(),
+            ])
+            ->log("Pengguna '{$user->email}' berhasil logout");
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+
 
         return redirect()->route('login');
     }
