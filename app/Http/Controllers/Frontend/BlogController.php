@@ -10,7 +10,9 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $news = News::latest()->where('status', 'published')->paginate(10);
+        $news = News::where('status', 'published')
+            ->orderBy('published_at', 'desc') 
+            ->paginate(10);
         return view('frontend.blog.blog', compact('news'));
     }
 

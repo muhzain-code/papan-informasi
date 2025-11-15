@@ -8,7 +8,8 @@
     </header>
 
     <div class="page-heading">
-        {{-- Toast Success Message --}}
+
+        {{-- Toast Success --}}
         @if (session('success'))
             <div id="toast-success" class="toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 m-3"
                 role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 1080;">
@@ -25,13 +26,13 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Berita</h3>
-                    <p class="text-subtitle text-muted">Mengelola data berita.</p>
+                    <h3>Pages</h3>
+                    <p class="text-subtitle text-muted">Mengelola halaman statis website.</p>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">Berita</li>
+                            <li class="breadcrumb-item">Pages</li>
                             <li class="breadcrumb-item active">Index</li>
                         </ol>
                     </nav>
@@ -43,13 +44,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex">
-                        <h5 class="card-title mb-0">Data Berita</h5>
-                        <a href="{{ route('admin.news.create') }}" class="btn btn-primary mb-3 ms-auto">
+                        <h5 class="card-title mb-0">Data Pages</h5>
+                        <a href="{{ route('admin.pages.create') }}" class="btn btn-primary mb-3 ms-auto">
                             <i class="bi bi-plus-circle"></i> Tambah
                         </a>
                     </div>
 
-                    <div class="d-flex justify-content-between flex-wrap mb-4">
+                     <div class="d-flex justify-content-between flex-wrap mb-4">
 
                         <!-- Entries Dropdown -->
                         <form method="GET" class="d-flex align-items-center">
@@ -78,81 +79,49 @@
                         </form>
                     </div>
 
-
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Judul</th>
-                                <th>Tanggal Publikasi</th>
-                                <th>Status</th>
+                                <th>Slug</th>
+                                <th>Meta Title</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
 
                             @php
-                                $no = ($news->currentPage() - 1) * $news->perPage() + 1;
+                                $no = ($pages->currentPage() - 1) * $pages->perPage() + 1;
                             @endphp
 
-                            @foreach ($news as $item)
+                            @foreach ($pages as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->title }}</td>
-                                    <td>{{ $item->published_at ? $item->published_at->format('d M Y, H:i') : '-' }}</td>
-                                    <td>
-                                        @if ($item->status === 'draft')
-                                            <span class="badge bg-warning text-dark">Draft</span>
-                                        @else
-                                            <span class="badge bg-success">Published</span>
-                                        @endif
-                                    </td>
+                                    <td>{{ $item->slug }}</td>
+                                    <td>{{ $item->meta_title ?? '-' }}</td>
                                     <td>
                                         <div class="d-flex gap-1">
 
-                                            {{-- Publish --}}
-                                            @if ($item->status === 'draft')
-                                                <form action="{{ route('admin.news.publish', $item->id) }}" method="POST"
-                                                    class="d-inline form-publish">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm">
-                                                        <i class="bi bi-check-circle"></i>
-                                                    </button>
-                                                </form>
-
-                                                {{-- Draft --}}
-                                            @else
-                                                <form action="{{ route('admin.news.draft', $item->id) }}" method="POST"
-                                                    class="d-inline form-draft">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-secondary btn-sm">
-                                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-
-                                            {{-- Show --}}
-                                            <a href="{{ route('admin.news.show', $item->id) }}"
-                                                class="btn btn-info btn-sm">
+                                            <a href="{{ route('admin.pages.show', $item->id) }}"
+                                                class="btn btn-info btn-sm" title="Lihat">
                                                 <i class="bi bi-eye"></i>
                                             </a>
 
-                                            {{-- Edit --}}
-                                            <a href="{{ route('admin.news.edit', $item->id) }}"
-                                                class="btn btn-warning btn-sm">
+                                            <a href="{{ route('admin.pages.edit', $item->id) }}"
+                                                class="btn btn-warning btn-sm" title="Edit">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
 
-                                            {{-- Delete --}}
-                                            <form action="{{ route('admin.news.destroy', $item->id) }}" method="POST"
+                                            <form action="{{ route('admin.pages.destroy', $item->id) }}" method="POST"
                                                 class="d-inline delete-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus Page">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -161,55 +130,35 @@
                         </tbody>
                     </table>
 
-                    {{-- PAGINATION --}}
+                    {{-- Pagination --}}
                     <div class="mt-3">
-                        {{ $news->links('pagination::bootstrap-5') }}
+                        {{ $pages->links('pagination::bootstrap-5') }}
                     </div>
+
 
                 </div>
             </div>
         </section>
+
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        // Delegated listener untuk Publish
+        // Delete confirmation
         document.addEventListener('submit', function(e) {
-            if (e.target.classList.contains('form-publish')) {
+            if (e.target.classList.contains('delete-form')) {
                 e.preventDefault();
-
                 let form = e.target;
 
                 Swal.fire({
-                    title: 'Publish Berita?',
-                    text: "Berita akan langsung tampil di halaman utama.",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Publish!',
-                    cancelButtonText: 'Batal',
-                    confirmButtonColor: '#28a745'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            }
-        });
-
-        // Delegated listener untuk Draft
-        document.addEventListener('submit', function(e) {
-            if (e.target.classList.contains('form-draft')) {
-                e.preventDefault();
-
-                let form = e.target;
-
-                Swal.fire({
-                    title: 'Kembalikan ke Draft?',
-                    text: "Berita tidak akan tampil lagi ke publik.",
+                    title: 'Hapus Halaman?',
+                    text: "Halaman ini akan dihapus dari website.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Ya, Set Draft!',
-                    cancelButtonText: 'Batal',
-                    confirmButtonColor: '#6c757d'
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();

@@ -104,6 +104,22 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'admin.pages.') ? 'active' : '' }}">
+                            <a href="{{ route('admin.pages.index') }}" class="sidebar-link">
+                                <i class="bi bi-file-earmark-text"></i>
+                                <span>Halaman Lain</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item {{ Str::startsWith($currentRoute, 'admin.settings.') ? 'active' : '' }}">
+                            <a href="{{ route('admin.settings.index') }}" class="sidebar-link">
+                                <i class="bi bi-sliders"></i>
+
+                                <span>Pengaturan</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
@@ -149,18 +165,13 @@
             @yield('content')
 
             <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>&copy; 2025 This application was developed by <a href="https://github.com/muhzain-code"
-                                target="_blank">Zain</a></p>
-                    </div>
-                    <div class="float-end text-end">
-                        <p>
-                            Template by <a href="https://saugi.me" target="_blank">Saugi</a>
-                        </p>
-                    </div>
+                <div class="footer mb-0 text-muted d-flex justify-content-center">
+                    <p class="m-0">&copy; 2025 This application was developed by
+                        <a href="https://github.com/muhzain-code" target="_blank">Zain</a>
+                    </p>
                 </div>
             </footer>
+
         </div>
     </div>
     <script src="{{ asset('mazer/dist/assets/static/js/components/dark.js') }}"></script>

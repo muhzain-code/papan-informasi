@@ -11,12 +11,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $news = News::latest()->take(3)->where('status', 'published')->get();
+        $news = News::where('status', 'published')
+            ->orderBy('published_at', 'desc') 
+            ->take(3)
+            ->get();
 
         $events = Event::latest()->take(2)->get();
 
         return view('frontend.home.index', compact('news', 'events'));
     }
-
-    
 }

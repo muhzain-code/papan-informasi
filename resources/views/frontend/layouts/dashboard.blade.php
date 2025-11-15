@@ -84,7 +84,9 @@
         </div>
     </div>
     <!-- Topbar End -->
-
+    @php
+        $currentRoute = Route::currentRouteName();
+    @endphp
     <!-- Navbar & Hero Start -->
     <div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
         <div class="container">
@@ -99,10 +101,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-0 mx-lg-auto">
-                        <a href="{{ route('home') }}" class="nav-item nav-link active">Beranda</a>
-                        <a href="{{ route('about') }}" class="nav-item nav-link">Tentang</a>
-                        <a href="{{ route('agenda.index') }}" class="nav-item nav-link">Agenda</a>
-                        <a href="{{ route('blog.index') }}" class="nav-item nav-link">Berita</a>
+                        <a href="{{ route('home') }}"
+                            class="nav-item nav-link {{ Str::startsWith($currentRoute, 'home') ? 'active' : '' }}">Beranda</a>
+                        <a href="{{ route('about') }}"
+                            class="nav-item nav-link {{ Str::startsWith($currentRoute, 'about') ? 'active' : '' }}">Tentang</a>
+                        <a href="{{ route('agenda.index') }}"
+                            class="nav-item nav-link {{ Str::startsWith($currentRoute, 'agenda.') ? 'active' : '' }}">Agenda</a>
+                        <a href="{{ route('blog.index') }}"
+                            class="nav-item nav-link {{ Str::startsWith($currentRoute, 'blog.') ? 'active' : '' }}">Berita</a>
                         <!-- <div class="nav-item dropdown">
                             <a href="#" class="nav-link" data-bs-toggle="dropdown">
                                 <span class="dropdown-toggle">Pages</span>
@@ -115,7 +121,8 @@
                                 <a href="404.html" class="dropdown-item">404 Page</a>
                             </div>
                         </div> -->
-                        <a href="{{ route('contact') }}" class="nav-item nav-link">Kontak</a>
+                        <a href="{{ route('contact') }}"
+                            class="nav-item nav-link {{ Str::startsWith($currentRoute, 'contact') ? 'active' : '' }}">Kontak</a>
                         <!-- <div class="nav-btn px-3">
                             <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0"
                                 data-bs-toggle="modal" data-bs-target="#searchModal"><i

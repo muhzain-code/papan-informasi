@@ -10,15 +10,28 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::latest()->paginate(10)->through(function ($item) {
-            $item->thumbnail_url = $item->thumbnail ? url(Storage::url($item->thumbnail)) : null;
-            return $item;
-        });
+        // Ambil nilai search dan entries
+        $search  = $request->input('search');
+        $entries = $request->input('entries', 10); // default 10 items per page
 
-        return view('news.index', compact('news'));
+        $news = News::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+            ->orderByRaw("published_at IS NULL ASC") // published_at null dipindah ke bawah
+            ->orderBy('published_at', 'desc')        // urutan publikasi terbaru
+            ->orderBy('created_at', 'desc')          // fallback jika published_at sama
+            ->paginate($entries)
+            ->appends([
+                'search'  => $search,
+                'entries' => $entries
+            ]);
+
+        return view('news.index', compact('news', 'search', 'entries'));
     }
+
 
     public function create()
     {

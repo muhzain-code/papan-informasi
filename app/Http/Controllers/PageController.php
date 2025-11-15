@@ -9,15 +9,27 @@ use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pages = Page::latest()->paginate(10)->through(function ($page) {
-            $page->featured_image_url = $page->featured_image ? url(Storage::url($page->featured_image)) : null;
-            return $page;
-        });
+        $search  = $request->input('search');
+        $entries = $request->input('entries', 10); // default 10 rows per page
 
-        return view('pages.index', compact('pages'));
+        $pages = Page::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%")
+                    ->orWhere('meta_title', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($entries)
+            ->appends([
+                'search'  => $search,
+                'entries' => $entries
+            ]);
+
+        return view('pages.index', compact('pages', 'search', 'entries'));
     }
+
 
     public function create()
     {

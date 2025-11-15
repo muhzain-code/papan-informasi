@@ -9,15 +9,26 @@ use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::latest()->paginate(10)->through(function ($event) {
-            $event->thumbnail_url = $event->thumbnail ? url(Storage::url($event->thumbnail)) : null;
-            return $event;
-        });
+        $search  = $request->input('search');
+        $entries = $request->input('entries', 10); 
 
-        return view('events.index', compact('events'));
+        $events = Event::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
+            })
+            ->orderBy('start_date', 'desc')
+            ->paginate($entries)
+            ->appends([
+                'search'  => $search,
+                'entries' => $entries
+            ]);
+
+        return view('events.index', compact('events', 'search', 'entries'));
     }
+
 
     public function create()
     {

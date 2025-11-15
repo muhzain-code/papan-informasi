@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('featured_image')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
+
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,9 +34,14 @@ return new class extends Migration
             $table->longText('content');
             $table->string('thumbnail')->nullable();
             $table->dateTime('published_at')->nullable();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->enum('status', ['draft', 'published'])->default('draft');
+
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // EVENTS
@@ -44,18 +54,27 @@ return new class extends Migration
             $table->dateTime('end_date')->nullable();
             $table->string('location')->nullable();
             $table->string('thumbnail')->nullable();
-            $table->timestamps();
-        });
 
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
 
         // SETTINGS
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
             $table->text('value')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('type')->default('text'); // text, image, video, link, boolean, dll
             $table->timestamps();
         });
-        
+
+
         // CONTACTS
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();

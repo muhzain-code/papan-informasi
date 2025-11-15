@@ -7,15 +7,30 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $settings = Setting::orderBy('key')->get();
-        return view('admin.settings.index', compact('settings'));
+        $search  = $request->input('search');
+        $entries = $request->input('entries', 10); 
+        
+        $settings = Setting::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('key', 'like', "%{$search}%")
+                    ->orWhere('value', 'like', "%{$search}%");
+            })
+            ->orderBy('key', 'asc')
+            ->paginate($entries)
+            ->appends([
+                'search'  => $search,
+                'entries' => $entries
+            ]);
+
+        return view('settings.index', compact('settings', 'search', 'entries'));
     }
+
 
     public function edit(Setting $setting)
     {
-        return view('admin.settings.edit', compact('setting'));
+        return view('settings.edit', compact('setting'));
     }
 
     public function update(Request $request, Setting $setting)

@@ -14,19 +14,19 @@
 
         <!-- Content -->
         <!-- <div class="hero-content container text-center text-white">
-                                                                                            <h4 class="text-uppercase fw-bold mb-4">Universitas Nurul Jadid</h4>
-                                                                                            <h1 class="display-1 fw-bold mb-4">Fakultas Teknik</h1>
-                                                                                         
+                                                                                                            <h4 class="text-uppercase fw-bold mb-4">Universitas Nurul Jadid</h4>
+                                                                                                            <h1 class="display-1 fw-bold mb-4">Fakultas Teknik</h1>
+                                                                                                         
 
-                                                                                            <div class="d-flex justify-content-center flex-wrap">
-                                                                                                <a class="btn btn-light rounded-pill py-3 px-5 me-2 mb-2" href="#">
-                                                                                                    <i class="fas fa-play-circle me-2"></i> Berita
-                                                                                                </a>
-                                                                                                <a class="btn btn-dark rounded-pill py-3 px-5 ms-2 mb-2" href="#">
-                                                                                                    Daftar
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        </div> -->
+                                                                                                            <div class="d-flex justify-content-center flex-wrap">
+                                                                                                                <a class="btn btn-light rounded-pill py-3 px-5 me-2 mb-2" href="#">
+                                                                                                                    <i class="fas fa-play-circle me-2"></i> Berita
+                                                                                                                </a>
+                                                                                                                <a class="btn btn-dark rounded-pill py-3 px-5 ms-2 mb-2" href="#">
+                                                                                                                    Daftar
+                                                                                                                </a>
+                                                                                                            </div>
+                                                                                                        </div> -->
 
     </section>
 
@@ -50,55 +50,52 @@
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="feature-item p-4 pt-0 ftnj-feature-item">
                         <div class="feature-icon p-4 mb-4 ftnj-icon-box">
-                            <i class="far fa-handshake"></i>
+                            <i class="fa fa-book"></i>
                         </div>
-                        <h4 class="mb-4 ftnj-feature-title">Sistem Informasi FT</h4>
+                        <h4 class="mb-4 ftnj-feature-title">SIAKAD</h4>
                         <p class="mb-4 ftnj-feature-desc">
-                            Akses layanan akademik, administrasi, dan informasi internal Fakultas Teknik secara online.
+                            Sistem Informasi Akademik Fakultas Teknik.
                         </p>
-                        <a class="btn btn-primary ftnj-btn" href="#">Kunjungi</a>
+                        <a class="btn btn-primary ftnj-btn" href="https://siakadft.unuja.ac.id/">Lihat</a>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
                     <div class="feature-item p-4 pt-0 ftnj-feature-item">
                         <div class="feature-icon p-4 mb-4 ftnj-icon-box">
-                            <i class="fa fa-laptop-code"></i>
+                            <i class="fa fa-tasks"></i>
                         </div>
-                        <h4 class="mb-4 ftnj-feature-title">E-Learning Teknik</h4>
+                        <h4 class="mb-4 ftnj-feature-title">SIAMTEK</h4>
                         <p class="mb-4 ftnj-feature-desc">
-                            Platform pembelajaran digital yang digunakan dosen dan mahasiswa Fakultas Teknik.
+                            Sistem Administrasi Monitoring Tugas Akhir, PKL dan KKN.
                         </p>
-                        <a class="btn btn-primary ftnj-btn" href="#">Masuk</a>
+                        <a class="btn btn-primary ftnj-btn" href="https://siamtek.unuja.ac.id/">Lihat</a>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
                     <div class="feature-item p-4 pt-0 ftnj-feature-item">
                         <div class="feature-icon p-4 mb-4 ftnj-icon-box">
-                            <i class="fa fa-server"></i>
+                            <i class="fa fa-user-graduate"></i>
                         </div>
-                        <h4 class="mb-4 ftnj-feature-title">Repository Teknik</h4>
-                        <p class="mb-4 ftnj-feature-desc">
-                            Pusat arsip digital untuk penelitian, laporan, dan publikasi akademik mahasiswa & dosen.
-                        </p>
-                        <a class="btn btn-primary ftnj-btn" href="#">Lihat</a>
+                        <h4 class="mb-4 ftnj-feature-title">Aplikasi Mahasiswa</h4>
+                        <p class="mb-4 ftnj-feature-desc">Aplikasi Mahasiswa Universitas Nurul Jadid.</p>
+                        <a class="btn btn-primary ftnj-btn" href="https://am.unuja.ac.id/">Lihat</a>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
                     <div class="feature-item p-4 pt-0 ftnj-feature-item">
                         <div class="feature-icon p-4 mb-4 ftnj-icon-box">
-                            <i class="fa fa-headphones"></i>
+                            <i class="fa fa-chalkboard-teacher"></i>
                         </div>
-                        <h4 class="mb-4 ftnj-feature-title">Helpdesk FT</h4>
-                        <p class="mb-4 ftnj-feature-desc">
-                            Layanan aduan & support teknis untuk seluruh mahasiswa dan staf Fakultas Teknik.
-                        </p>
-                        <a class="btn btn-primary ftnj-btn" href="#">Buka</a>
+                        <h4 class="mb-4 ftnj-feature-title">Aplikasi Dosen</h4>
+                        <p class="mb-4 ftnj-feature-desc">Aplikasi Dosen Universitas Nurul Jadid</p>
+                        <a class="btn btn-primary ftnj-btn" href="https://ad.unuja.ac.id/">Lihat</a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Feature End -->
@@ -155,7 +152,7 @@
                     </div>
                 @endforeach
                 <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
-                    <a class="btn btn-primary rounded-pill py-3 px-5" href="#">Berita Lainnya</a>
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="{{ route('blog.index') }}">Berita Lainnya</a>
                 </div>
             </div>
         </div>
@@ -208,7 +205,8 @@
                 @endforeach
 
                 <div class="col-12 text-center mt-5 wow fadeInUp" data-wow-delay="0.2s">
-                    <a class="btn btn-primary rounded-pill py-3 px-5" href="#">Agenda Lainnya</a>
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="{{ route('agenda.index') }}">Agenda
+                        Lainnya</a>
                 </div>
 
             </div>
