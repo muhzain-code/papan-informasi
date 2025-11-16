@@ -8,11 +8,25 @@ use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Schedule::latest()->paginate(10);
-        return view('schedules.index', compact('data'));
+        $search  = $request->input('search');
+        $entries = $request->input('entries', 10);
+        $schedules = Schedule::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('date', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($entries)
+            ->appends([
+                'search'  => $search,
+                'entries' => $entries,
+            ]);
+
+        return view('schedules.index', compact('schedules', 'search', 'entries'));
     }
+
 
     public function create()
     {

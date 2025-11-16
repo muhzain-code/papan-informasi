@@ -76,7 +76,7 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->enum('source_type', ['file', 'youtube', 'url'])->default('file');
+            $table->enum('source_type', ['file', 'youtube'])->default('file');
             $table->string('video_path')->nullable();
             $table->string('video_url')->nullable();
             $table->boolean('is_active')->default(true);

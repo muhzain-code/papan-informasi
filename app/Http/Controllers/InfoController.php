@@ -8,11 +8,26 @@ use Illuminate\Support\Facades\Auth;
 
 class InfoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Info::latest()->paginate(10);
-        return view('infos.index', compact('data'));
+        $search  = $request->input('search');
+        $entries = $request->input('entries', 10);
+
+        $infos = Info::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('message', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($entries)
+            ->appends([
+                'search'  => $search,
+                'entries' => $entries,
+            ]);
+
+        return view('infos.index', compact('infos', 'search', 'entries'));
     }
+
 
     public function create()
     {
