@@ -51,14 +51,12 @@
 
         main {
             display: grid;
-            /* Grid 40% kiri (Berita) dan 60% kanan (Aside) */
             grid-template-columns: 40% 60%;
             overflow: hidden;
         }
 
         aside {
             display: grid;
-            /* Baris atas 14.0625vw (rasio 16:9 dari 25vw lebar video) */
             grid-template-rows: 14.0625vw 1fr;
             overflow: hidden;
         }
@@ -77,7 +75,6 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            /* Transisi untuk fade-in/out via JS */
             transition: opacity 0.5s ease-in-out;
         }
     </style>
@@ -100,101 +97,76 @@
         </div>
     </header>
 
-    <!-- STRUKTUR HTML YANG BENAR -->
     <main class="h-full">
 
-        {{-- =================================================================== --}}
-        {{-- 1. BAGIAN SLIDESHOW BERITA (Menggunakan $news) - 40% --}}
-        {{-- =================================================================== --}}
         <section class="h-full relative bg-gradient-to-br from-slate-800 to-slate-900 border-r-2 border-slate-700">
             <div id="news-slideshow-container" class="slideshow-container">
 
                 @forelse($news as $newsItem)
-                <div class="slide news-slide flex flex-col overflow-hidden">
+                    <div class="slide news-slide flex flex-col overflow-hidden">
 
-                    <!-- PERBAIKAN 1: Gambar diubah dari h-4/5 (80%) menjadi h-3/4 (75%) agar sedikit lebih kecil -->
-                    <img src="{{ $newsItem->thumbnail ? asset('storage/'. $newsItem->thumbnail) : 'https://placehold.co/1000x800/047857/ffffff?text=Berita' }}"
-                        alt="{{ $newsItem->title }}" class="w-full h-3/4 object-cover"
-                        onerror="this.src='https://placehold.co/1000x800/777/ffffff?text=Image+Error'">
+                        <img src="{{ $newsItem->thumbnail ? asset('storage/' . $newsItem->thumbnail) : 'https://placehold.co/1000x800/047857/ffffff?text=Berita' }}"
+                            alt="{{ $newsItem->title }}" class="w-full h-3/4 object-cover"
+                            onerror="this.src='https://placehold.co/1000x800/777/ffffff?text=Image+Error'">
 
-                    <!-- PERBAIKAN 2: Area teks diubah dari h-1/5 (20%) menjadi h-1/4 (25%) dan justify-start -->
-                    <div class="w-full h-1/4 p-4 bg-slate-800 flex flex-col justify-start">
-                        <p class="text-sm font-medium text-amber-400">
-                            {{ \Illuminate\Support\Str::upper($newsItem->published_at->format('d F Y')) }}</p>
-                        
-                        <!-- PERBAIKAN 3: Judul diberi line-clamp-3 untuk membatasi 3 baris dan memberi ellipsis (...) -->
-                        <h2 class="text-2xl font-bold text-white mt-1 line-clamp-3">{{ $newsItem->title }}</h2>
+                        <div class="w-full h-1/4 p-4 bg-slate-800 flex flex-col justify-start">
+                            <p class="text-sm font-medium text-amber-400">
+                                {{ \Illuminate\Support\Str::upper($newsItem->published_at->format('d F Y')) }}</p>
+
+                            <h2 class="text-2xl font-bold text-white mt-1 line-clamp-3">{{ $newsItem->title }}</h2>
+                        </div>
                     </div>
-                </div>
                 @empty
-                <div class="slide news-slide flex flex-col overflow-hidden" style="opacity: 1;">
-                    <!-- PERBAIKAN 1 (Empty): Gambar diubah dari h-4/5 (80%) menjadi h-3/4 (75%) -->
-                    <img src="https://placehold.co/1000x800/777/ffffff?text=Tidak+Ada+Berita" alt="Tidak Ada Berita"
-                        class="w-full h-3/4 object-cover">
-                    <!-- PERBAIKAN 2 (Empty): Area teks diubah dari h-1/5 (20%) menjadi h-1/4 (25%) dan justify-start -->
-                    <div class="w-full h-1/4 p-4 bg-slate-800 flex flex-col justify-start">
-                        <h2 class="text-2xl font-bold text-white mt-1">Tidak Ada Berita</h2>
-                        <p class="text-base text-slate-300 mt-1">Belum ada berita terbaru yang dipublikasikan.</p>
+                    <div class="slide news-slide flex flex-col overflow-hidden" style="opacity: 1;">
+                        <img src="https://placehold.co/1000x800/777/ffffff?text=Tidak+Ada+Berita" alt="Tidak Ada Berita"
+                            class="w-full h-3/4 object-cover">
+                        <div class="w-full h-1/4 p-4 bg-slate-800 flex flex-col justify-start">
+                            <h2 class="text-2xl font-bold text-white mt-1">Tidak Ada Berita</h2>
+                            <p class="text-base text-slate-300 mt-1">Belum ada berita terbaru yang dipublikasikan.</p>
+                        </div>
                     </div>
-                </div>
                 @endforelse
 
             </div>
         </section>
 
-        {{-- =================================================================== --}}
-        {{-- SISI KANAN (Informasi, Video, Jadwal) - 60% --}}
-        {{-- =================================================================== --}}
         <aside class="h-full">
 
-            {{-- Bagian Atas: Info + Video --}}
             <div class="h-full w-full flex">
 
-                {{-- =================================================================== --}}
-                {{-- 2. BAGIAN INFORMASI PENTING (Menggunakan $infos) --}}
-                {{-- =================================================================== --}}
                 <div
                     class="h-full bg-gradient-to-br from-slate-800 to-slate-700 flex flex-col overflow-hidden border-r-2 border-slate-700 flex-1">
 
                     <div id="info-slideshow-container" class="slideshow-container flex-grow min-h-0">
 
                         @forelse($infos as $info)
-                        <div class="slide info-slide p-3 flex flex-col h-full justify-center">
-                            <h3 class="text-2xl font-semibold text-amber-400 mt-1 text-center">
-                                {{ $info->title }}
-                            </h3>
-                            <p class="text-base text-slate-300 text-center leading-relaxed mt-1">
-                                {{ $info->message }}
-                            </p>
-                        </div>
+                            <div class="slide info-slide p-3 flex flex-col h-full justify-center">
+                                <h3 class="text-2xl font-semibold text-amber-400 mt-1 text-center">
+                                    {{ $info->title }}
+                                </h3>
+                                <p class="text-base text-slate-300 text-center leading-relaxed mt-1">
+                                    {{ $info->message }}
+                                </p>
+                            </div>
                         @empty
-                        <div class="slide info-slide p-3 flex flex-col h-full justify-center" style="opacity: 1;">
-                            <h3 class="text-2xl font-semibold text-amber-400 text-center">
-                                Tidak Ada Informasi
-                            </h3>
-                            <p class="text-base text-slate-300 text-center leading-relaxed mt-1">
-                                Belum ada informasi penting saat ini.
-                            </p>
-                        </div>
+                            <div class="slide info-slide p-3 flex flex-col h-full justify-center" style="opacity: 1;">
+                                <h3 class="text-2xl font-semibold text-amber-400 text-center">
+                                    Tidak Ada Informasi
+                                </h3>
+                                <p class="text-base text-slate-300 text-center leading-relaxed mt-1">
+                                    Belum ada informasi penting saat ini.
+                                </p>
+                            </div>
                         @endforelse
 
                     </div>
                 </div>
 
-                {{-- =================================================================== --}}
-                {{-- 3. BAGIAN VIDEO (Menggunakan $videos) --}}
-                {{-- =================================================================== --}}
-                
-                <!-- PERBAIKAN TOTAL: Kontainer video tunggal. JS akan mengisi ini. -->
                 <div id="video-player-container" class="h-full bg-black relative" style="width: 25vw; flex-shrink: 0;">
-                    <!-- Player (video atau iframe) akan dimasukkan di sini oleh JS -->
                 </div>
 
             </div>
 
-            {{-- =================================================================== --}}
-            {{-- 4. BAGIAN JADWAL KULIAH (Menggunakan $schedules) --}}
-            {{-- =================================================================== --}}
             <div
                 class="h-full w-full bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col overflow-hidden border-t-2 border-slate-700">
                 <div class="p-3 border-b-2 border-amber-400 flex-shrink-0">
@@ -203,106 +175,97 @@
 
                 <div id="jadwal-slideshow-container" class="slideshow-container flex-grow min-h-0">
 
-                    {{-- Chunk jadwal per 6 item --}}
                     @forelse($schedules->chunk(6) as $scheduleChunk)
-                    <!-- PERBAIKAN 4: Tambahkan h-full agar slide mengisi kontainer slideshow -->
-                    <div class="slide jadwal-slide p-1 h-full">
+                        <div class="slide jadwal-slide p-1 h-full">
 
-                        {{-- Grid 3 kolom --}}
-                        <!-- PERBAIKAN 5: Tambahkan h-full dan grid-rows-2 agar grid mengisi slide secara proporsional -->
-                        <div class="grid grid-cols-3 grid-rows-2 gap-1 h-full">
+                            <div class="grid grid-cols-3 grid-rows-2 gap-1 h-full">
 
-                            @foreach ($scheduleChunk as $schedule)
-                            <div
-                                class="p-2 bg-slate-700/50 backdrop-blur-sm rounded-lg flex flex-col border border-slate-600">
-                                <p class="text-sm font-medium text-amber-400">
-                                    {{ $schedule->start_time ? \Carbon\Carbon::parse($schedule->start_time)->format('H:i') : '-' }}
-                                    @if ($schedule->end_time)
-                                    -
-                                    {{ $schedule->end_time ? \Carbon\Carbon::parse($schedule->end_time)->format('H:i') : '-' }}
-                                    @endif
-                                </p>
-                                <h3 class="text-base font-bold text-white mt-1 flex-grow">
-                                    {{ $schedule->course->name ?? ($schedule->course->name ?? 'N/A') }}
-                                </h3>
-                                <p class="text-sm text-slate-300">
-                                    {{ $schedule->lecturer->name ?? 'Dosen tidak diatur' }}
-                                </p>
-                                <p class="text-sm text-slate-300 font-medium">
-                                    {{ $schedule->room->name ?? ($schedule->room->name ?? 'N:A') }}
-                                </p>
+                                @foreach ($scheduleChunk as $schedule)
+                                    <div
+                                        class="p-2 bg-slate-700/50 backdrop-blur-sm rounded-lg flex flex-col border border-slate-600">
+                                        <p class="text-sm font-medium text-amber-400">
+                                            {{ $schedule->start_time ? \Carbon\Carbon::parse($schedule->start_time)->format('H:i') : '-' }}
+                                            @if ($schedule->end_time)
+                                                -
+                                                {{ $schedule->end_time ? \Carbon\Carbon::parse($schedule->end_time)->format('H:i') : '-' }}
+                                            @endif
+                                        </p>
+                                        <h3 class="text-base font-bold text-white mt-1 flex-grow">
+                                            {{ $schedule->course->name ?? ($schedule->course->name ?? 'N/A') }}
+                                        </h3>
+                                        <p class="text-sm text-slate-300">
+                                            {{ $schedule->lecturer->name ?? 'Dosen tidak diatur' }}
+                                        </p>
+                                        <p class="text-sm text-slate-300 font-medium">
+                                            {{ $schedule->room->name ?? ($schedule->room->name ?? 'N:A') }}
+                                        </p>
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
-                    </div>
                     @empty
-                    <div class="slide jadwal-slide p-1 flex items-center justify-center" style="opacity: 1;">
-                        <div class="p-4 bg-slate-700/50 rounded-lg text-center">
-                            <h3 class="text-lg font-bold text-white">Tidak Ada Jadwal Kuliah</h3>
-                            <p class="text-sm text-slate-300">Tidak ada jadwal kuliah untuk hari ini.</p>
+                        <div class="slide jadwal-slide p-1 flex items-center justify-center" style="opacity: 1;">
+                            <div class="p-4 bg-slate-700/50 rounded-lg text-center">
+                                <h3 class="text-lg font-bold text-white">Tidak Ada Jadwal Kuliah</h3>
+                                <p class="text-sm text-slate-300">Tidak ada jadwal kuliah untuk hari ini.</p>
+                            </div>
                         </div>
-                    </div>
                     @endforelse
                 </div>
             </div>
         </aside>
 
     </main>
-    <!-- AKHIR DARI MAIN -->
 
-    {{-- =================================================================== --}}
-    {{-- 5. BAGIAN FOOTER TICKER (Menggunakan $announcements) --}}
-    {{-- =================================================================== --}}
     <footer class="p-2 bg-slate-800 border-t-2 border-amber-400 overflow-hidden whitespace-nowrap z-10">
         @if ($announcements->isEmpty())
-        <div class="inline-block">
-            <span class="text-lg mx-12 text-slate-200">
-                Tidak ada pengumuman saat ini.
-            </span>
-        </div>
+            <div class="inline-block">
+                <span class="text-lg mx-12 text-slate-200">
+                    Tidak ada pengumuman saat ini.
+                </span>
+            </div>
         @else
-        <div class="inline-block animate-ticker">
-            @for ($i = 0; $i < 2; $i++)
-            @foreach ($announcements as $announcement)
-            <span class="text-lg mx-12 text-slate-200">
-                {{ $announcement->title }}
-            </span>
-            @endforeach
-            @endfor
-        </div>
+            <div class="inline-block animate-ticker">
+                @for ($i = 0; $i < 2; $i++)
+                    @foreach ($announcements as $announcement)
+                        <span class="text-lg mx-12 text-slate-200">
+                            {{ $announcement->title }}
+                        </span>
+                    @endforeach
+                @endfor
+            </div>
         @endif
     </footer>
 
-    <!-- Memuat YouTube API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
-    <!-- Melewatkan data $videos dari Blade ke JavaScript -->
     @php
-        $jsVideoData = $videos->map(function ($video) {
-            if ($video->source_type == 'file' && $video->video_path) {
-                return [
-                    'type' => 'file',
-                    'url' => asset('storage/' . $video->video_path)
-                ];
-            } elseif ($video->source_type == 'youtube' && $video->video_url) {
-                // Ekstrak ID video dari URL embed
-                $url = rtrim($video->video_url, '/');
-                $videoId = \Illuminate\Support\Str::afterLast($url, '/');
-                $videoId = explode('?', $videoId)[0]; // Hapus parameter jika ada
-                return [
-                    'type' => 'youtube',
-                    'url' => $videoId
-                ];
-            }
-            return null;
-        })->whereNotNull()->values();
+        $jsVideoData = $videos
+            ->map(function ($video) {
+                if ($video->source_type == 'file' && $video->video_path) {
+                    return [
+                        'type' => 'file',
+                        'url' => asset('storage/' . $video->video_path),
+                    ];
+                } elseif ($video->source_type == 'youtube' && $video->video_url) {
+                    $url = rtrim($video->video_url, '/');
+                    $videoId = \Illuminate\Support\Str::afterLast($url, '/');
+                    $videoId = explode('?', $videoId)[0];
+                    return [
+                        'type' => 'youtube',
+                        'url' => $videoId,
+                    ];
+                }
+                return null;
+            })
+            ->whereNotNull()
+            ->values();
     @endphp
 
     <script>
-        // Data video yang sudah bersih sekarang di-pass ke JS
         const videoData = @json($jsVideoData);
     </script>
-    
+
     <script>
         function updateTime() {
             const clockEl = document.getElementById('clock');
@@ -337,33 +300,26 @@
         updateTime();
         setInterval(updateTime, 1000);
 
-        
-        // --- LOGIKA VIDEO BARU (BERDASARKAN REFERENSI ANDA) ---
 
         let currentVideoIndex = 0;
         let ytPlayer = null;
         let playerContainer = null;
 
-        // 2. Fungsi untuk memutar video berikutnya
         function playNextVideo() {
             console.log("Playing next video...");
-            // Maju ke index berikutnya, loop kembali ke 0 jika sudah di akhir
-            if (videoData.length > 0) { // Hanya jika ada video
+            if (videoData.length > 0) {
                 currentVideoIndex = (currentVideoIndex + 1) % videoData.length;
                 playCurrentVideo();
             }
         }
 
-        // 3. Event listener untuk status YouTube
         function onYTStateChange(event) {
-            // 0 = ENDED (Video Selesai)
             if (event.data === YT.PlayerState.ENDED) {
                 console.log("YT Video Ended.");
                 playNextVideo();
             }
         }
 
-        // 4. Fungsi utama untuk memutar video
         function playCurrentVideo() {
             if (!playerContainer) {
                 playerContainer = document.getElementById("video-player-container");
@@ -373,15 +329,12 @@
                 }
             }
 
-            // Hancurkan player YT lama jika ada (untuk membersihkan memori)
             if (ytPlayer) {
                 ytPlayer.destroy();
                 ytPlayer = null;
             }
-            // Kosongkan kontainer
             playerContainer.innerHTML = "";
 
-            // Cek jika tidak ada video
             if (!videoData || videoData.length === 0) {
                 playerContainer.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-slate-900">
                     <img src="https://placehold.co/800x800/1e293b/475569?text=Video+Tidak+Tersedia"
@@ -394,34 +347,30 @@
             const video = videoData[currentVideoIndex];
             if (!video) {
                 console.error(`Data video tidak valid di index ${currentVideoIndex}`);
-                playNextVideo(); // Coba lewati
+                playNextVideo();
                 return;
             }
 
             console.log(`Playing video ${currentVideoIndex}: ${video.type} - ${video.url}`);
 
             if (video.type === 'youtube') {
-                // Buat placeholder <div> baru untuk YT Player
                 const ytPlaceholder = document.createElement('div');
-                ytPlaceholder.id = 'yt-player-dynamic'; // ID unik (dinamis)
+                ytPlaceholder.id = 'yt-player-dynamic';
                 ytPlaceholder.className = 'w-full h-full';
                 playerContainer.appendChild(ytPlaceholder);
 
-                // Buat YT Player baru
                 ytPlayer = new YT.Player('yt-player-dynamic', {
-                    videoId: video.url, // 'url' adalah videoId
+                    videoId: video.url,
                     width: '100%',
                     height: '100%',
                     playerVars: {
-                        'controls': 1, 
+                        'controls': 1,
                         'showinfo': 0,
                         'rel': 0,
                         'origin': window.location.origin,
-                        'enablejsapi': 1 // Pastikan API aktif
-                        // PERBAIKAN: Hapus autoplay dan mute dari sini
+                        'enablejsapi': 1
                     },
                     events: {
-                        // PERBAIKAN: Gunakan onReady untuk memulai video
                         'onReady': (event) => {
                             console.log('YT Player is Ready. Muting and Playing.');
                             event.target.mute();
@@ -430,35 +379,31 @@
                         'onStateChange': onYTStateChange,
                         'onError': (e) => {
                             console.error('YT Player Error:', e.data);
-                            playNextVideo(); // Coba lewati jika error
+                            playNextVideo();
                         }
                     }
                 });
 
             } else if (video.type === 'file') {
-                // Buat tag <video> baru
                 const videoEl = document.createElement('video');
                 videoEl.className = 'w-full h-full object-cover';
                 videoEl.src = video.url;
-                videoEl.controls = true; // Izinkan user pause
-                videoEl.muted = true;    // HARUS MUTE untuk autoplay
-                videoEl.playsInline = true; // Penting untuk iOS
+                videoEl.controls = true;
+                videoEl.muted = true;
+                videoEl.playsInline = true;
 
-                // Tambahkan event listener untuk 'ended'
                 videoEl.onended = () => {
                     console.log("File Video Ended.");
                     playNextVideo();
                 };
-                
-                // Tambahkan error handler
+
                 videoEl.onerror = () => {
                     console.error('File Video Error: Gagal memuat', video.url);
-                    playNextVideo(); // Coba lewati jika error
+                    playNextVideo();
                 }
 
                 playerContainer.appendChild(videoEl);
-                
-                // Coba paksa play jika autoplay diblokir
+
                 const playPromise = videoEl.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(e => {
@@ -469,43 +414,33 @@
         }
 
 
-        // --- PERBAIKAN: LOGIKA PEMICU (TRIGGER) YANG KUAT ---
-
         let domReady = false;
         let ytApiReady = false;
-        let videoPlayerStarted = false; // Flag untuk mencegah pemutaran ganda
+        let videoPlayerStarted = false;
 
-        // PERBAIKAN: Cek dulu apakah ada video YouTube di DALAM daftar
         const hasYouTubeVideo = videoData.some(video => video.type === 'youtube');
 
         function startVideoPlayerIfReady() {
             if (videoPlayerStarted) {
-                return; // Sudah dijalankan, jangan ulangi
+                return;
             }
 
-            // Cek jika tidak ada video
             if (!videoData || videoData.length === 0) {
                 if (domReady) {
-                    // Jika DOM siap dan tidak ada video, tampilkan pesan 'Tidak Ada Video'
                     console.log("DOM ready, no videos found. Showing empty state.");
                     videoPlayerStarted = true;
-                    playCurrentVideo(); // Ini akan menjalankan logika 'empty' di dalam fungsi
+                    playCurrentVideo();
                 }
                 return;
             }
 
-            // --- LOGIKA BARU YANG SUDAH DIPERBAIKI ---
             if (!hasYouTubeVideo) {
-                // KASUS 1: HANYA FILE VIDEO
-                // Kita tidak perlu menunggu API YouTube. Cukup tunggu DOM.
                 if (domReady) {
                     console.log("DOM ready. Only file videos found. Starting player.");
                     videoPlayerStarted = true;
                     playCurrentVideo();
                 }
             } else {
-                // KASUS 2: ADA VIDEO YOUTUBE (meskipun bukan yang pertama)
-                // Kita HARUS menunggu KEDUANYA (DOM dan API) agar aman
                 if (domReady && ytApiReady) {
                     console.log("DOM and YT API ready. YouTube video(s) present. Starting player.");
                     videoPlayerStarted = true;
@@ -516,33 +451,27 @@
             }
         }
 
-        // 1. Fungsi ini SEKARANG GLOBAL dan akan dipanggil oleh API
         function onYouTubeIframeAPIReady() {
             console.log("YouTube API is ready.");
             ytApiReady = true;
-            // Coba jalankan, mungkin DOM sudah siap
             startVideoPlayerIfReady();
         }
-        
-        // 2. Panggil setup slideshow standar SETELAH DOM siap
+
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM is ready. Setting up standard slideshows.");
             domReady = true;
-            
-            /**
-             * Fungsi untuk slideshow standar (non-media)
-             */
+
             function setupJsSlideshow(containerId, slideClass, durationInSeconds) {
                 const container = document.getElementById(containerId);
-                if (!container) return; 
+                if (!container) return;
 
                 const slides = container.querySelectorAll(slideClass);
 
                 if (slides.length <= 1) {
                     if (slides.length === 1) {
-                        slides[0].style.opacity = 1; 
+                        slides[0].style.opacity = 1;
                     }
-                    return; 
+                    return;
                 }
 
                 let currentSlideIndex = 0;
@@ -555,22 +484,18 @@
                 }, durationInSeconds * 1000);
             }
 
-            // Durasi slideshow
             const animationDurations = {
                 news: 13, // 13s
                 info: 11, // 11s
                 jadwal: 12, // 12s
             };
 
-            // Terapkan logika slideshow standar (Berita, Info, Jadwal)
             setupJsSlideshow('news-slideshow-container', '.news-slide', animationDurations.news);
             setupJsSlideshow('info-slideshow-container', '.info-slide', animationDurations.info);
             setupJsSlideshow('jadwal-slideshow-container', '.jadwal-slide', animationDurations.jadwal);
 
-            // Coba jalankan, mungkin API sudah siap (atau video pertama adalah file)
             startVideoPlayerIfReady();
         });
-
     </script>
 
 </body>

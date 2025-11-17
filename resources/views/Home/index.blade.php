@@ -197,8 +197,8 @@
                     <p class="fw-semibold mb-1">Email</p>
                     <p class="text-gray-600">{{ $user->email }}</p>
 
-                    <p class="fw-semibold mb-1">Role</p>
-                    <p class="text-gray-600">{{ $user->role }}</p>
+                    {{-- <p class="fw-semibold mb-1">Role</p>
+                    <p class="text-gray-600">{{ $user->role }}</p> --}}
 
                     <p class="fw-semibold mb-1">Login Terakhir</p>
                     <p class="text-gray-600">{{ $user->last_login }}</p>
