@@ -13,7 +13,7 @@
 
                 <div class="col-12 col-md-6 order-md-1 order-last">
                     <h3>Detail Schedule</h3>
-                    <p class="text-subtitle text-muted">Lihat detail jadwal yang telah dibuat.</p>
+                    <p class="text-subtitle text-muted">Detail jadwal kuliah.</p>
                 </div>
 
                 <div class="col-12 col-md-6 order-md-2 order-first">
@@ -22,7 +22,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('schedules.index') }}">Schedules</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                            <li class="breadcrumb-item active">Detail</li>
                         </ol>
                     </nav>
                 </div>
@@ -38,44 +38,48 @@
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
-                    {{-- Judul --}}
+                    {{-- Mata Kuliah --}}
                     <div class="mb-3">
-                        <label class="form-label"><strong>Nama Schedule</strong></label>
-                        <p>{{ $schedule->title }}</p>
+                        <label class="form-label"><strong>Mata Kuliah</strong></label>
+                        <p>{{ $schedule->course->name }} ({{ $schedule->course->code }})</p>
                     </div>
 
-                    {{-- Tempat --}}
+                    {{-- Dosen --}}
                     <div class="mb-3">
-                        <label class="form-label"><strong>Tempat</strong></label>
-                        <p>{{ $schedule->place ?? '-' }}</p>
+                        <label class="form-label"><strong>Dosen</strong></label>
+                        <p>{{ $schedule->lecturer->name }}</p>
                     </div>
 
-                    {{-- Waktu Mulai --}}
+                    {{-- Ruangan --}}
                     <div class="mb-3">
-                        <label class="form-label"><strong>Waktu Mulai</strong></label>
+                        <label class="form-label"><strong>Ruangan</strong></label>
+                        <p>{{ $schedule->room->name }}</p>
+                    </div>
+
+                    {{-- Hari --}}
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Hari</strong></label>
                         <p>
-                            {{ $schedule->start_at ? \Carbon\Carbon::parse($schedule->start_at)->format('d M Y, H:i') : '-' }}
+                            @php
+                                $days = [
+                                    1 => 'Senin',
+                                    2 => 'Selasa',
+                                    3 => 'Rabu',
+                                    4 => 'Kamis',
+                                    5 => 'Jumat',
+                                    6 => 'Sabtu',
+                                    7 => 'Minggu',
+                                ];
+                            @endphp
+                            {{ $days[$schedule->day_of_week] ?? '-' }}
                         </p>
                     </div>
 
-                    {{-- Waktu Selesai --}}
+                    {{-- Waktu --}}
                     <div class="mb-3">
-                        <label class="form-label"><strong>Waktu Selesai</strong></label>
-                        <p>
-                            {{ $schedule->end_at ? \Carbon\Carbon::parse($schedule->end_at)->format('d M Y, H:i') : '-' }}
-                        </p>
-                    </div>
-
-                    {{-- Status --}}
-                    <div class="mb-3">
-                        <label class="form-label"><strong>Status</strong></label>
-                        <p>
-                            @if ($schedule->is_active)
-                                <span class="badge bg-success">Active</span>
-                            @else
-                                <span class="badge bg-secondary">Inactive</span>
-                            @endif
-                        </p>
+                        <label class="form-label"><strong>Waktu</strong></label>
+                        <p>{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
+                            - {{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}</p>
                     </div>
 
                     {{-- Created at --}}
@@ -90,7 +94,7 @@
                         <p>{{ $schedule->updated_at->format('d M Y, H:i') }}</p>
                     </div>
 
-                    {{-- Optional: created_by --}}
+                    {{-- Created By --}}
                     @if ($schedule->createdBy)
                         <div class="mb-3">
                             <label class="form-label"><strong>Dibuat oleh</strong></label>
@@ -98,9 +102,9 @@
                         </div>
                     @endif
 
-                    {{-- Tombol Aksi --}}
+                    {{-- Tombol --}}
                     <a href="{{ route('schedules.index') }}" class="btn btn-secondary me-2">
-                        <i class="bi bi-arrow-left"></i> Kembali ke Daftar
+                        <i class="bi bi-arrow-left"></i> Kembali
                     </a>
 
                     <a href="{{ route('schedules.edit', $schedule->id) }}" class="btn btn-primary">

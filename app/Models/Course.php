@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Schedule extends Model
+class Course extends Model
 {
     use SoftDeletes, LogsActivity;
 
     protected $fillable = [
-        'course_id',
-        'lecturer_id',
-        'room_id',
-        'day_of_week',
-        'start_time',
-        'end_time',
+        'code',
+        'name',
+        'sks',
+        'description',
         'created_by',
         'updated_by',
         'deleted_by',
@@ -27,13 +25,13 @@ class Schedule extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->useLogName('schedule')
+            ->useLogName('course')
             ->logOnly($this->fillable)
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(
                 fn($event) =>
-                "Data schedule berhasil " .
+                "Data course berhasil " .
                     match ($event) {
                         'created' => 'ditambahkan',
                         'updated' => 'diperbarui',
@@ -48,24 +46,15 @@ class Schedule extends Model
     {
         static::creating(fn($m) => $m->created_by ??= Auth::id());
         static::updating(fn($m) => $m->updated_by = Auth::id());
-        static::deleting(fn($m) => $m->forceFill([
-            'deleted_by' => Auth::id()
-        ])->saveQuietly());
+
+        static::deleting(function ($m) {
+            $m->forceFill(['deleted_by' => Auth::id()])->saveQuietly();
+        });
     }
 
     // Relationships
-    public function course()
+    public function schedules()
     {
-        return $this->belongsTo(Course::class);
-    }
-
-    public function lecturer()
-    {
-        return $this->belongsTo(Lecturer::class);
-    }
-
-    public function room()
-    {
-        return $this->belongsTo(Room::class);
+        return $this->hasMany(Schedule::class);
     }
 }

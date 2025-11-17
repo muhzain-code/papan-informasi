@@ -13,7 +13,7 @@
 
                 <div class="col-12 col-md-6 order-md-1 order-last">
                     <h3>Edit Jadwal</h3>
-                    <p class="text-subtitle text-muted">Perbarui jadwal kegiatan.</p>
+                    <p class="text-subtitle text-muted">Perbarui jadwal perkuliahan.</p>
                 </div>
 
                 <div class="col-12 col-md-6 order-md-2 order-first">
@@ -42,68 +42,108 @@
                         @csrf
                         @method('PUT')
 
-                        {{-- Title --}}
+                        {{-- Mata Kuliah --}}
                         <div class="mb-3">
-                            <label for="title" class="form-label">Judul Kegiatan</label>
-                            <input type="text" name="title" id="title" value="{{ old('title', $schedule->title) }}"
-                                class="form-control @error('title') is-invalid @enderror" required>
-                            @error('title')
+                            <label for="course_id" class="form-label">Mata Kuliah</label>
+                            <select name="course_id" id="course_id"
+                                class="form-select @error('course_id') is-invalid @enderror" required>
+                                <option value="">-- Pilih Mata Kuliah --</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{ $course->id }}"
+                                        {{ old('course_id', $schedule->course_id) == $course->id ? 'selected' : '' }}>
+                                        {{ $course->code }} - {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('course_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- Place --}}
+                        {{-- Dosen --}}
                         <div class="mb-3">
-                            <label for="place" class="form-label">Tempat</label>
-                            <input type="text" name="place" id="place" value="{{ old('place', $schedule->place) }}"
-                                class="form-control @error('place') is-invalid @enderror">
-                            @error('place')
+                            <label for="lecturer_id" class="form-label">Dosen Pengajar</label>
+                            <select name="lecturer_id" id="lecturer_id"
+                                class="form-select @error('lecturer_id') is-invalid @enderror" required>
+                                <option value="">-- Pilih Dosen --</option>
+                                @foreach ($lecturers as $lecturer)
+                                    <option value="{{ $lecturer->id }}"
+                                        {{ old('lecturer_id', $schedule->lecturer_id) == $lecturer->id ? 'selected' : '' }}>
+                                        {{ $lecturer->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('lecturer_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- Start At --}}
+                        {{-- Ruangan --}}
                         <div class="mb-3">
-                            <label for="start_at" class="form-label">Waktu Mulai</label>
-                            <input type="datetime-local" name="start_at" id="start_at"
-                                value="{{ old('start_at', $schedule->start_at ? \Carbon\Carbon::parse($schedule->start_at)->format('Y-m-d\TH:i') : '') }}"
-                                class="form-control @error('start_at') is-invalid @enderror">
-                            @error('start_at')
+                            <label for="room_id" class="form-label">Ruangan</label>
+                            <select name="room_id" id="room_id" class="form-select @error('room_id') is-invalid @enderror"
+                                required>
+                                <option value="">-- Pilih Ruangan --</option>
+                                @foreach ($rooms as $room)
+                                    <option value="{{ $room->id }}"
+                                        {{ old('room_id', $schedule->room_id) == $room->id ? 'selected' : '' }}>
+                                        {{ $room->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('room_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- End At --}}
+                        {{-- Hari --}}
                         <div class="mb-3">
-                            <label for="end_at" class="form-label">Waktu Selesai</label>
-                            <input type="datetime-local" name="end_at" id="end_at"
-                                value="{{ old('end_at', $schedule->end_at ? \Carbon\Carbon::parse($schedule->end_at)->format('Y-m-d\TH:i') : '') }}"
-                                class="form-control @error('end_at') is-invalid @enderror">
-                            @error('end_at')
+                            <label for="day_of_week" class="form-label">Hari</label>
+                            <select name="day_of_week" id="day_of_week"
+                                class="form-select @error('day_of_week') is-invalid @enderror" required>
+                                <option value="">-- Pilih Hari --</option>
+                                @php
+                                    $hari = [
+                                        1 => 'Senin',
+                                        2 => 'Selasa',
+                                        3 => 'Rabu',
+                                        4 => 'Kamis',
+                                        5 => 'Jumat',
+                                        6 => 'Sabtu',
+                                        7 => 'Minggu',
+                                    ];
+                                @endphp
+                                @foreach ($hari as $num => $name)
+                                    <option value="{{ $num }}"
+                                        {{ old('day_of_week', $schedule->day_of_week) == $num ? 'selected' : '' }}>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('day_of_week')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- Is Active --}}
+                        {{-- Waktu Mulai --}}
                         <div class="mb-3">
-                            <label class="form-label">Status</label>
+                            <label for="start_time" class="form-label">Waktu Mulai</label>
+                            <input type="time" name="start_time" id="start_time"
+                                class="form-control @error('start_time') is-invalid @enderror"
+                                value="{{ old('start_time', $schedule->start_time) }}" required>
+                            @error('start_time')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                            <div class="form-check form-check-inline">
-                                <input type="radio" name="is_active" id="active" value="1"
-                                    class="form-check-input @error('is_active') is-invalid @enderror"
-                                    {{ old('is_active', $schedule->is_active) == 1 ? 'checked' : '' }}>
-                                <label class="form-check-label" for="active">Active</label>
-                            </div>
-
-                            <div class="form-check form-check-inline">
-                                <input type="radio" name="is_active" id="inactive" value="0"
-                                    class="form-check-input @error('is_active') is-invalid @enderror"
-                                    {{ old('is_active', $schedule->is_active) == 0 ? 'checked' : '' }}>
-                                <label class="form-check-label" for="inactive">Inactive</label>
-                            </div>
-
-                            @error('is_active')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                        {{-- Waktu Selesai --}}
+                        <div class="mb-3">
+                            <label for="end_time" class="form-label">Waktu Selesai</label>
+                            <input type="time" name="end_time" id="end_time"
+                                class="form-control @error('end_time') is-invalid @enderror"
+                                value="{{ old('end_time', $schedule->end_time) }}" required>
+                            @error('end_time')
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 

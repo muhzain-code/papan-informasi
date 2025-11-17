@@ -8,17 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class Schedule extends Model
+class Lecturer extends Model
 {
     use SoftDeletes, LogsActivity;
 
     protected $fillable = [
-        'course_id',
-        'lecturer_id',
-        'room_id',
-        'day_of_week',
-        'start_time',
-        'end_time',
+        'name',
+        'nidn',
+        'email',
+        'phone',
         'created_by',
         'updated_by',
         'deleted_by',
@@ -27,13 +25,13 @@ class Schedule extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->useLogName('schedule')
+            ->useLogName('lecturer')
             ->logOnly($this->fillable)
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(
                 fn($event) =>
-                "Data schedule berhasil " .
+                "Data lecturer berhasil " .
                     match ($event) {
                         'created' => 'ditambahkan',
                         'updated' => 'diperbarui',
@@ -54,18 +52,8 @@ class Schedule extends Model
     }
 
     // Relationships
-    public function course()
+    public function schedules()
     {
-        return $this->belongsTo(Course::class);
-    }
-
-    public function lecturer()
-    {
-        return $this->belongsTo(Lecturer::class);
-    }
-
-    public function room()
-    {
-        return $this->belongsTo(Room::class);
+        return $this->hasMany(Schedule::class);
     }
 }

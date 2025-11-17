@@ -108,21 +108,47 @@
                                     <td>{{ $item->created_at?->format('d M Y, H:i') }}</td>
                                     <td>
                                         <div class="d-flex gap-1">
+
+                                            {{-- Tombol Publish / Draft --}}
+                                            @if ($item->status === 'draft')
+                                                {{-- Publish --}}
+                                                <form action="{{ route('announcements.publish', $item->id) }}"
+                                                    method="POST" class="d-inline form-publish">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                {{-- Kembalikan ke Draft --}}
+                                                <form action="{{ route('announcements.draft', $item->id) }}" method="POST"
+                                                    class="d-inline form-draft">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-secondary btn-sm">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+
+                                            {{-- Edit --}}
                                             <a href="{{ route('announcements.edit', $item->id) }}"
                                                 class="btn btn-warning btn-sm">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
 
-                                            <form action="{{ route('announcements.destroy', $item->id) }}"
-                                                method="POST" class="d-inline delete-form">
+                                            {{-- Delete --}}
+                                            <form action="{{ route('announcements.destroy', $item->id) }}" method="POST"
+                                                class="d-inline delete-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
+
                                         </div>
                                     </td>
+
                                 </tr>
                             @endforeach
 
@@ -142,20 +168,44 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // Publish
         document.addEventListener('submit', function(e) {
-            if (e.target.classList.contains('delete-form')) {
+            if (e.target.classList.contains('form-publish')) {
                 e.preventDefault();
 
                 let form = e.target;
 
                 Swal.fire({
-                    title: 'Hapus Pengumuman?',
-                    text: "Data pengumuman akan dihapus.",
+                    title: 'Publish Pengumuman?',
+                    text: "Pengumuman akan ditampilkan ke publik.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Publish!',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#28a745'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+
+        // Set Draft
+        document.addEventListener('submit', function(e) {
+            if (e.target.classList.contains('form-draft')) {
+                e.preventDefault();
+
+                let form = e.target;
+
+                Swal.fire({
+                    title: 'Kembalikan ke Draft?',
+                    text: "Pengumuman tidak akan tampil ke publik.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: 'Ya, Set Draft!',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#6c757d'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();

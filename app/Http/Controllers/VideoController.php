@@ -33,6 +33,7 @@ class VideoController extends Controller
     {
         return view('videos.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -46,8 +47,20 @@ class VideoController extends Controller
             'is_active'   => 'required|boolean',
         ]);
 
-        $videoPath = null;
+        // Jika YouTube → cek link dan convert
+        $youtubeUrl = null;
+        if ($request->source_type === 'youtube') {
+            $converted = $this->convertToYoutubeEmbed($request->video_url);
 
+            if (!$converted) {
+                return back()->withErrors(['video_url' => 'Link YouTube tidak valid'])->withInput();
+            }
+
+            $youtubeUrl = $converted;
+        }
+
+        // Jika File
+        $videoPath = null;
         if ($request->source_type === 'file' && $request->hasFile('video_path')) {
             $videoPath = $request->file('video_path')->store('videos', 'public');
         }
@@ -56,7 +69,7 @@ class VideoController extends Controller
             'title'       => $request->title,
             'source_type' => $request->source_type,
             'video_path'  => $videoPath,
-            'video_url'   => $request->source_type === 'youtube' ? $request->video_url : null,
+            'video_url'   => $youtubeUrl,
             'order'       => $request->order,
             'is_active'   => $request->is_active,
             'created_by'  => Auth::id(),
@@ -64,6 +77,7 @@ class VideoController extends Controller
 
         return redirect()->route('videos.index')->with('success', 'Video berhasil ditambahkan.');
     }
+
 
 
     public function show(Video $video)
@@ -90,17 +104,29 @@ class VideoController extends Controller
         ]);
 
         $videoPath = $video->video_path;
+        $youtubeUrl = null;
 
-        if ($video->source_type === 'file' && $request->source_type === 'youtube') {
+        // Jika YouTube → convert link
+        if ($request->source_type === 'youtube') {
+            $converted = $this->convertToYoutubeEmbed($request->video_url);
+
+            if (!$converted) {
+                return back()->withErrors(['video_url' => 'Link YouTube tidak valid'])->withInput();
+            }
+
+            $youtubeUrl = $converted;
+
+            // Hapus file lama jika sebelumnya file
             if ($videoPath && Storage::disk('public')->exists($videoPath)) {
                 Storage::disk('public')->delete($videoPath);
             }
-
             $videoPath = null;
         }
 
+        // Jika File
         if ($request->source_type === 'file' && $request->hasFile('video_path')) {
 
+            // Hapus file lama
             if ($videoPath && Storage::disk('public')->exists($videoPath)) {
                 Storage::disk('public')->delete($videoPath);
             }
@@ -112,7 +138,7 @@ class VideoController extends Controller
             'title'       => $request->title,
             'source_type' => $request->source_type,
             'video_path'  => $request->source_type === 'file' ? $videoPath : null,
-            'video_url'   => $request->source_type === 'youtube' ? $request->video_url : null,
+            'video_url'   => $request->source_type === 'youtube' ? $youtubeUrl : null,
             'order'       => $request->order,
             'is_active'   => $request->is_active,
             'updated_by'  => Auth::id(),
@@ -120,9 +146,6 @@ class VideoController extends Controller
 
         return redirect()->route('videos.index')->with('success', 'Video berhasil diperbarui.');
     }
-
-
-
 
     public function destroy(Video $video)
     {
@@ -135,5 +158,27 @@ class VideoController extends Controller
         $video->delete();
 
         return redirect()->route('videos.index')->with('success', 'Video berhasil dihapus.');
+    }
+
+    private function convertToYoutubeEmbed($url)
+    {
+        if (preg_match('/youtube\.com\/embed\//', $url)) {
+            return $url;
+        }
+
+        $patterns = [
+            '/youtu\.be\/([a-zA-Z0-9_-]+)/',                     // youtu.be/ID
+            '/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/',         // youtube.com/watch?v=ID
+            '/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/',          // youtube.com/shorts/ID
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url, $match)) {
+                $videoId = $match[1];
+                return "https://www.youtube.com/embed/" . $videoId;
+            }
+        }
+
+        return null; // tidak valid
     }
 }

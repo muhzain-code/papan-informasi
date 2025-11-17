@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Models\Course;
+use App\Models\Lecturer;
+use App\Models\Room;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
@@ -12,86 +14,78 @@ class ScheduleController extends Controller
     {
         $search  = $request->input('search');
         $entries = $request->input('entries', 10);
-        $schedules = Schedule::query()
-            ->when($search, function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('date', 'like', "%{$search}%");
-            })
+
+        $schedules = Schedule::with(['course', 'lecturer', 'room'])
+            ->when($search, fn($q) => $q->whereHas('course', fn($q2) => $q2->where('name', 'like', "%{$search}%"))
+                ->orWhereHas('lecturer', fn($q2) => $q2->where('name', 'like', "%{$search}%"))
+                ->orWhereHas('room', fn($q2) => $q2->where('name', 'like', "%{$search}%")))
             ->orderBy('created_at', 'desc')
             ->paginate($entries)
-            ->appends([
-                'search'  => $search,
-                'entries' => $entries,
-            ]);
+            ->appends(compact('search', 'entries'));
 
         return view('schedules.index', compact('schedules', 'search', 'entries'));
     }
 
+    public function show(Schedule $schedule)
+    {
+        $schedule->load(['course', 'lecturer', 'room']);
+
+        return view('schedules.show', compact('schedule'));
+    }
 
     public function create()
     {
-        return view('schedules.create');
+        $courses = Course::all();
+        $lecturers = Lecturer::all();
+        $rooms = Room::all();
+
+        return view('schedules.create', compact('courses', 'lecturers', 'rooms'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title'    => 'required|string|max:255',
-            'place'    => 'nullable|string|max:255',
-            'start_at' => 'nullable|date',
-            'end_at'   => 'nullable|date|after_or_equal:start_at',
-            'is_active' => 'required|boolean',
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'lecturer_id' => 'required|exists:lecturers,id',
+            'room_id' => 'required|exists:rooms,id',
+            'day_of_week' => 'required|integer|min:1|max:7',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
-        Schedule::create([
-            'title'      => $request->title,
-            'place'      => $request->place,
-            'start_at'   => $request->start_at,
-            'end_at'     => $request->end_at,
-            'is_active'  => $request->is_active,
-            'created_by' => Auth::id(),
-        ]);
+        Schedule::create($validated);
 
-        return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil dibuat.');
-    }
-
-    public function show(Schedule $schedule)
-    {
-        return view('schedules.show', compact('schedule'));
+        return redirect()->route('schedules.index')->with('success', 'Schedule berhasil dibuat.');
     }
 
     public function edit(Schedule $schedule)
     {
-        return view('schedules.edit', compact('schedule'));
+        $courses = Course::all();
+        $lecturers = Lecturer::all();
+        $rooms = Room::all();
+
+        return view('schedules.edit', compact('schedule', 'courses', 'lecturers', 'rooms'));
     }
 
     public function update(Request $request, Schedule $schedule)
     {
-        $request->validate([
-            'title'    => 'required|string|max:255',
-            'place'    => 'nullable|string|max:255',
-            'start_at' => 'nullable|date',
-            'end_at'   => 'nullable|date|after_or_equal:start_at',
-            'is_active' => 'required|boolean',
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'lecturer_id' => 'required|exists:lecturers,id',
+            'room_id' => 'required|exists:rooms,id',
+            'day_of_week' => 'required|integer|min:1|max:7',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
         ]);
 
-        $schedule->update([
-            'title'      => $request->title,
-            'place'      => $request->place,
-            'start_at'   => $request->start_at,
-            'end_at'     => $request->end_at,
-            'is_active'  => $request->is_active,
-            'updated_by' => Auth::id(),
-        ]);
+        $schedule->update($validated);
 
-        return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil diperbarui.');
+        return redirect()->route('schedules.index')->with('success', 'Schedule berhasil diperbarui.');
     }
 
     public function destroy(Schedule $schedule)
     {
-        $schedule->update(['deleted_by' => Auth::id()]);
         $schedule->delete();
-
-        return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil dihapus.');
+        return redirect()->route('schedules.index')->with('success', 'Schedule berhasil dihapus.');
     }
 }

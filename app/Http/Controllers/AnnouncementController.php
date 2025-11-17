@@ -82,4 +82,22 @@ class AnnouncementController extends Controller
 
         return redirect()->route('announcements.index')->with('success', 'Pengumuman berhasil dihapus.');
     }
+
+    public function publish(Announcement $announcement)
+    {
+        $announcement->update([
+            'status' => 'published',
+        ]);
+
+        return back()->with('success', 'Pengumuman berhasil dipublish.');
+    }
+
+    public function draft(Announcement $announcement)
+    {
+        $announcement->update([
+            'status' => 'draft',
+        ]);
+
+        return back()->with('success', 'Pengumuman berhasil dikembalikan ke draft.');
+    }
 }

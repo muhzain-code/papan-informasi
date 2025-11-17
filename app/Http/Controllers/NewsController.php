@@ -13,15 +13,15 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $search  = $request->input('search');
-        $entries = $request->input('entries', 10); 
+        $entries = $request->input('entries', 10);
 
         $news = News::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%");
             })
-            ->orderByRaw("published_at IS NULL ASC") 
-            ->orderBy('published_at', 'desc')        
-            ->orderBy('created_at', 'desc')         
+            ->orderByRaw("published_at IS NULL ASC")
+            ->orderBy('published_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate($entries)
             ->appends([
                 'search'  => $search,
@@ -75,10 +75,11 @@ class NewsController extends Controller
     public function update(Request $request, News $news)
     {
         $request->validate([
-            'title'    => 'required|string|max:255',
-            'content'  => 'required',
-            'thumbnail' => 'nullable|image|max:2048',
-            'status'   => 'required|in:draft,published',
+            'title'        => 'required|string|max:255',
+            'content'      => 'required',
+            'thumbnail'    => 'nullable|image|max:2048',
+            'status'       => 'required|in:draft,published',
+            'published_at' => 'nullable|date',
         ]);
 
         $thumbnail = $news->thumbnail;
@@ -90,17 +91,32 @@ class NewsController extends Controller
             $thumbnail = $request->file('thumbnail')->store('news', 'public');
         }
 
+        $publishedAt = $news->published_at; 
+
+        if ($request->status === 'published') {
+            if ($request->filled('published_at')) {
+                $publishedAt = $request->published_at;  
+            } elseif (! $news->published_at) {
+                $publishedAt = now();  
+            }
+        } else {
+            if ($request->filled('published_at')) {
+                $publishedAt = $request->published_at;
+            }
+        }
+
         $news->update([
-            'title'       => $request->title,
-            'content'     => $request->content,
-            'thumbnail'   => $thumbnail,
-            'status'      => $request->status,
-            'published_at' => $request->status === 'published' ? now() : $news->published_at,
-            'updated_by'  => Auth::id(),
+            'title'        => $request->title,
+            'content'      => $request->content,
+            'thumbnail'    => $thumbnail,
+            'status'       => $request->status,
+            'published_at' => $publishedAt,
+            'updated_by'   => Auth::id(),
         ]);
 
         return redirect()->route('news.index')->with('success', 'Berita berhasil diperbarui.');
     }
+
 
     public function destroy(News $news)
     {

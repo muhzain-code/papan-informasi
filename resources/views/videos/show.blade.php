@@ -44,13 +44,6 @@
                         <p>{{ $video->title }}</p>
                     </div>
 
-                    {{-- Deskripsi --}}
-                    <div class="mb-3">
-                        <label class="form-label"><strong>Deskripsi</strong></label>
-                        <p>{{ $video->description ?? '-' }}</p>
-                    </div>
-
-                    {{-- Video Player --}}
                     {{-- Video Player --}}
                     <div class="mb-4">
                         <label class="form-label"><strong>Video</strong></label>
@@ -62,28 +55,17 @@
                                 Browser Anda tidak mendukung pemutar video.
                             </video>
 
-                            {{-- YOUTUBE VIDEO --}}
+                            {{-- YOUTUBE (SUDAH EMBED) --}}
                         @elseif ($video->source_type === 'youtube' && $video->video_url)
-                            @php
-                                // Ambil kode video YouTube dengan aman
-                                preg_match('/(?:v=|youtu\.be\/)([^&]+)/', $video->video_url, $yt);
-                            @endphp
-
-                            @if (isset($yt[1]))
-                                <iframe width="100%" height="400"
-                                    src="https://www.youtube.com/embed/{{ $yt[1] }}" class="rounded shadow-sm"
-                                    allowfullscreen>
-                                </iframe>
-                            @else
-                                <p class="text-danger">URL YouTube tidak valid.</p>
-                            @endif
+                            <iframe width="100%" height="400" src="{{ $video->video_url }}" class="rounded shadow-sm"
+                                allowfullscreen>
+                            </iframe>
 
                             {{-- TIDAK ADA VIDEO --}}
                         @else
                             <p class="text-danger">Video tidak tersedia.</p>
                         @endif
                     </div>
-
 
 
                     {{-- Status --}}

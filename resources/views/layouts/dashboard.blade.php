@@ -98,6 +98,36 @@
                             </a>
                         </li>
 
+                        {{-- DATA KAMPUS --}}
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'courses.') ? 'active' : '' }}">
+                            <a href="{{ route('courses.index') }}" class="sidebar-link">
+                                <i class="bi bi-journal-bookmark"></i>
+                                <span>Mata Kuliah</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'rooms.') ? 'active' : '' }}">
+                            <a href="{{ route('rooms.index') }}" class="sidebar-link">
+                                <i class="bi bi-door-closed"></i>
+                                <span>Ruangan</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'lecturers.') ? 'active' : '' }}">
+                            <a href="{{ route('lecturers.index') }}" class="sidebar-link">
+                                <i class="bi bi-person-badge"></i>
+                                <span>Dosen</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'schedules.') ? 'active' : '' }}">
+                            <a href="{{ route('schedules.index') }}" class="sidebar-link">
+                                <i class="bi bi-calendar-week"></i>
+                                <span>Jadwal</span>
+                            </a>
+                        </li>
+
+                        {{-- KONTEN --}}
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'news.') ? 'active' : '' }}">
                             <a href="{{ route('news.index') }}" class="sidebar-link">
                                 <i class="bi bi-newspaper"></i>
@@ -105,73 +135,65 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'schedules.') ? 'active' : '' }}">
-                            <a href="{{ route('schedules.index') }}" class="sidebar-link">
-                                <i class="bi bi-sliders"></i>
-                                <span>Jadwal</span>
-                            </a>
-                        </li>
-
-                        <li
+                        {{-- <li
                             class="sidebar-item {{ Str::startsWith($currentRoute, 'announcements.') ? 'active' : '' }}">
                             <a href="{{ route('announcements.index') }}" class="sidebar-link">
-                                <i class="bi bi-calendar-event"></i>
+                                <i class="bi bi-megaphone"></i>
                                 <span>Pengumuman</span>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'infos.') ? 'active' : '' }}">
                             <a href="{{ route('infos.index') }}" class="sidebar-link">
-                                <i class="bi bi-file-earmark-text"></i>
+                                <i class="bi bi-info-circle"></i>
                                 <span>Info</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'videos.') ? 'active' : '' }}">
                             <a href="{{ route('videos.index') }}" class="sidebar-link">
-                                <i class="bi bi-sliders"></i>
+                                <i class="bi bi-play-btn"></i>
                                 <span>Video</span>
                             </a>
                         </li>
 
                         <li
-                            class="sidebar-item has-sub {{ Str::startsWith($currentRoute, 'activity.index') || Str::startsWith($currentRoute, 'register') ? 'active' : '' }}">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
-                                <span>Auth</span>
+                            class="sidebar-item {{ Str::startsWith($currentRoute, 'announcements.') ? 'active' : '' }}">
+                            <a href="{{ route('announcements.index') }}" class="sidebar-link">
+                                <i class="bi bi-megaphone"></i>
+                                <span>Pengumuman</span>
                             </a>
-
-                            <ul
-                                class="submenu {{ Str::startsWith($currentRoute, 'activity.index') || Str::startsWith($currentRoute, 'register') ? 'active' : '' }}">
-                                <li
-                                    class="submenu-item {{ Str::startsWith($currentRoute, 'activity.index') ? 'active' : '' }}">
-                                    <a href="{{ route('activity.index') }}" class="submenu-link">
-                                        <i class="bi bi-person-lines-fill"></i> <!-- Icon diubah agar beda -->
-                                        <span>Activity</span>
-                                    </a>
-                                </li>
-
-                                <li
-                                    class="submenu-item {{ Str::startsWith($currentRoute, 'register') ? 'active' : '' }}">
-                                    <a href="{{ route('register') }}" class="submenu-link">
-                                        <i class="bi bi-person-plus"></i>
-                                        <span>Register</span>
-                                    </a>
-                                </li>
-
-                                <li class="submenu-item">
-                                    <a href="{{ route('logout') }}" class="submenu-link"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="bi bi-box-arrow-right"></i>
-                                        <span>Logout</span>
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        style="display: none;">
-                                        @csrf
-                                    </form>
-                                </li>
-                            </ul>
                         </li>
+
+                        {{-- SISTEM --}}
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'users.') ? 'active' : '' }}">
+                            <a href="{{ route('users.index') }}" class="sidebar-link">
+                                <i class="bi bi-people"></i>
+                                <span>Pengguna</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'activity.') ? 'active' : '' }}">
+                            <a href="{{ route('activity.index') }}" class="sidebar-link">
+                                <i class="bi bi-graph-up"></i>
+                                <span>Aktifitas</span>
+                            </a>
+                        </li>
+
+                        {{-- LOGOUT --}}
+                        <li class="sidebar-item">
+                            <a href="{{ route('logout') }}" class="sidebar-link"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+
+
                     </ul>
                 </div>
             </div>

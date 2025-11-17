@@ -4,11 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnnouncementController;
@@ -34,26 +38,28 @@ Route::prefix('admin')
         Route::get('/', [DashboardController::class, 'index'])->name('index');
 
         Route::resource('news', NewsController::class);
-         Route::post('news/{news}/publish', [NewsController::class, 'publish'])->name('news.publish');
+        Route::post('news/{news}/publish', [NewsController::class, 'publish'])->name('news.publish');
         Route::post('news/{news}/draft', [NewsController::class, 'draft'])->name('news.draft');
         Route::resource('announcements', AnnouncementController::class);
+        Route::post('/announcements/{announcement}/publish', [AnnouncementController::class, 'publish'])
+            ->name('announcements.publish');
+
+        Route::post('/announcements/{announcement}/draft', [AnnouncementController::class, 'draft'])
+            ->name('announcements.draft');
+
         Route::resource('infos', InfoController::class);
         Route::resource('videos', VideoController::class);
         Route::resource('schedules', ScheduleController::class);
+        Route::Resource('courses', CourseController::class);
+        Route::Resource('rooms', RoomController::class);
+        Route::Resource('lecturers', LecturerController::class);
+
+        Route::resource('users', UserController::class);
 
         //activity
         Route::get('/activity', [ActivityController::class, 'index'])->name('activity.index');
         Route::get('/activity-log/{id}', [ActivityController::class, 'show'])->name('activity.show');
     });
 
-// ========== FRONTEND ==========
-// Route::get('/', [HomeController::class, 'index'])->name('home');
-
-// Route::get('berita', [BlogController::class, 'index'])->name('blog.index');
-// Route::get('berita/{slug}', [BlogController::class, 'show'])->name('blog.show');
-
-// Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
-// Route::get('agenda/{slug}', [AgendaController::class, 'show'])->name('agenda.show');
-
-// Route::view('tentang', 'frontend.about.about')->name('about');
-// Route::view('kontak', 'frontend.contact.contact')->name('contact');
+// frontend
+Route::get('/', [HomeController::class, 'index'])->name('home');
