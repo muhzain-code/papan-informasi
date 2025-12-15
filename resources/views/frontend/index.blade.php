@@ -193,10 +193,28 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
 
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: clamp(0.3rem, 0.5vw, 0.5rem);
+        }
+
         .schedule-time {
             font-size: clamp(0.7rem, 1.5vmin, 1.1rem) !important;
             line-height: 1.3;
             flex-shrink: 0;
+        }
+
+        .schedule-prodi {
+            font-size: clamp(0.55rem, 1.1vmin, 0.8rem) !important;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: clamp(0.1rem, 0.2vh, 0.15rem) clamp(0.3rem, 0.5vw, 0.4rem);
+            border-radius: clamp(0.2rem, 0.4vmin, 0.3rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .schedule-course {
@@ -595,12 +613,14 @@
             ->whereNotNull()
             ->values();
 
-        // Prepare schedule data for JavaScript
-        $jsScheduleData = $schedules->map(function ($schedule) {
+        // Prepare schedule data for JavaScript with short prodi code
+        $prodiCodes = ['TI', 'TE', 'SI', 'MJ', 'AK', 'HK', 'MI', 'TK'];
+        $jsScheduleData = $schedules->map(function ($schedule, $index) use ($prodiCodes) {
             return [
                 'time' => ($schedule->start_time ? \Carbon\Carbon::parse($schedule->start_time)->format('H:i') : '-') . 
                           ($schedule->end_time ? ' - ' . \Carbon\Carbon::parse($schedule->end_time)->format('H:i') : ''),
                 'course' => $schedule->course->name ?? 'N/A',
+                'prodi' => $prodiCodes[$index % count($prodiCodes)],
                 'lecturer' => $schedule->lecturer->name ?? 'Dosen tidak diatur',
                 'room' => $schedule->room->name ?? 'N/A',
             ];
@@ -908,7 +928,10 @@
                                 <div class="grid h-full" style="grid-template-columns: repeat(${grid.cols}, 1fr); grid-template-rows: repeat(${grid.rows}, 1fr); gap: clamp(0.4rem, 0.8vh, 0.7rem);">
                                     ${chunk.map(schedule => `
                                         <div class="schedule-card bg-slate-700/60 backdrop-blur-sm border-2 border-slate-600 hover:border-amber-400/50">
-                                            <p class="schedule-time font-bold text-amber-400">${schedule.time}</p>
+                                            <div class="schedule-header">
+                                                <span class="schedule-time font-bold text-amber-400">${schedule.time}</span>
+                                                <span class="schedule-prodi">${schedule.prodi}</span>
+                                            </div>
                                             <h3 class="schedule-course font-black text-white">${schedule.course}</h3>
                                             <p class="schedule-lecturer text-slate-300">${schedule.lecturer}</p>
                                             <p class="schedule-room text-amber-300 font-bold">${schedule.room}</p>
