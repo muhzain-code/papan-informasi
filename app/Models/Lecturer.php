@@ -56,4 +56,9 @@ class Lecturer extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

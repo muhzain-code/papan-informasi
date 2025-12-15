@@ -20,17 +20,14 @@ use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\AgendaController;
 
-// ========== AUTH ==========
 require __DIR__ . '/auth.php';
 
-// ========== PROFILE (protected) ==========
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ========== ADMIN AREA (protected) ==========
 Route::prefix('admin')
     ->middleware('auth')
     ->group(function () {
@@ -56,10 +53,9 @@ Route::prefix('admin')
 
         Route::resource('users', UserController::class);
 
-        //activity
+        
         Route::get('/activity', [ActivityController::class, 'index'])->name('activity.index');
         Route::get('/activity-log/{id}', [ActivityController::class, 'show'])->name('activity.show');
     });
 
-// frontend
 Route::get('/', [HomeController::class, 'index'])->name('home');

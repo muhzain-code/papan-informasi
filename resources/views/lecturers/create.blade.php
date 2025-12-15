@@ -39,8 +39,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Dosen <span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name"
-                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                required>
+                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
 
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -49,7 +48,7 @@
 
                         {{-- NIDN --}}
                         <div class="mb-3">
-                            <label for="nidn" class="form-label">NIDN (Opsional)</label>
+                            <label for="nidn" class="form-label">NIDN</label>
                             <input type="text" name="nidn" id="nidn"
                                 class="form-control @error('nidn') is-invalid @enderror" value="{{ old('nidn') }}">
 

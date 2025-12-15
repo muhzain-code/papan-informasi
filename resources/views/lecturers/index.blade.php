@@ -110,6 +110,10 @@
                                     <td>
                                         <div class="d-flex gap-1">
 
+                                            <a href="{{ route('lecturers.show', $item->id) }}" class="btn btn-info btn-sm">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
                                             {{-- Edit --}}
                                             <a href="{{ route('lecturers.edit', $item->id) }}"
                                                 class="btn btn-warning btn-sm">
