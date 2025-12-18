@@ -299,11 +299,14 @@
 
         .chat-bubble .message {
             color: #e2e8f0;
-            line-height: 1.3;
+            line-height: 1.4;
             font-size: clamp(0.65rem, 1.3vmin, 0.9rem);
-            white-space: nowrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            word-break: break-word;
         }
 
         /* Info meta styling */
@@ -351,14 +354,12 @@
 
         #video-player-container video {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
             object-fit: cover !important;
+            object-position: center center;
         }
 
         #video-player-container iframe {
@@ -626,14 +627,13 @@
             ];
         })->values();
 
-        // Prepare notification data (using infos) with full details
-        $jsNotificationData = $infos->map(function ($info) {
+        // Prepare notification data using notifications table (filtered by today's date)
+        $jsNotificationData = $notifications->map(function ($notification) {
             return [
-                'sender' => $info->user->name ?? 'Admin',
-                'title' => $info->title,
-                'message' => $info->message,
-                'date' => $info->created_at ? $info->created_at->format('d M Y') : '-',
-                'time' => $info->created_at ? $info->created_at->format('H:i') : '-',
+                'sender' => $notification->creator->name ?? 'Admin',
+                'message' => $notification->message,
+                'date' => $notification->date ? $notification->date->format('d M Y') : '-',
+                'time' => $notification->date ? $notification->date->format('H:i') : '-',
             ];
         })->values();
     @endphp
@@ -955,13 +955,14 @@
 
             function calculateNotificationCount() {
                 const wrapper = document.getElementById('notification-wrapper');
-                if (!wrapper) return 2;
+                if (!wrapper) return 3;
                 
                 const wrapperHeight = wrapper.clientHeight;
-                // Use smaller estimate (~55px) to ensure all fit perfectly
-                // Minimum 2, maximum 5
-                const estimated = Math.floor(wrapperHeight / 55);
-                return Math.max(2, Math.min(estimated, 5));
+                // Base: 3 notifications at 100% screen (1080p)
+                // Show 4 if screen is larger and can fit more
+                // Each notification bubble ~80px with 3-line message
+                const estimated = Math.floor(wrapperHeight / 80);
+                return Math.max(3, Math.min(estimated, 4));
             }
 
             function renderNotifications() {

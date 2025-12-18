@@ -68,7 +68,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        
+
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('code', 20)->unique();
@@ -137,6 +137,15 @@ return new class extends Migration
             $table->foreign('room_id')->references('id')->on('rooms')->cascadeOnDelete();
 
             $table->index(['room_id', 'day_of_week', 'start_time', 'end_time'], 'room_schedule_idx');
+        });
+
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->id();
+            $table->text('message');
+            $table->datetime('date');
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

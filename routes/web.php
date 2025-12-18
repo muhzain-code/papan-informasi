@@ -16,6 +16,7 @@ use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\AgendaController;
@@ -52,8 +53,9 @@ Route::prefix('admin')
         Route::Resource('lecturers', LecturerController::class);
 
         Route::resource('users', UserController::class);
+        Route::resource('notifications', NotificationController::class);
 
-        
+
         Route::get('/activity', [ActivityController::class, 'index'])->name('activity.index');
         Route::get('/activity-log/{id}', [ActivityController::class, 'show'])->name('activity.show');
     });

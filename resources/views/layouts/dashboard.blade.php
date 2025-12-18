@@ -36,8 +36,8 @@
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo">
-                            <a href="index.html"><img src="{{ asset('mazer/dist/assets/compiled/svg/logo.svg') }}"
-                                    alt="Logo" srcset=""></a>
+                            <a href=""><img src="{{ asset('img/ft2.png') }}"
+                                    alt="Logo" style="width: 150px; height: auto;"></a>
                         </div>
                         <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -162,6 +162,14 @@
                             <a href="{{ route('announcements.index') }}" class="sidebar-link">
                                 <i class="bi bi-megaphone"></i>
                                 <span>Pengumuman</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item {{ Str::startsWith($currentRoute, 'notifications.') ? 'active' : '' }}">
+                            <a href="{{ route('notifications.index') }}" class="sidebar-link">
+                                <i class="bi bi-bell"></i>
+                                <span>Notifikasi</span>
                             </a>
                         </li>
 

@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\Video;
 use App\Models\Schedule;
 use App\Models\Announcement;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -51,6 +52,12 @@ class HomeController extends Controller
                 'end_time'
             ]);
 
+        // Get notifications for today
+        $todayDate = now('Asia/Jakarta')->toDateString();
+        $notifications = Notification::with('creator:id,name')
+            ->whereDate('date', $todayDate)
+            ->orderBy('date', 'desc')
+            ->get(['id', 'message', 'date', 'created_by']);
 
         return view('frontend.index', [
             'news' => $news,
@@ -58,6 +65,7 @@ class HomeController extends Controller
             'videos' => $videos,
             'schedules' => $schedules,
             'announcements' => $announcements,
+            'notifications' => $notifications,
         ]);
     }
 }
