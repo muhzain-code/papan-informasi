@@ -50,9 +50,9 @@
                     <div class="d-flex justify-content-between flex-wrap mb-3 mt-3">
 
                         {{-- Entries --}}
-                        <form method="GET" class="d-flex align-items-center">
+                        <form method="GET" class="d-flex align-items-center ajax-form">
                             <label class="me-2">Show</label>
-                            <select name="entries" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                            <select name="entries" class="form-select form-select-sm w-auto">
                                 <option value="10" {{ $entries == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ $entries == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ $entries == 50 ? 'selected' : '' }}>50</option>
@@ -66,8 +66,8 @@
                         </form>
 
                         {{-- Source Type Filter --}}
-                        <form method="GET" class="d-flex align-items-center">
-                            <select name="source_type" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+                        <form method="GET" class="d-flex align-items-center ajax-form">
+                            <select name="source_type" class="form-select form-select-sm w-auto">
                                 <option value="">Semua Sumber</option>
                                 <option value="file" {{ $sourceType == 'file' ? 'selected' : '' }}>File</option>
                                 <option value="youtube" {{ $sourceType == 'youtube' ? 'selected' : '' }}>YouTube</option>
@@ -78,8 +78,8 @@
                         </form>
 
                         {{-- Status Filter --}}
-                        <form method="GET" class="d-flex align-items-center">
-                            <select name="is_active" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+                        <form method="GET" class="d-flex align-items-center ajax-form">
+                            <select name="is_active" class="form-select form-select-sm w-auto">
                                 <option value="">Semua Status</option>
                                 <option value="1" {{ $isActive === '1' ? 'selected' : '' }}>Aktif</option>
                                 <option value="0" {{ $isActive === '0' ? 'selected' : '' }}>Nonaktif</option>
@@ -90,7 +90,7 @@
                         </form>
 
                         {{-- Search --}}
-                        <form method="GET" class="d-flex">
+                        <form method="GET" class="d-flex ajax-form">
                             <input type="text" name="search" value="{{ $search }}"
                                 class="form-control form-control-sm" placeholder="Cari judul...">
                             <input type="hidden" name="entries" value="{{ $entries }}">
@@ -100,6 +100,7 @@
                         </form>
                     </div>
 
+                    <div id="table-container">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -182,10 +183,8 @@
                         </tbody>
                     </table>
 
-                    <div class="mt-3">
-                        {{ $videos->links('pagination::bootstrap-5') }}
+                        </div>
                     </div>
-
                 </div>
             </div>
         </section>

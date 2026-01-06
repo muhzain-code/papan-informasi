@@ -54,9 +54,9 @@
                     <div class="d-flex justify-content-between flex-wrap mb-4">
 
                         {{-- Entries --}}
-                        <form method="GET" class="d-flex align-items-center">
+                        <form method="GET" class="d-flex align-items-center ajax-form">
                             <label class="me-2">Show</label>
-                            <select name="entries" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+                            <select name="entries" class="form-select form-select-sm w-auto">
                                 <option value="10" {{ $entries == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ $entries == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ $entries == 50 ? 'selected' : '' }}>50</option>
@@ -68,7 +68,7 @@
                         </form>
 
                         {{-- Search --}}
-                        <form method="GET" class="d-flex">
+                        <form method="GET" class="d-flex ajax-form">
                             <input type="text" name="search" value="{{ $search }}"
                                 class="form-control form-control-sm" placeholder="Cari nama/email...">
 
@@ -78,6 +78,7 @@
                         </form>
                     </div>
 
+                    <div id="table-container">
                     {{-- TABLE USERS --}}
                     <table class="table table-striped">
                         <thead>
@@ -127,11 +128,8 @@
                         </tbody>
                     </table>
 
-                    {{-- Pagination --}}
-                    <div class="mt-3">
-                        {{ $users->links('pagination::bootstrap-5') }}
+                        </div>
                     </div>
-
                 </div>
             </div>
         </section>

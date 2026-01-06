@@ -249,6 +249,7 @@
         })
     </script>
 
+    <script src="{{ asset('js/ajax-filter.js') }}"></script>
 </body>
 
 </html>

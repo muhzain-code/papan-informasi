@@ -119,7 +119,7 @@
                     </div>
 
                     {{-- Filters (Layout Baru: Search di atas, Dropdown di bawah) --}}
-                    <form method="GET" class="mb-4">
+                    <form method="GET" class="mb-4 ajax-form">
                         {{-- Baris 1: Pencarian --}}
                         <div class="row g-2 mb-2">
                             <div class="col-12 col-md-5">
@@ -140,7 +140,7 @@
                         {{-- Baris 2: Dropdown Filter --}}
                         <div class="row g-2">
                             <div class="col-6 col-md-2">
-                                <select name="entries" onchange="this.form.submit()" class="form-select form-select-sm">
+                                <select name="entries" class="form-select form-select-sm">
                                     <option value="15" {{ $entries == 15 ? 'selected' : '' }}>15 Baris</option>
                                     <option value="25" {{ $entries == 25 ? 'selected' : '' }}>25 Baris</option>
                                     <option value="50" {{ $entries == 50 ? 'selected' : '' }}>50 Baris</option>
@@ -149,7 +149,7 @@
                             </div>
 
                             <div class="col-6 col-md-2">
-                                <select name="hari" onchange="this.form.submit()" class="form-select form-select-sm">
+                                <select name="hari" class="form-select form-select-sm">
                                     <option value="">Semua Hari</option>
                                     @foreach ($hariList as $h)
                                         <option value="{{ $h }}" {{ $hari == $h ? 'selected' : '' }}>
@@ -160,7 +160,7 @@
                             </div>
 
                             <div class="col-6 col-md-3">
-                                <select name="fakultas" onchange="this.form.submit()" class="form-select form-select-sm">
+                                <select name="fakultas" class="form-select form-select-sm">
                                     <option value="">Semua Fakultas</option>
                                     @foreach ($fakultasList as $fak)
                                         <option value="{{ $fak->api_id }}" {{ $fakultas == $fak->api_id ? 'selected' : '' }}>
@@ -171,7 +171,7 @@
                             </div>
 
                             <div class="col-6 col-md-3">
-                                <select name="prodi" onchange="this.form.submit()" class="form-select form-select-sm">
+                                <select name="prodi" class="form-select form-select-sm">
                                     <option value="">Semua Prodi</option>
                                     @foreach ($prodiList as $p)
                                         <option value="{{ $p->api_id }}" {{ $prodi == $p->api_id ? 'selected' : '' }}>
@@ -183,7 +183,7 @@
 
                             @if ($semesterList->isNotEmpty())
                                 <div class="col-6 col-md-2">
-                                    <select name="semester" onchange="this.form.submit()" class="form-select form-select-sm">
+                                    <select name="semester" class="form-select form-select-sm">
                                         <option value="">Semua Smt</option>
                                         @foreach ($semesterList as $smt)
                                             <option value="{{ $smt }}" {{ $semester == $smt ? 'selected' : '' }}>
@@ -196,7 +196,8 @@
                         </div>
                     </form>
 
-                    {{-- Table (TIDAK DISENTUH SAMA SEKALI) --}}
+                    <div id="table-container">
+                        {{-- Table (TIDAK DISENTUH SAMA SEKALI) --}}
                     <div class="table-responsive">
                         <table class="table table-striped table-sm">
                             <thead>
@@ -256,8 +257,8 @@
                     {{-- Pagination --}}
                     <div class="mt-3">
                         {{ $jadwal->links('pagination::bootstrap-5') }}
+                        </div>
                     </div>
-
                 </div>
             </div>
         </section>

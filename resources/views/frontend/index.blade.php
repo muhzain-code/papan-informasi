@@ -761,7 +761,7 @@
                 videoEl.className = 'w-full h-full object-cover';
                 videoEl.src = video.url;
                 videoEl.controls = true;
-                videoEl.muted = true;
+                videoEl.muted = false;
                 videoEl.playsInline = true;
 
                 videoEl.onended = () => {
@@ -779,7 +779,9 @@
                 const playPromise = videoEl.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(e => {
-                        console.warn("Autoplay file video ditolak, video akan diam:", e);
+                        console.warn("Autoplay file video ditolak, mencoba putar tanpa suara:", e);
+                        videoEl.muted = true;
+                        videoEl.play();
                     });
                 }
             }
