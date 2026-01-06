@@ -60,8 +60,33 @@
                             </select>
                             <span class="ms-2">entries</span>
 
-                            {{-- Keep search --}}
                             <input type="hidden" name="search" value="{{ $search }}">
+                            <input type="hidden" name="source_type" value="{{ $sourceType }}">
+                            <input type="hidden" name="is_active" value="{{ $isActive }}">
+                        </form>
+
+                        {{-- Source Type Filter --}}
+                        <form method="GET" class="d-flex align-items-center">
+                            <select name="source_type" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+                                <option value="">Semua Sumber</option>
+                                <option value="file" {{ $sourceType == 'file' ? 'selected' : '' }}>File</option>
+                                <option value="youtube" {{ $sourceType == 'youtube' ? 'selected' : '' }}>YouTube</option>
+                            </select>
+                            <input type="hidden" name="entries" value="{{ $entries }}">
+                            <input type="hidden" name="search" value="{{ $search }}">
+                            <input type="hidden" name="is_active" value="{{ $isActive }}">
+                        </form>
+
+                        {{-- Status Filter --}}
+                        <form method="GET" class="d-flex align-items-center">
+                            <select name="is_active" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+                                <option value="">Semua Status</option>
+                                <option value="1" {{ $isActive === '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ $isActive === '0' ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
+                            <input type="hidden" name="entries" value="{{ $entries }}">
+                            <input type="hidden" name="search" value="{{ $search }}">
+                            <input type="hidden" name="source_type" value="{{ $sourceType }}">
                         </form>
 
                         {{-- Search --}}
@@ -69,6 +94,8 @@
                             <input type="text" name="search" value="{{ $search }}"
                                 class="form-control form-control-sm" placeholder="Cari judul...">
                             <input type="hidden" name="entries" value="{{ $entries }}">
+                            <input type="hidden" name="source_type" value="{{ $sourceType }}">
+                            <input type="hidden" name="is_active" value="{{ $isActive }}">
                             <button class="btn btn-primary btn-sm ms-2">Search</button>
                         </form>
                     </div>

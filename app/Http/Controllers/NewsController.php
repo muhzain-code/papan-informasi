@@ -14,10 +14,14 @@ class NewsController extends Controller
     {
         $search  = $request->input('search');
         $entries = $request->input('entries', 10);
+        $status  = $request->input('status');
 
         $news = News::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%");
+            })
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
             })
             ->orderByRaw("published_at IS NULL ASC")
             ->orderBy('published_at', 'desc')
@@ -25,10 +29,11 @@ class NewsController extends Controller
             ->paginate($entries)
             ->appends([
                 'search'  => $search,
-                'entries' => $entries
+                'entries' => $entries,
+                'status'  => $status,
             ]);
 
-        return view('news.index', compact('news', 'search', 'entries'));
+        return view('news.index', compact('news', 'search', 'entries', 'status'));
     }
 
     public function create()

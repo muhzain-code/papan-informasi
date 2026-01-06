@@ -83,14 +83,6 @@
                             $currentRoute = Route::currentRouteName();
                         @endphp
 
-                        <!-- Perbaikan: Penambahan Tombol Lihat Website -->
-                        {{-- <li class="sidebar-item">
-                        <a href="{{ url('/') }}" target="_blank" class="sidebar-link">
-                            <i class="bi bi-box-arrow-up-right"></i>
-                            <span>Lihat Website</span>
-                        </a>
-                    </li> --}}
-
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'index') ? 'active' : '' }}">
                             <a href="{{ route('index') }}" class="sidebar-link">
                                 <i class="bi bi-speedometer2"></i>
@@ -98,32 +90,11 @@
                             </a>
                         </li>
 
-                        {{-- DATA KAMPUS --}}
-                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'courses.') ? 'active' : '' }}">
-                            <a href="{{ route('courses.index') }}" class="sidebar-link">
-                                <i class="bi bi-journal-bookmark"></i>
-                                <span>Mata Kuliah</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'rooms.') ? 'active' : '' }}">
-                            <a href="{{ route('rooms.index') }}" class="sidebar-link">
-                                <i class="bi bi-door-closed"></i>
-                                <span>Ruangan</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'lecturers.') ? 'active' : '' }}">
-                            <a href="{{ route('lecturers.index') }}" class="sidebar-link">
-                                <i class="bi bi-person-badge"></i>
-                                <span>Dosen</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'schedules.') ? 'active' : '' }}">
-                            <a href="{{ route('schedules.index') }}" class="sidebar-link">
+                        {{-- JADWAL KULIAH --}}
+                        <li class="sidebar-item {{ Str::startsWith($currentRoute, 'jadwal.') ? 'active' : '' }}">
+                            <a href="{{ route('jadwal.index') }}" class="sidebar-link">
                                 <i class="bi bi-calendar-week"></i>
-                                <span>Jadwal</span>
+                                <span>Jadwal Kuliah</span>
                             </a>
                         </li>
 
@@ -134,14 +105,6 @@
                                 <span>Berita</span>
                             </a>
                         </li>
-
-                        {{-- <li
-                            class="sidebar-item {{ Str::startsWith($currentRoute, 'announcements.') ? 'active' : '' }}">
-                            <a href="{{ route('announcements.index') }}" class="sidebar-link">
-                                <i class="bi bi-megaphone"></i>
-                                <span>Pengumuman</span>
-                            </a>
-                        </li> --}}
 
                         <li class="sidebar-item {{ Str::startsWith($currentRoute, 'infos.') ? 'active' : '' }}">
                             <a href="{{ route('infos.index') }}" class="sidebar-link">

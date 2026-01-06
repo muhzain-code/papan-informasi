@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'unuja' => [
+        'url' => env('UNUJA_API_URL', 'https://v3-api.unuja.ac.id'),
+        'username' => env('UNUJA_API_USERNAME'),
+        'password' => env('UNUJA_API_PASSWORD'),
+    ],
+
 ];

@@ -33,12 +33,11 @@ class AuthenticatedSessionController extends Controller
             ->event('login')
             ->withProperties([
                 'user_id'     => $user->id,
-                'email'       => $user->email,
-                // 'role'        => $user->getRoleNames()->first(),
+                'name'        => $user->name,
                 'ip'          => request()->ip(),
                 'user_agent'  => request()->userAgent(),
             ])
-            ->log("Pengguna '{$user->email}' berhasil login");
+            ->log("Pengguna '{$user->name}' berhasil login");
         return redirect()->intended(route('index', absolute: false));
     }
 
@@ -53,12 +52,11 @@ class AuthenticatedSessionController extends Controller
             ->event('logout')
             ->withProperties([
                 'user_id'     => $user->id,
-                'email'       => $user->email,
-                // 'role'        => $user->getRoleNames()->first(),
+                'name'        => $user->name,
                 'ip'          => request()->ip(),
                 'user_agent'  => request()->userAgent(),
             ])
-            ->log("Pengguna '{$user->email}' berhasil logout");
+            ->log("Pengguna '{$user->name}' berhasil logout");
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

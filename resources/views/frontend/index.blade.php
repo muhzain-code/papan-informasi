@@ -168,79 +168,84 @@
             padding: clamp(1rem, 2vh, 2rem) clamp(1rem, 3vw, 2.5rem);
         }
 
-        /* Schedule cards - FIXED VISIBILITY */
+        /* Schedule cards - FIXED 4 CARDS LAYOUT */
         .schedule-grid {
-            padding: clamp(0.5rem, 1.2vh, 0.9rem);
-            gap: clamp(0.5rem, 1vh, 0.8rem) !important;
+            padding: clamp(0.3rem, 0.8vh, 0.6rem);
+            gap: clamp(0.3rem, 0.6vh, 0.5rem) !important;
         }
 
         .schedule-card {
-            padding: clamp(0.5rem, 1.2vh, 0.9rem) clamp(0.5rem, 1.2vw, 0.9rem);
+            padding: clamp(0.4rem, 1vh, 0.7rem) clamp(0.5rem, 1vw, 0.8rem);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border-radius: clamp(0.4rem, 0.8vmin, 0.8rem);
+            border-radius: clamp(0.3rem, 0.6vmin, 0.6rem);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
+            justify-content: space-evenly;
+            align-items: stretch;
             text-align: left;
-            gap: clamp(0.15rem, 0.4vh, 0.3rem);
-            overflow: visible;
-            min-height: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
         }
 
         .schedule-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
         .schedule-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: clamp(0.3rem, 0.5vw, 0.5rem);
+            gap: clamp(0.2rem, 0.4vw, 0.4rem);
+            width: 100%;
         }
 
         .schedule-time {
-            font-size: clamp(0.7rem, 1.5vmin, 1.1rem) !important;
-            line-height: 1.3;
-            flex-shrink: 0;
+            font-size: clamp(0.65rem, 1.4vmin, 1rem) !important;
+            line-height: 1.2;
+            white-space: nowrap;
         }
 
         .schedule-prodi {
-            font-size: clamp(0.55rem, 1.1vmin, 0.8rem) !important;
+            font-size: clamp(0.5rem, 1vmin, 0.7rem) !important;
             background: linear-gradient(135deg, #06b6d4, #0891b2);
             color: white;
-            padding: clamp(0.1rem, 0.2vh, 0.15rem) clamp(0.3rem, 0.5vw, 0.4rem);
-            border-radius: clamp(0.2rem, 0.4vmin, 0.3rem);
+            padding: clamp(0.08rem, 0.15vh, 0.12rem) clamp(0.25rem, 0.4vw, 0.35rem);
+            border-radius: clamp(0.15rem, 0.3vmin, 0.25rem);
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .schedule-course {
-            font-size: clamp(0.75rem, 1.6vmin, 1.2rem) !important;
-            line-height: 1.3 !important;
-            word-break: break-word;
+            font-size: clamp(0.7rem, 1.5vmin, 1.1rem) !important;
+            line-height: 1.25 !important;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-height: calc(1.3em * 3);
-            flex-shrink: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            width: 100%;
         }
 
         .schedule-lecturer {
-            font-size: clamp(0.65rem, 1.4vmin, 1rem) !important;
-            line-height: 1.3;
+            font-size: clamp(0.6rem, 1.2vmin, 0.9rem) !important;
+            line-height: 1.2;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 100%;
-            flex-shrink: 0;
+            width: 100%;
         }
 
         .schedule-room {
-            font-size: clamp(0.7rem, 1.5vmin, 1.1rem) !important;
-            line-height: 1.3;
-            flex-shrink: 0;
+            font-size: clamp(0.6rem, 1.3vmin, 0.95rem) !important;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
         }
 
         /* Chat bubbles - NO CUTTING OR SINKING */
@@ -614,19 +619,6 @@
             ->whereNotNull()
             ->values();
 
-        // Prepare schedule data for JavaScript with short prodi code
-        $prodiCodes = ['TI', 'TE', 'SI', 'MJ', 'AK', 'HK', 'MI', 'TK'];
-        $jsScheduleData = $schedules->map(function ($schedule, $index) use ($prodiCodes) {
-            return [
-                'time' => ($schedule->start_time ? \Carbon\Carbon::parse($schedule->start_time)->format('H:i') : '-') . 
-                          ($schedule->end_time ? ' - ' . \Carbon\Carbon::parse($schedule->end_time)->format('H:i') : ''),
-                'course' => $schedule->course->name ?? 'N/A',
-                'prodi' => $prodiCodes[$index % count($prodiCodes)],
-                'lecturer' => $schedule->lecturer->name ?? 'Dosen tidak diatur',
-                'room' => $schedule->room->name ?? 'N/A',
-            ];
-        })->values();
-
         // Prepare notification data using notifications table (filtered by today's date)
         $jsNotificationData = $notifications->map(function ($notification) {
             return [
@@ -640,8 +632,10 @@
 
     <script>
         const videoData = @json($jsVideoData);
-        const scheduleData = @json($jsScheduleData);
+        let jadwalData = []; // Will be populated via API
+        let lastSyncTime = null;
         const notificationData = @json($jsNotificationData);
+        const API_POLL_INTERVAL = 30000; // 30 seconds for real-time updates
     </script>
 
     <script>
@@ -896,19 +890,41 @@
                 }
             }
 
-            function renderSchedules() {
+            // ===== API POLLING FOR REAL-TIME DATA =====
+            async function fetchJadwalData() {
+                try {
+                    const response = await fetch('/api/jadwal?limit=50');
+                    if (!response.ok) throw new Error('API request failed');
+                    
+                    const result = await response.json();
+                    
+                    if (result.success && result.data) {
+                        // Check if data changed
+                        if (result.synced_at !== lastSyncTime) {
+                            lastSyncTime = result.synced_at;
+                            jadwalData = result.data;
+                            renderJadwal();
+                            console.log(`Jadwal updated: ${result.data.length} items`);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching jadwal data:', error);
+                }
+            }
+
+            function renderJadwal() {
                 const container = document.getElementById('jadwal-container');
                 if (!container) return;
 
                 const count = calculateScheduleCount();
                 const grid = getScheduleGridConfig(count);
 
-                if (!scheduleData || scheduleData.length === 0) {
+                if (!jadwalData || jadwalData.length === 0) {
                     container.innerHTML = `
                         <div class="w-full h-full flex items-center justify-center">
                             <div class="schedule-card bg-slate-700/50 text-center border-2 border-slate-600 p-4">
-                                <h3 class="info-title font-black text-white mb-2">Tidak Ada Jadwal</h3>
-                                <p class="info-message text-slate-300">Tidak ada jadwal kuliah hari ini.</p>
+                                <h3 class="info-title font-black text-white mb-2">Memuat Data...</h3>
+                                <p class="info-message text-slate-300">Mengambil jadwal kuliah dari server.</p>
                             </div>
                         </div>
                     `;
@@ -917,24 +933,24 @@
 
                 // Create slides with proper chunking
                 const chunks = [];
-                for (let i = 0; i < scheduleData.length; i += count) {
-                    chunks.push(scheduleData.slice(i, i + count));
+                for (let i = 0; i < jadwalData.length; i += count) {
+                    chunks.push(jadwalData.slice(i, i + count));
                 }
 
                 container.innerHTML = `
                     <div class="slideshow-container w-full h-full" id="schedule-slideshow">
                         ${chunks.map((chunk, chunkIdx) => `
                             <div class="slide schedule-slide w-full h-full" style="opacity: ${chunkIdx === 0 ? 1 : 0};">
-                                <div class="grid h-full" style="grid-template-columns: repeat(${grid.cols}, 1fr); grid-template-rows: repeat(${grid.rows}, 1fr); gap: clamp(0.4rem, 0.8vh, 0.7rem);">
-                                    ${chunk.map(schedule => `
-                                        <div class="schedule-card bg-slate-700/60 backdrop-blur-sm border-2 border-slate-600 hover:border-amber-400/50">
+                                <div class="grid h-full w-full" style="grid-template-columns: repeat(${grid.cols}, 1fr); grid-template-rows: repeat(${grid.rows}, 1fr); gap: clamp(0.3rem, 0.6vh, 0.5rem);">
+                                    ${chunk.map(jadwal => `
+                                        <div class="schedule-card bg-slate-700/60 backdrop-blur-sm border border-slate-600 hover:border-amber-400/50">
                                             <div class="schedule-header">
-                                                <span class="schedule-time font-bold text-amber-400">${schedule.time}</span>
-                                                <span class="schedule-prodi">${schedule.prodi}</span>
+                                                <span class="schedule-time font-bold text-amber-400">${jadwal.waktu}</span>
+                                                <span class="schedule-prodi">${jadwal.prodi || 'N/A'}</span>
                                             </div>
-                                            <h3 class="schedule-course font-black text-white">${schedule.course}</h3>
-                                            <p class="schedule-lecturer text-slate-300">${schedule.lecturer}</p>
-                                            <p class="schedule-room text-amber-300 font-bold">${schedule.room}</p>
+                                            <h3 class="schedule-course font-black text-white">${jadwal.mata_kuliah}</h3>
+                                            <p class="schedule-lecturer text-slate-300">${jadwal.dosen}</p>
+                                            <p class="schedule-room text-amber-300 font-bold">${jadwal.ruangan} | Kelas ${jadwal.kelas}</p>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -943,10 +959,16 @@
                     </div>
                 `;
 
-                // Setup slideshow for schedules
+                // Setup slideshow for jadwal
                 if (chunks.length > 1) {
                     setupJsSlideshow('schedule-slideshow', '.schedule-slide', animationDurations.jadwal);
                 }
+            }
+
+            // Start API polling for real-time updates
+            function startApiPolling() {
+                fetchJadwalData(); // Initial fetch
+                setInterval(fetchJadwalData, API_POLL_INTERVAL); // Poll every 30 seconds
             }
 
             // ===== ADAPTIVE NOTIFICATION SYSTEM =====
@@ -1031,7 +1053,7 @@
             }
 
             // Initial render
-            renderSchedules();
+            startApiPolling(); // Start fetching AKM data from API with 30s polling
             startNotificationRotation();
 
             // Handle window resize
@@ -1039,7 +1061,7 @@
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
-                    renderSchedules();
+                    renderJadwal();
                     startNotificationRotation();
                 }, 250);
             });

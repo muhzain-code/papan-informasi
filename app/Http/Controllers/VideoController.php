@@ -11,22 +11,32 @@ class VideoController extends Controller
 {
     public function index(Request $request)
     {
-        $search  = $request->input('search');
-        $entries = $request->input('entries', 10);
+        $search     = $request->input('search');
+        $entries    = $request->input('entries', 10);
+        $sourceType = $request->input('source_type');
+        $isActive   = $request->input('is_active');
 
         $videos = Video::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('video_url', 'like', "%{$search}%");
             })
+            ->when($sourceType, function ($query) use ($sourceType) {
+                $query->where('source_type', $sourceType);
+            })
+            ->when($isActive !== null && $isActive !== '', function ($query) use ($isActive) {
+                $query->where('is_active', $isActive);
+            })
             ->orderBy('order', 'asc')
             ->paginate($entries)
             ->appends([
-                'search'  => $search,
-                'entries' => $entries,
+                'search'      => $search,
+                'entries'     => $entries,
+                'source_type' => $sourceType,
+                'is_active'   => $isActive,
             ]);
 
-        return view('videos.index', compact('videos', 'search', 'entries'));
+        return view('videos.index', compact('videos', 'search', 'entries', 'sourceType', 'isActive'));
     }
 
     public function create()

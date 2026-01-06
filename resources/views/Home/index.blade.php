@@ -85,8 +85,56 @@
                     </div>
                 </div>
 
+                <!-- Jadwal Kuliah -->
+                <div class="col-md-3 col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body py-4 d-flex align-items-center">
+                            <div class="d-flex justify-content-center align-items-center bg-primary text-white rounded-3 me-3"
+                                 style="width:50px; height:50px;">
+                                <i class="bi bi-calendar-week fs-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 mb-1">Jadwal</p>
+                                <h3 class="fw-bold mb-0">{{ $jadwalCount }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fakultas -->
+                <div class="col-md-3 col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body py-4 d-flex align-items-center">
+                            <div class="d-flex justify-content-center align-items-center bg-success text-white rounded-3 me-3"
+                                 style="width:50px; height:50px;">
+                                <i class="bi bi-building fs-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 mb-1">Fakultas</p>
+                                <h3 class="fw-bold mb-0">{{ $fakultasCount }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prodi -->
+                <div class="col-md-3 col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body py-4 d-flex align-items-center">
+                            <div class="d-flex justify-content-center align-items-center bg-info text-white rounded-3 me-3"
+                                 style="width:50px; height:50px;">
+                                <i class="bi bi-mortarboard fs-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 mb-1">Prodi</p>
+                                <h3 class="fw-bold mb-0">{{ $prodiCount }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Mata Kuliah -->
-                <div class="col-md-4 col-12">
+                <div class="col-md-3 col-6">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-body py-4 d-flex align-items-center">
                             <div class="d-flex justify-content-center align-items-center bg-secondary text-white rounded-3 me-3"
@@ -95,39 +143,7 @@
                             </div>
                             <div>
                                 <p class="text-gray-600 mb-1">Mata Kuliah</p>
-                                <h3 class="fw-bold mb-0">{{ $courseCount }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ruangan -->
-                <div class="col-md-4 col-12">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body py-4 d-flex align-items-center">
-                            <div class="d-flex justify-content-center align-items-center bg-info text-white rounded-3 me-3"
-                                 style="width:50px; height:50px;">
-                                <i class="bi bi-house-door fs-4"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-600 mb-1">Ruangan</p>
-                                <h3 class="fw-bold mb-0">{{ $roomCount }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dosen -->
-                <div class="col-md-4 col-12">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body py-4 d-flex align-items-center">
-                            <div class="d-flex justify-content-center align-items-center bg-success text-white rounded-3 me-3"
-                                 style="width:50px; height:50px;">
-                                <i class="bi bi-person-badge fs-4"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-600 mb-1">Dosen</p>
-                                <h3 class="fw-bold mb-0">{{ $lecturerCount }}</h3>
+                                <h3 class="fw-bold mb-0">{{ $mataKuliahCount }}</h3>
                             </div>
                         </div>
                     </div>

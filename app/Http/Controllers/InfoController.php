@@ -12,20 +12,25 @@ class InfoController extends Controller
     {
         $search  = $request->input('search');
         $entries = $request->input('entries', 10);
+        $status  = $request->input('status');
 
         $infos = Info::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('message', 'like', "%{$search}%");
             })
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($entries)
             ->appends([
                 'search'  => $search,
                 'entries' => $entries,
+                'status'  => $status,
             ]);
 
-        return view('infos.index', compact('infos', 'search', 'entries'));
+        return view('infos.index', compact('infos', 'search', 'entries', 'status'));
     }
 
 

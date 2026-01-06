@@ -68,6 +68,18 @@
                             <span class="ms-2">entries</span>
 
                             <input type="hidden" name="search" value="{{ $search }}">
+                            <input type="hidden" name="status" value="{{ $status }}">
+                        </form>
+
+                        {{-- Status Filter --}}
+                        <form method="GET" class="d-flex align-items-center">
+                            <select name="status" onchange="this.form.submit()" class="form-select form-select-sm w-auto">
+                                <option value="">Semua Status</option>
+                                <option value="active" {{ $status == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ $status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                            <input type="hidden" name="entries" value="{{ $entries }}">
+                            <input type="hidden" name="search" value="{{ $search }}">
                         </form>
 
                         {{-- Search --}}
@@ -76,6 +88,7 @@
                                 class="form-control form-control-sm" placeholder="Cari judul / isi informasi...">
 
                             <input type="hidden" name="entries" value="{{ $entries }}">
+                            <input type="hidden" name="status" value="{{ $status }}">
 
                             <button class="btn btn-primary btn-sm ms-2">Search</button>
                         </form>

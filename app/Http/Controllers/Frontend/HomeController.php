@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Carbon\Carbon;
 use App\Models\Info;
 use App\Models\News;
-use App\Models\Event;
 use App\Models\Video;
-use App\Models\Schedule;
 use App\Models\Announcement;
 use App\Models\Notification;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -37,21 +33,6 @@ class HomeController extends Controller
             ->limit(5)
             ->get(['title']);
 
-        $today = now('Asia/Jakarta')->dayOfWeek;
-
-        $schedules = Schedule::with(['course:id,name,code', 'lecturer:id,name', 'room:id,name,code'])
-            ->where('day_of_week', $today)
-            ->orderBy('start_time', 'asc')
-            ->get([
-                'id',
-                'course_id',
-                'lecturer_id',
-                'room_id',
-                'day_of_week',
-                'start_time',
-                'end_time'
-            ]);
-
         // Get notifications for today
         $todayDate = now('Asia/Jakarta')->toDateString();
         $notifications = Notification::with('creator:id,name')
@@ -63,7 +44,6 @@ class HomeController extends Controller
             'news' => $news,
             'infos' => $infos,
             'videos' => $videos,
-            'schedules' => $schedules,
             'announcements' => $announcements,
             'notifications' => $notifications,
         ]);

@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Info;
 use App\Models\News;
-use App\Models\Room;
-use App\Models\Event;
 use App\Models\Video;
-use App\Models\Course;
-use App\Models\Contact;
-use App\Models\Lecturer;
-use App\Models\Schedule;
-use App\Models\Announcement;
+use App\Models\JdwJadwal;
+use App\Models\JdwFakultas;
+use App\Models\JdwProdi;
+use App\Models\JdwMataKuliah;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -20,13 +17,16 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        // Content statistics
         $newsCount      = News::count();
         $infoCount      = Info::count();
         $videoCount     = Video::count();
 
-        $courseCount    = Course::count();
-        $roomCount      = Room::count();
-        $lecturerCount  = Lecturer::count();
+        // Jadwal statistics from jdw_* tables
+        $jadwalCount     = JdwJadwal::count();
+        $fakultasCount   = JdwFakultas::count();
+        $prodiCount      = JdwProdi::count();
+        $mataKuliahCount = JdwMataKuliah::count();
 
         $recentActivity = \Spatie\Activitylog\Models\Activity::with('causer')
             ->latest()
@@ -38,10 +38,12 @@ class DashboardController extends Controller
             'newsCount',
             'infoCount',
             'videoCount',
-            'courseCount',
-            'roomCount',
-            'lecturerCount',
+            'jadwalCount',
+            'fakultasCount',
+            'prodiCount',
+            'mataKuliahCount',
             'recentActivity'
         ));
     }
 }
+
