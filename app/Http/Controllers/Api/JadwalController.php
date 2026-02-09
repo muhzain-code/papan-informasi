@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SyncJadwalDataJob;
+use App\Services\UnujaApiService;
 use App\Models\JdwJadwal;
 use App\Models\JdwFakultas;
 use App\Models\JdwProdi;
@@ -137,17 +137,20 @@ class JadwalController extends Controller
     }
 
     /**
-     * Trigger manual sync (admin only)
+     * Trigger manual sync (admin only) - langsung tanpa job/queue
      */
-    public function sync(Request $request): JsonResponse
+    public function sync(Request $request, UnujaApiService $apiService): JsonResponse
     {
         $semester = $request->input('semester', '20251');
 
-        SyncJadwalDataJob::dispatch($semester);
+        $result = $apiService->syncToDatabase($semester);
 
         return response()->json([
-            'success' => true,
-            'message' => 'Sync job dispatched successfully',
+            'success' => $result['success'],
+            'message' => $result['success']
+                ? "Sync berhasil! {$result['records_synced']} jadwal tersinkronisasi."
+                : "Sync gagal: {$result['error']}",
+            'records_synced' => $result['records_synced'] ?? 0,
         ]);
     }
 }

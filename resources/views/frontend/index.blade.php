@@ -744,8 +744,9 @@
                     },
                     events: {
                         'onReady': (event) => {
-                            console.log('YT Player is Ready. Muting and Playing.');
-                            event.target.mute();
+                            console.log('YT Player is Ready. Playing with sound.');
+                            event.target.unMute();
+                            event.target.setVolume(100);
                             event.target.playVideo();
                         },
                         'onStateChange': onYTStateChange,
@@ -763,6 +764,7 @@
                 videoEl.controls = true;
                 videoEl.muted = false;
                 videoEl.playsInline = true;
+                videoEl.volume = 1.0;
 
                 videoEl.onended = () => {
                     console.log("File Video Ended.");
@@ -779,9 +781,7 @@
                 const playPromise = videoEl.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(e => {
-                        console.warn("Autoplay file video ditolak, mencoba putar tanpa suara:", e);
-                        videoEl.muted = true;
-                        videoEl.play();
+                        console.warn("Autoplay dengan suara ditolak browser:", e);
                     });
                 }
             }

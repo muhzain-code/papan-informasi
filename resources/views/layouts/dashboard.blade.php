@@ -175,7 +175,7 @@
 
             <footer>
                 <div class="footer mb-0 text-muted d-flex justify-content-center">
-                    <p class="m-0">&copy; 2025 This application was developed by
+                    <p class="m-0">&copy; {{ date('Y') }} This application was developed by
                         <a href="https://github.com/muhzain-code" target="_blank">Zain</a>
                     </p>
                 </div>
