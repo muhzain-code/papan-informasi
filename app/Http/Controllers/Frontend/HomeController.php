@@ -24,9 +24,27 @@ class HomeController extends Controller
             ->limit(5)
             ->get(['id', 'title', 'message', 'date']);
 
-        $videos = Video::where('is_active', true)
+        // Video logic: cari video aktif dengan range tanggal hari ini
+        $today = now('Asia/Jakarta')->toDateString();
+
+        $scheduledVideos = Video::where('is_active', true)
+            ->where('is_default', false)
+            ->whereNotNull('start_date')
+            ->whereNotNull('end_date')
+            ->where('start_date', '<=', $today)
+            ->where('end_date', '>=', $today)
             ->orderBy('order', 'asc')
             ->get(['id', 'source_type', 'video_path', 'video_url', 'title']);
+
+        // Jika ada video terjadwal hari ini, gunakan itu. Jika tidak, gunakan default.
+        if ($scheduledVideos->isNotEmpty()) {
+            $videos = $scheduledVideos;
+        } else {
+            $videos = Video::where('is_active', true)
+                ->where('is_default', true)
+                ->orderBy('order', 'asc')
+                ->get(['id', 'source_type', 'video_path', 'video_url', 'title']);
+        }
 
         $announcements = Announcement::where('status', 'published')
             ->latest()

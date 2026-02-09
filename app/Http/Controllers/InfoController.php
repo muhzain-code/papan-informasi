@@ -46,6 +46,13 @@ class InfoController extends Controller
             'message' => 'required',
             'date'    => 'nullable|date',
             'status'  => 'required|in:active,inactive',
+        ], [
+            'title.required'   => 'Judul informasi wajib diisi.',
+            'title.max'        => 'Judul informasi maksimal 255 karakter.',
+            'message.required' => 'Isi pesan wajib diisi.',
+            'date.date'        => 'Format tanggal tidak valid.',
+            'status.required'  => 'Status wajib dipilih.',
+            'status.in'        => 'Status harus berupa aktif atau tidak aktif.',
         ]);
 
         Info::create([
@@ -76,6 +83,13 @@ class InfoController extends Controller
             'message' => 'required',
             'date'    => 'nullable|date',
             'status'  => 'required|in:active,inactive',
+        ], [
+            'title.required'   => 'Judul informasi wajib diisi.',
+            'title.max'        => 'Judul informasi maksimal 255 karakter.',
+            'message.required' => 'Isi pesan wajib diisi.',
+            'date.date'        => 'Format tanggal tidak valid.',
+            'status.required'  => 'Status wajib dipilih.',
+            'status.in'        => 'Status harus berupa aktif atau tidak aktif.',
         ]);
 
         $info->update([

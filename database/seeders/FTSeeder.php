@@ -18,63 +18,63 @@ class FTSeeder extends Seeder
         | NEWS
         |--------------------------------------------------------------------------
         */
-        DB::table('news')->insert([
-            [
-                'title' => 'BEM UNUJA Gelar International Conference Bahas Pendidikan Holistik',
-                'content' => 'Badan Eksekutif Mahasiswa Universitas Nurul Jadid (UNUJA) menggelar International Conference dengan tema "Holistic Education: Building Intellectual, Emotional, and Spiritual Intelligence" di Aula 1 Pondok Pesantren Nurul Jadid. Acara dihadiri narasumber internasional serta mahasiswa dari berbagai kampus untuk membahas integrasi kecerdasan intelektual, emosional, dan spiritual dalam pendidikan modern.',
-                'thumbnail' => 'news/bem-international-conference.jpg',
-                'published_at' => $now->subDays(90),
-                'status' => 'published',
-                'created_by' => $admin,
-                'updated_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'title' => 'Kongres ke-VIII BEM PTNU Se-Nusantara Resmi Digelar di UNUJA',
-                'content' => 'UNUJA menjadi tuan rumah Kongres VIII BEM PTNU Se-Nusantara, sebuah forum strategis mahasiswa Nahdlatul Ulama yang dihadiri perwakilan BEM PTNU dari seluruh Indonesia. Tema kongres adalah "Merajut Persatuan Mahasiswa Nahdliyin untuk Mendorong Kualitas Pendidikan dan Kemandirian Ekonomi Umat."',
-                'thumbnail' => 'news/kongres-viii-bem-ptnu.jpg',
-                'published_at' => $now->subDays(120),
-                'status' => 'published',
-                'created_by' => $admin,
-                'updated_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'title' => 'Kiai Zuhri Zaini Bicara Tantangan Teknologi dan Persatuan di Kongres BEMPTNU',
-                'content' => 'KH. M. Zuhri Zaini memberikan pesan mendalam kepada peserta Kongres VIII BEMPTNU di UNUJA, bahwa perjuangan mahasiswa akan diuji oleh konflik dan kemajuan teknologi, serta pentingnya persatuan dan nilai keagamaan dalam menghadapi masa depan.',
-                'thumbnail' => 'news/zuhri-zaini-kongres.jpg',
-                'published_at' => $now->subDays(110),
-                'status' => 'published',
-                'created_by' => $admin,
-                'updated_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'title' => 'CBT Center UNUJA Resmi Diakui Sebagai Pusat Uji Kompetensi Tenaga Kesehatan Nasional',
-                'content' => 'Laboratorium komputer CBT Center UNUJA di Gedung D secara resmi diakui oleh Lembaga Pengembangan Uji Kompetensi Tenaga Kesehatan (LPUK-NAKES) sebagai pusat uji kompetensi nasional. Sertifikasi ini memperkuat komitmen UNUJA dalam mendukung mutu pendidikan dan tenaga kesehatan di Indonesia.',
-                'thumbnail' => 'news/cbt-center-unuja.jpg',
-                'published_at' => $now->subDays(150),
-                'status' => 'published',
-                'created_by' => $admin,
-                'updated_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'title' => 'UNUJA Gelar Try Out UKOM Nasional, CBT Center Jadi Lokasi Resmi',
-                'content' => 'Pada 14–16 Juni 2025, UNUJA menjadi tuan rumah Try Out Uji Kompetensi Nasional (UKOM) bagi mahasiswa kesehatan seperti Ners, Keperawatan, dan Teknologi Laboratorium Medik, bekerja sama dengan AIPNI, AIPKIND, AIPViKI, dan LPUK-NAKES.',
-                'thumbnail' => 'news/tryout-ukom-unuja.jpg',
-                'published_at' => $now->subDays(160),
-                'status' => 'published',
-                'created_by' => $admin,
-                'updated_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-        ]);
+        // DB::table('news')->insert([
+        //     [
+        //         'title' => 'BEM UNUJA Gelar International Conference Bahas Pendidikan Holistik',
+        //         'content' => 'Badan Eksekutif Mahasiswa Universitas Nurul Jadid (UNUJA) menggelar International Conference dengan tema "Holistic Education: Building Intellectual, Emotional, and Spiritual Intelligence" di Aula 1 Pondok Pesantren Nurul Jadid. Acara dihadiri narasumber internasional serta mahasiswa dari berbagai kampus untuk membahas integrasi kecerdasan intelektual, emosional, dan spiritual dalam pendidikan modern.',
+        //         'thumbnail' => 'news/bem-international-conference.jpg',
+        //         'published_at' => $now->subDays(90),
+        //         'status' => 'published',
+        //         'created_by' => $admin,
+        //         'updated_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        //     [
+        //         'title' => 'Kongres ke-VIII BEM PTNU Se-Nusantara Resmi Digelar di UNUJA',
+        //         'content' => 'UNUJA menjadi tuan rumah Kongres VIII BEM PTNU Se-Nusantara, sebuah forum strategis mahasiswa Nahdlatul Ulama yang dihadiri perwakilan BEM PTNU dari seluruh Indonesia. Tema kongres adalah "Merajut Persatuan Mahasiswa Nahdliyin untuk Mendorong Kualitas Pendidikan dan Kemandirian Ekonomi Umat."',
+        //         'thumbnail' => 'news/kongres-viii-bem-ptnu.jpg',
+        //         'published_at' => $now->subDays(120),
+        //         'status' => 'published',
+        //         'created_by' => $admin,
+        //         'updated_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        //     [
+        //         'title' => 'Kiai Zuhri Zaini Bicara Tantangan Teknologi dan Persatuan di Kongres BEMPTNU',
+        //         'content' => 'KH. M. Zuhri Zaini memberikan pesan mendalam kepada peserta Kongres VIII BEMPTNU di UNUJA, bahwa perjuangan mahasiswa akan diuji oleh konflik dan kemajuan teknologi, serta pentingnya persatuan dan nilai keagamaan dalam menghadapi masa depan.',
+        //         'thumbnail' => 'news/zuhri-zaini-kongres.jpg',
+        //         'published_at' => $now->subDays(110),
+        //         'status' => 'published',
+        //         'created_by' => $admin,
+        //         'updated_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        //     [
+        //         'title' => 'CBT Center UNUJA Resmi Diakui Sebagai Pusat Uji Kompetensi Tenaga Kesehatan Nasional',
+        //         'content' => 'Laboratorium komputer CBT Center UNUJA di Gedung D secara resmi diakui oleh Lembaga Pengembangan Uji Kompetensi Tenaga Kesehatan (LPUK-NAKES) sebagai pusat uji kompetensi nasional. Sertifikasi ini memperkuat komitmen UNUJA dalam mendukung mutu pendidikan dan tenaga kesehatan di Indonesia.',
+        //         'thumbnail' => 'news/cbt-center-unuja.jpg',
+        //         'published_at' => $now->subDays(150),
+        //         'status' => 'published',
+        //         'created_by' => $admin,
+        //         'updated_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        //     [
+        //         'title' => 'UNUJA Gelar Try Out UKOM Nasional, CBT Center Jadi Lokasi Resmi',
+        //         'content' => 'Pada 14–16 Juni 2025, UNUJA menjadi tuan rumah Try Out Uji Kompetensi Nasional (UKOM) bagi mahasiswa kesehatan seperti Ners, Keperawatan, dan Teknologi Laboratorium Medik, bekerja sama dengan AIPNI, AIPKIND, AIPViKI, dan LPUK-NAKES.',
+        //         'thumbnail' => 'news/tryout-ukom-unuja.jpg',
+        //         'published_at' => $now->subDays(160),
+        //         'status' => 'published',
+        //         'created_by' => $admin,
+        //         'updated_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        // ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -182,28 +182,28 @@ class FTSeeder extends Seeder
         | VIDEOS
         |--------------------------------------------------------------------------
         */
-        DB::table('videos')->insert([
-            [
-                'title' => 'Profil Fakultas Teknik UNUJA',
-                'source_type' => 'youtube',
-                'video_url' => 'https://www.youtube.com/embed/ycx9W2KFx1A',
-                'is_active' => 1,
-                'order' => 1,
-                'created_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'title' => 'Sarana Prasarana Fakultas Teknik UNUJA',
-                'source_type' => 'youtube',
-                'video_url' => 'https://www.youtube.com/embed/SqgVpYleREA',
-                'is_active' => 1,
-                'order' => 2,
-                'created_by' => $admin,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-        ]);
+        // DB::table('videos')->insert([
+        //     [
+        //         'title' => 'Profil Fakultas Teknik UNUJA',
+        //         'source_type' => 'youtube',
+        //         'video_url' => 'https://www.youtube.com/embed/ycx9W2KFx1A',
+        //         'is_active' => 1,
+        //         'order' => 1,
+        //         'created_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        //     [
+        //         'title' => 'Sarana Prasarana Fakultas Teknik UNUJA',
+        //         'source_type' => 'youtube',
+        //         'video_url' => 'https://www.youtube.com/embed/SqgVpYleREA',
+        //         'is_active' => 1,
+        //         'order' => 2,
+        //         'created_by' => $admin,
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ],
+        // ]);
 
         /*
         |--------------------------------------------------------------------------

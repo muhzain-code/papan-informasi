@@ -40,6 +40,15 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+        ], [
+            'name.required'         => 'Nama wajib diisi.',
+            'name.max'              => 'Nama maksimal 255 karakter.',
+            'email.required'        => 'Email wajib diisi.',
+            'email.email'           => 'Format email tidak valid.',
+            'email.unique'          => 'Email ini sudah terdaftar.',
+            'password.required'     => 'Password wajib diisi.',
+            'password.min'          => 'Password minimal 6 karakter.',
+            'password.confirmed'    => 'Konfirmasi password tidak cocok.',
         ]);
 
         User::create([
@@ -67,6 +76,14 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => "required|email|unique:users,email,{$user->id}",
             'password' => 'nullable|min:6|confirmed',
+        ], [
+            'name.required'         => 'Nama wajib diisi.',
+            'name.max'              => 'Nama maksimal 255 karakter.',
+            'email.required'        => 'Email wajib diisi.',
+            'email.email'           => 'Format email tidak valid.',
+            'email.unique'          => 'Email ini sudah digunakan user lain.',
+            'password.min'          => 'Password minimal 6 karakter.',
+            'password.confirmed'    => 'Konfirmasi password tidak cocok.',
         ]);
 
         $user->name  = $validated['name'];

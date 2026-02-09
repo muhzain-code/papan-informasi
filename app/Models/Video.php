@@ -20,10 +20,20 @@ class Video extends Model
         'video_path',
         'video_url',
         'is_active',
+        'is_default',
+        'start_date',
+        'end_date',
         'order',
         'created_by',
         'updated_by',
         'deleted_by',
+    ];
+
+    protected $casts = [
+        'is_active'  => 'boolean',
+        'is_default' => 'boolean',
+        'start_date' => 'date',
+        'end_date'   => 'date',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -53,5 +63,28 @@ class Video extends Model
             fn($model) =>
             $model->forceFill(['deleted_by' => Auth::id()])->saveQuietly()
         );
+    }
+
+    /**
+     * Scope: video yang aktif dan sesuai jadwal hari ini
+     * Prioritas: video dengan range tanggal hari ini, fallback ke default
+     */
+    public function scopePlayableToday($query)
+    {
+        $today = now('Asia/Jakarta')->toDateString();
+
+        return $query->where('is_active', true)
+            ->where(function ($q) use ($today) {
+                // Video dengan range tanggal yang mencakup hari ini
+                $q->where(function ($q2) use ($today) {
+                    $q2->where('is_default', false)
+                       ->whereNotNull('start_date')
+                       ->whereNotNull('end_date')
+                       ->where('start_date', '<=', $today)
+                       ->where('end_date', '>=', $today);
+                })
+                // Atau video default
+                ->orWhere('is_default', true);
+            });
     }
 }

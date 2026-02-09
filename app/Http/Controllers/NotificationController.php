@@ -38,6 +38,10 @@ class NotificationController extends Controller
         $request->validate([
             'message' => 'required',
             'date' => 'required|date',
+        ], [
+            'message.required' => 'Pesan notifikasi wajib diisi.',
+            'date.required'    => 'Tanggal wajib diisi.',
+            'date.date'        => 'Format tanggal tidak valid.',
         ]);
 
         Notification::create([
@@ -64,6 +68,10 @@ class NotificationController extends Controller
         $request->validate([
             'message' => 'required',
             'date' => 'required|date',
+        ], [
+            'message.required' => 'Pesan notifikasi wajib diisi.',
+            'date.required'    => 'Tanggal wajib diisi.',
+            'date.date'        => 'Format tanggal tidak valid.',
         ]);
 
         $notification->update([

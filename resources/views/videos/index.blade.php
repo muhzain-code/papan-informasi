@@ -109,6 +109,7 @@
                                 <th>Sumber</th>
                                 <th>Video</th>
                                 <th>Status</th>
+                                <th>Jadwal</th>
                                 <th>Urutan</th>
                                 <th>Aksi</th>
                             </tr>
@@ -153,6 +154,17 @@
                                         @endif
                                     </td>
 
+                                    <td>
+                                        @if ($item->is_default)
+                                            <span class="badge bg-primary">Default</span>
+                                        @else
+                                            <small>
+                                                {{ $item->start_date?->format('d/m/Y') }} -
+                                                {{ $item->end_date?->format('d/m/Y') }}
+                                            </small>
+                                        @endif
+                                    </td>
+
                                     <td>{{ $item->order }}</td>
 
                                     <td>
@@ -190,26 +202,5 @@
         </section>
     </div>
 
-    {{-- SweetAlert Delete --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        document.addEventListener('submit', function(e) {
-            if (e.target.classList.contains('delete-form')) {
-                e.preventDefault();
-                let form = e.target;
-
-                Swal.fire({
-                    title: 'Hapus Video?',
-                    text: "Video akan dipindahkan ke sampah (soft delete).",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Hapus',
-                    cancelButtonText: 'Batal',
-                    confirmButtonColor: '#d33'
-                }).then((result) => {
-                    if (result.isConfirmed) form.submit();
-                });
-            }
-        });
-    </script>
 @endsection
+

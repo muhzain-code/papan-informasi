@@ -46,16 +46,44 @@ class VideoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'title'       => 'nullable|string|max:255',
             'source_type' => 'required|in:file,youtube',
-
             'video_path'  => 'required_if:source_type,file|file|mimes:mp4,mkv,avi,webm|max:204800',
             'video_url'   => 'required_if:source_type,youtube|nullable|string|max:500',
-
             'order'       => 'required|integer',
             'is_active'   => 'required|boolean',
-        ]);
+            'is_default'  => 'nullable|boolean',
+        ];
+
+        $messages = [
+            'title.max'                  => 'Judul video maksimal 255 karakter.',
+            'source_type.required'       => 'Jenis sumber video wajib dipilih.',
+            'source_type.in'             => 'Jenis sumber video harus berupa file atau youtube.',
+            'video_path.required_if'     => 'File video wajib diunggah jika sumber berupa file.',
+            'video_path.file'            => 'Video harus berupa file yang valid.',
+            'video_path.mimes'           => 'Format video harus: mp4, mkv, avi, atau webm.',
+            'video_path.max'             => 'Ukuran file video maksimal 200MB.',
+            'video_url.required_if'      => 'URL YouTube wajib diisi jika sumber berupa YouTube.',
+            'video_url.max'              => 'URL YouTube maksimal 500 karakter.',
+            'order.required'             => 'Urutan tampil wajib diisi.',
+            'order.integer'              => 'Urutan tampil harus berupa angka.',
+            'is_active.required'         => 'Status wajib dipilih.',
+            'is_active.boolean'          => 'Status harus berupa aktif atau tidak aktif.',
+        ];
+
+        // Jika bukan default, wajib isi start_date dan end_date
+        if (!$request->boolean('is_default')) {
+            $rules['start_date'] = 'required|date';
+            $rules['end_date']   = 'required|date|after_or_equal:start_date';
+            $messages['start_date.required']       = 'Tanggal mulai wajib diisi jika bukan video default.';
+            $messages['start_date.date']           = 'Tanggal mulai harus berupa tanggal yang valid.';
+            $messages['end_date.required']         = 'Tanggal selesai wajib diisi jika bukan video default.';
+            $messages['end_date.date']             = 'Tanggal selesai harus berupa tanggal yang valid.';
+            $messages['end_date.after_or_equal']   = 'Tanggal selesai harus sama atau setelah tanggal mulai.';
+        }
+
+        $request->validate($rules, $messages);
 
         // Jika YouTube → cek link dan convert
         $youtubeUrl = null;
@@ -63,7 +91,7 @@ class VideoController extends Controller
             $converted = $this->convertToYoutubeEmbed($request->video_url);
 
             if (!$converted) {
-                return back()->withErrors(['video_url' => 'Link YouTube tidak valid'])->withInput();
+                return back()->withErrors(['video_url' => 'Link YouTube tidak valid. Gunakan format seperti: https://www.youtube.com/watch?v=xxxx'])->withInput();
             }
 
             $youtubeUrl = $converted;
@@ -75,6 +103,8 @@ class VideoController extends Controller
             $videoPath = $request->file('video_path')->store('videos', 'public');
         }
 
+        $isDefault = $request->boolean('is_default');
+
         Video::create([
             'title'       => $request->title,
             'source_type' => $request->source_type,
@@ -82,13 +112,14 @@ class VideoController extends Controller
             'video_url'   => $youtubeUrl,
             'order'       => $request->order,
             'is_active'   => $request->is_active,
+            'is_default'  => $isDefault,
+            'start_date'  => $isDefault ? null : $request->start_date,
+            'end_date'    => $isDefault ? null : $request->end_date,
             'created_by'  => Auth::id(),
         ]);
 
         return redirect()->route('videos.index')->with('success', 'Video berhasil ditambahkan.');
     }
-
-
 
     public function show(Video $video)
     {
@@ -102,16 +133,43 @@ class VideoController extends Controller
 
     public function update(Request $request, Video $video)
     {
-        $request->validate([
+        $rules = [
             'title'       => 'nullable|string|max:255',
             'source_type' => 'required|in:file,youtube',
-
             'video_path'  => 'nullable|file|mimes:mp4,mkv,avi,webm|max:204800',
             'video_url'   => 'nullable|required_if:source_type,youtube|string|max:500',
-
             'order'       => 'required|integer',
             'is_active'   => 'required|boolean',
-        ]);
+            'is_default'  => 'nullable|boolean',
+        ];
+
+        $messages = [
+            'title.max'                  => 'Judul video maksimal 255 karakter.',
+            'source_type.required'       => 'Jenis sumber video wajib dipilih.',
+            'source_type.in'             => 'Jenis sumber video harus berupa file atau youtube.',
+            'video_path.file'            => 'Video harus berupa file yang valid.',
+            'video_path.mimes'           => 'Format video harus: mp4, mkv, avi, atau webm.',
+            'video_path.max'             => 'Ukuran file video maksimal 200MB.',
+            'video_url.required_if'      => 'URL YouTube wajib diisi jika sumber berupa YouTube.',
+            'video_url.max'              => 'URL YouTube maksimal 500 karakter.',
+            'order.required'             => 'Urutan tampil wajib diisi.',
+            'order.integer'              => 'Urutan tampil harus berupa angka.',
+            'is_active.required'         => 'Status wajib dipilih.',
+            'is_active.boolean'          => 'Status harus berupa aktif atau tidak aktif.',
+        ];
+
+        // Jika bukan default, wajib isi start_date dan end_date
+        if (!$request->boolean('is_default')) {
+            $rules['start_date'] = 'required|date';
+            $rules['end_date']   = 'required|date|after_or_equal:start_date';
+            $messages['start_date.required']       = 'Tanggal mulai wajib diisi jika bukan video default.';
+            $messages['start_date.date']           = 'Tanggal mulai harus berupa tanggal yang valid.';
+            $messages['end_date.required']         = 'Tanggal selesai wajib diisi jika bukan video default.';
+            $messages['end_date.date']             = 'Tanggal selesai harus berupa tanggal yang valid.';
+            $messages['end_date.after_or_equal']   = 'Tanggal selesai harus sama atau setelah tanggal mulai.';
+        }
+
+        $request->validate($rules, $messages);
 
         $videoPath = $video->video_path;
         $youtubeUrl = null;
@@ -121,7 +179,7 @@ class VideoController extends Controller
             $converted = $this->convertToYoutubeEmbed($request->video_url);
 
             if (!$converted) {
-                return back()->withErrors(['video_url' => 'Link YouTube tidak valid'])->withInput();
+                return back()->withErrors(['video_url' => 'Link YouTube tidak valid. Gunakan format seperti: https://www.youtube.com/watch?v=xxxx'])->withInput();
             }
 
             $youtubeUrl = $converted;
@@ -135,7 +193,6 @@ class VideoController extends Controller
 
         // Jika File
         if ($request->source_type === 'file' && $request->hasFile('video_path')) {
-
             // Hapus file lama
             if ($videoPath && Storage::disk('public')->exists($videoPath)) {
                 Storage::disk('public')->delete($videoPath);
@@ -144,6 +201,8 @@ class VideoController extends Controller
             $videoPath = $request->file('video_path')->store('videos', 'public');
         }
 
+        $isDefault = $request->boolean('is_default');
+
         $video->update([
             'title'       => $request->title,
             'source_type' => $request->source_type,
@@ -151,6 +210,9 @@ class VideoController extends Controller
             'video_url'   => $request->source_type === 'youtube' ? $youtubeUrl : null,
             'order'       => $request->order,
             'is_active'   => $request->is_active,
+            'is_default'  => $isDefault,
+            'start_date'  => $isDefault ? null : $request->start_date,
+            'end_date'    => $isDefault ? null : $request->end_date,
             'updated_by'  => Auth::id(),
         ]);
 

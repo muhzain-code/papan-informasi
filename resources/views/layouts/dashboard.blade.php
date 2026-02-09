@@ -26,6 +26,49 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
+    {{-- Loading Overlay Styles --}}
+    <style>
+        #loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        #loading-overlay.active {
+            display: flex;
+        }
+        .loading-content {
+            text-align: center;
+            padding: 2rem 2.5rem;
+            border-radius: 1rem;
+            background: var(--bs-body-bg, #fff);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(67, 94, 190, 0.2);
+            border-top-color: #435ebe;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        .loading-content p {
+            margin: 0;
+            font-weight: 600;
+            color: var(--bs-body-color, #333);
+            font-size: 0.95rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -202,18 +245,19 @@
                     e.preventDefault();
 
                     Swal.fire({
-                        title: 'Confirm Deletion',
-                        text: 'This action cannot be undone. Are you sure you want to proceed?',
+                        title: 'Konfirmasi Hapus',
+                        text: 'Tindakan ini tidak dapat dibatalkan. Apakah Anda yakin?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it',
-                        cancelButtonText: 'Cancel',
+                        confirmButtonText: 'Ya, hapus!',
+                        cancelButtonText: 'Batal',
                         confirmButtonColor: '#d33',
                         cancelButtonColor: '#6c757d',
                         reverseButtons: true,
                         focusCancel: true
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            if (window.showLoading) showLoading('Menghapus data...');
                             form.submit();
                         }
                     });
@@ -250,6 +294,79 @@
     </script>
 
     <script src="{{ asset('js/ajax-filter.js') }}"></script>
+
+    {{-- Loading Overlay HTML --}}
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loading-text">Memproses data...</p>
+        </div>
+    </div>
+
+    {{-- Loading Overlay Script --}}
+    <script>
+    (function() {
+        const overlay = document.getElementById('loading-overlay');
+        const loadingText = document.getElementById('loading-text');
+
+        // Form classes that use SweetAlert confirmation — spinner harus ditrigger dari dalam .then()
+        const SWAL_FORM_CLASSES = ['delete-form', 'form-publish', 'form-draft'];
+
+        function showLoading(text) {
+            loadingText.textContent = text || 'Memproses data...';
+            overlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            overlay.classList.remove('active');
+        }
+
+        // Auto-show on form submissions (skip forms that use SweetAlert confirmation)
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+
+            // Skip forms that use SweetAlert (spinner ditrigger dari dalam callback mereka)
+            if (SWAL_FORM_CLASSES.some(cls => form.classList.contains(cls))) return;
+            // Skip ajax filter forms and logout
+            if (form.classList.contains('ajax-form')) return;
+            if (form.id === 'logout-form') return;
+
+            // Detect action type from submit button or form
+            let text = 'Memproses data...';
+            const btn = form.querySelector('button[type="submit"]:focus, button[type="submit"]:active');
+            const btnText = btn ? btn.textContent.trim().toLowerCase() : '';
+            const action = form.getAttribute('action') || '';
+
+            if (btnText.includes('simpan') || action.includes('store')) {
+                text = 'Menyimpan data...';
+            } else if (btnText.includes('perbarui') || btnText.includes('update') || form.querySelector('input[name="_method"][value="PUT"]')) {
+                text = 'Memperbarui data...';
+            } else if (btnText.includes('sync') || action.includes('sync')) {
+                text = 'Menyinkronkan data...';
+            }
+
+            showLoading(text);
+        });
+
+        // Also support manual trigger via .btn-loading class
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-loading');
+            if (btn) {
+                const text = btn.getAttribute('data-loading-text') || 'Memproses data...';
+                showLoading(text);
+            }
+        });
+
+        // Hide on back/forward navigation
+        window.addEventListener('pageshow', function(e) {
+            if (e.persisted) hideLoading();
+        });
+
+        // Expose globally
+        window.showLoading = showLoading;
+        window.hideLoading = hideLoading;
+    })();
+    </script>
 </body>
 
 </html>

@@ -135,29 +135,5 @@
         </section>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        // Konfirmasi Delete
-        document.addEventListener('submit', function(e) {
-            if (e.target.classList.contains('delete-form')) {
-                e.preventDefault();
-                let form = e.target;
-
-                Swal.fire({
-                    title: 'Hapus User?',
-                    text: "Data user akan dihapus permanen.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal',
-                    confirmButtonColor: '#dc3545'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            }
-        });
-    </script>
 @endsection
+

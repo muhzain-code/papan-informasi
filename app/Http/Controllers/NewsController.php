@@ -46,8 +46,16 @@ class NewsController extends Controller
         $request->validate([
             'title'    => 'required|string|max:255',
             'content'  => 'required',
-            'thumbnail' => 'nullable|image|max:2048',
+            'thumbnail' => 'nullable|image|max:5096',
             'status'   => 'required|in:draft,published',
+        ], [
+            'title.required'     => 'Judul berita wajib diisi.',
+            'title.max'          => 'Judul berita maksimal 255 karakter.',
+            'content.required'   => 'Konten berita wajib diisi.',
+            'thumbnail.image'    => 'Thumbnail harus berupa file gambar (jpg, png, gif, dll).',
+            'thumbnail.max'      => 'Ukuran thumbnail maksimal 5MB.',
+            'status.required'    => 'Status wajib dipilih.',
+            'status.in'          => 'Status harus berupa draft atau published.',
         ]);
 
         $thumbnail = null;
@@ -85,6 +93,15 @@ class NewsController extends Controller
             'thumbnail'    => 'nullable|image|max:2048',
             'status'       => 'required|in:draft,published',
             'published_at' => 'nullable|date',
+        ], [
+            'title.required'       => 'Judul berita wajib diisi.',
+            'title.max'            => 'Judul berita maksimal 255 karakter.',
+            'content.required'     => 'Konten berita wajib diisi.',
+            'thumbnail.image'      => 'Thumbnail harus berupa file gambar (jpg, png, gif, dll).',
+            'thumbnail.max'        => 'Ukuran thumbnail maksimal 2MB.',
+            'status.required'      => 'Status wajib dipilih.',
+            'status.in'            => 'Status harus berupa draft atau published.',
+            'published_at.date'    => 'Format tanggal publikasi tidak valid.',
         ]);
 
         $thumbnail = $news->thumbnail;

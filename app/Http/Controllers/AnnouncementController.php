@@ -43,6 +43,11 @@ class AnnouncementController extends Controller
         $request->validate([
             'title'  => 'required|string|max:255',
             'status' => 'required|in:draft,published',
+        ], [
+            'title.required'  => 'Judul pengumuman wajib diisi.',
+            'title.max'       => 'Judul pengumuman maksimal 255 karakter.',
+            'status.required' => 'Status wajib dipilih.',
+            'status.in'       => 'Status harus berupa draft atau published.',
         ]);
 
         Announcement::create([
@@ -69,6 +74,11 @@ class AnnouncementController extends Controller
         $request->validate([
             'title'  => 'required|string|max:255',
             'status' => 'required|in:draft,published',
+        ], [
+            'title.required'  => 'Judul pengumuman wajib diisi.',
+            'title.max'       => 'Judul pengumuman maksimal 255 karakter.',
+            'status.required' => 'Status wajib dipilih.',
+            'status.in'       => 'Status harus berupa draft atau published.',
         ]);
 
         $announcement->update([

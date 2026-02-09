@@ -143,6 +143,41 @@
                             @enderror
                         </div>
 
+                        {{-- Default Checkbox --}}
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="is_default" name="is_default" value="1"
+                                    {{ old('is_default', $video->is_default) ? 'checked' : '' }}>
+                                <label class="form-check-label fw-bold" for="is_default">Default</label>
+                            </div>
+                            <small class="text-muted">Jika dicentang, video ini akan diputar kapan saja (tanpa batas tanggal).</small>
+                        </div>
+
+                        {{-- Date Range (hidden when is_default is checked) --}}
+                        <div class="mb-3" id="date-range-fields" style="display:none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Tanggal Mulai</label>
+                                    <input type="date" name="start_date"
+                                        class="form-control @error('start_date') is-invalid @enderror"
+                                        value="{{ old('start_date', $video->start_date?->format('Y-m-d')) }}">
+                                    @error('start_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tanggal Selesai</label>
+                                    <input type="date" name="end_date"
+                                        class="form-control @error('end_date') is-invalid @enderror"
+                                        value="{{ old('end_date', $video->end_date?->format('Y-m-d')) }}">
+                                    @error('end_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <small class="text-muted">Video akan diputar hanya dalam rentang tanggal ini.</small>
+                        </div>
+
                         {{-- Buttons --}}
                         <div class="d-flex justify-content-between mt-4">
                             <a href="{{ route('videos.index') }}" class="btn btn-secondary">
@@ -161,7 +196,7 @@
         </section>
     </div>
 
-    {{-- Dynamic Source Script --}}
+    {{-- Dynamic Source & Default Script --}}
     <script>
         function updateSourceFields() {
             const type = document.getElementById('source_type').value;
@@ -177,8 +212,22 @@
             }
         }
 
+        function updateDefaultFields() {
+            const isDefault = document.getElementById('is_default').checked;
+            const dateFields = document.getElementById('date-range-fields');
+
+            if (isDefault) {
+                dateFields.style.display = 'none';
+                dateFields.querySelectorAll('input[type="date"]').forEach(el => el.value = '');
+            } else {
+                dateFields.style.display = 'block';
+            }
+        }
+
         updateSourceFields();
+        updateDefaultFields();
         document.getElementById('source_type').addEventListener('change', updateSourceFields);
+        document.getElementById('is_default').addEventListener('change', updateDefaultFields);
     </script>
 
 @endsection

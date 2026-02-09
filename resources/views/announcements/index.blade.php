@@ -194,6 +194,7 @@
                     confirmButtonColor: '#28a745'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        if (window.showLoading) showLoading('Mempublikasikan pengumuman...');
                         form.submit();
                     }
                 });
@@ -217,6 +218,7 @@
                     confirmButtonColor: '#6c757d'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        if (window.showLoading) showLoading('Mengubah status pengumuman...');
                         form.submit();
                     }
                 });
